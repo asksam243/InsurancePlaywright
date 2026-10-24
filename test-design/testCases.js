@@ -61,12 +61,12 @@ const T = (id, title, o) => ({
 
 const cases = [
   // ------------------------------------------------------------------ AUTH
-  T('AUTH-V01', 'Valid agent logs in; dashboard URL and greeting asserted', {
+  T('AUTH-V01', 'Valid agent logs in and lands on their draft application (BR-AUTH-010)', {
     type: 'UI Positive', priority: 'P1', severity: 'Critical', smoke: true, defects: ['RI-01'],
     pre: 'Seeded valid agent exists and is active; browser has no session',
     steps: ['Open /login', 'Enter valid agent email and password', 'Click Log in'],
     data: AGENT_DATA,
-    expected: 'Browser leaves /login and lands on the dashboard; the logout control is visible',
+    expected: 'Browser leaves /login and lands on the draft application Client Information page (/applications/:id/client); the logout control is visible',
     evidence: EV_SEEDED,
   }),
   T('AUTH-V02', 'Invalid password shows correct error message', {
@@ -127,6 +127,14 @@ const cases = [
     data: 'AGENT_MFA_EMAIL; OTP_CODE',
     expected: 'OTP prompt appears; wrong OTP is rejected; correct OTP completes login to the dashboard',
     cond: 'Set AGENT_MFA_EMAIL and OTP_CODE (Q06, Q08)',
+  }),
+  T('AUTH-V14', 'Admin logs in and lands on the dashboard (carried over from the starter project as AUTH-V01b)', {
+    type: 'UI Positive', priority: 'P2', severity: 'High', smoke: true,
+    pre: 'Seeded admin user exists and is active; browser has no session',
+    steps: ['Open /login', 'Enter admin email and password', 'Click Log in'],
+    data: 'ADMIN_EMAIL + ADMIN_PASSWORD',
+    expected: 'Browser lands on /dashboard (admin is the only role that does); the logout control is visible',
+    evidence: EV_SEEDED,
   }),
   T('AUTH-V10', 'Session timeout redirects to login', {
     source: 'S1+', type: 'UI Boundary', priority: 'P2', severity: 'High',
@@ -799,7 +807,7 @@ const SENSITIVE = ['CLI-V08', 'CLI-V09', 'CLI-V10', 'CLI-V12']; // tests that ty
 // that column, so they are linked here to the closest risk (author judgement - review with the mentor). Every case
 // must trace to at least one risk; FW-04 enforces that.
 const EXTRA_RISKS = {
-  'AUTH-V03': ['R02'], 'AUTH-V09': ['R01'], 'AUTH-V11': ['R06'], 'AUTH-V12': ['R06'], 'AUTH-V13': ['R06'],
+  'AUTH-V03': ['R02'], 'AUTH-V09': ['R01'], 'AUTH-V14': ['R01'], 'AUTH-V11': ['R06'], 'AUTH-V12': ['R06'], 'AUTH-V13': ['R06'],
   'DASH-V01': ['R07'], 'DASH-V03': ['R07'], 'DASH-V05': ['R07'], 'DASH-V07': ['R07'],
   'CLI-V01': ['R10'], 'CLI-V02': ['R10'], 'CLI-V09': ['R30'], 'CLI-V11': ['R15'], 'CLI-V13': ['R10'], 'CLI-V14': ['R15'], 'CLI-V15': ['R15'],
   'PROD-V01': ['R16'], 'PROD-V02': ['R16'], 'PROD-V09': ['R18'], 'PROD-V10': ['R16'], 'PROD-V11': ['R33', 'R18'],

@@ -34,12 +34,12 @@ class ApiClient {
   static async create(playwright, user) {
     // Content-Type is NOT set globally: Playwright adds application/json for object payloads and multipart for file uploads.
     const headers = { Accept: 'application/json' };
-    if (env.apiKey) headers['X-API-Key'] = env.apiKey;
+    if (env.apiKey && user) headers['X-API-Key'] = env.apiKey; // anonymous clients stay key-less on purpose (API-V02)
     const ctx = await playwright.request.newContext({ baseURL: env.apiBaseUrl, extraHTTPHeaders: headers });
     const client = new ApiClient(ctx);
     if (user) {
       const res = await client.login(user);
-      if (!res.ok()) throw new Error(`API login failed for ${user.email}: HTTP ${res.status()} ${await res.text()}`);
+      if (!res.ok() && env.apiAuthMode !== 'key') throw new Error(`API login failed for ${user.email}: HTTP ${res.status()} ${await res.text()}`);
     }
     return client;
   }

@@ -1,0 +1,23 @@
+{
+  "name": "insurance-order-entry-playwright-automation",
+  "version": "1.0.0",
+  "description": "Playwright/JavaScript QA automation for the Insurance Order Entry platform (MassMutual India tech forum project).",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:api": "playwright test --grep @api",
+    "test:auth": "playwright test tests/auth",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report reports/html-report",
+    "codegen": "playwright codegen"
+  },
+  "keywords": ["playwright", "qa-automation", "insurance", "page-object-model"],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "dotenv": "^16.4.5"
+  }
+}

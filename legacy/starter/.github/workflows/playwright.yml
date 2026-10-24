@@ -1,0 +1,79 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Nightly regression run — adjust cron as needed for your cohort schedule.
+    - cron: '0 2 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  smoke:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      - name: Run smoke tests
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          VALID_AGENT_EMAIL: ${{ secrets.VALID_AGENT_EMAIL }}
+          VALID_AGENT_PASSWORD: ${{ secrets.VALID_AGENT_PASSWORD }}
+          NEW_AGENT_EMAIL: ${{ secrets.NEW_AGENT_EMAIL }}
+          NEW_AGENT_PASSWORD: ${{ secrets.NEW_AGENT_PASSWORD }}
+          LOCKED_AGENT_EMAIL: ${{ secrets.LOCKED_AGENT_EMAIL }}
+          LOCKED_AGENT_PASSWORD: ${{ secrets.LOCKED_AGENT_PASSWORD }}
+        run: npm run test:smoke
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-smoke
+          path: reports/
+          retention-days: 14
+
+  regression:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      - name: Run full regression suite
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          VALID_AGENT_EMAIL: ${{ secrets.VALID_AGENT_EMAIL }}
+          VALID_AGENT_PASSWORD: ${{ secrets.VALID_AGENT_PASSWORD }}
+          NEW_AGENT_EMAIL: ${{ secrets.NEW_AGENT_EMAIL }}
+          NEW_AGENT_PASSWORD: ${{ secrets.NEW_AGENT_PASSWORD }}
+          LOCKED_AGENT_EMAIL: ${{ secrets.LOCKED_AGENT_EMAIL }}
+          LOCKED_AGENT_PASSWORD: ${{ secrets.LOCKED_AGENT_PASSWORD }}
+        run: npm test
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-regression
+          path: reports/
+          retention-days: 14
+      - name: Fail build on critical test failure
+        if: failure()
+        run: exit 1

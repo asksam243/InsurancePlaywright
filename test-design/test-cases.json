@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-14",
+  "generated": "2026-10-24",
   "releaseGate": [
     "AUTH-V01",
     "AUTH-V05",
@@ -25,7 +25,7 @@
     {
       "id": "AUTH-V01",
       "prefix": "AUTH",
-      "title": "Valid agent logs in; dashboard URL and greeting asserted",
+      "title": "Valid agent logs in and lands on their draft application (BR-AUTH-010)",
       "source": "S1",
       "type": "UI Positive",
       "priority": "P1",
@@ -42,7 +42,7 @@
         "Click Log in"
       ],
       "data": "AGENT_VALID_EMAIL / AGENT_VALID_PASSWORD",
-      "expected": "Browser leaves /login and lands on the dashboard; the logout control is visible",
+      "expected": "Browser leaves /login and lands on the draft application Client Information page (/applications/:id/client); the logout control is visible",
       "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
       "automation": "Automated",
       "cond": "",
@@ -407,6 +407,47 @@
         "@regression",
         "@authentication",
         "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V14",
+      "prefix": "AUTH",
+      "title": "Admin logs in and lands on the dashboard (carried over from the starter project as AUTH-V01b)",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Seeded admin user exists and is active; browser has no session",
+      "steps": [
+        "Open /login",
+        "Enter admin email and password",
+        "Click Log in"
+      ],
+      "data": "ADMIN_EMAIL + ADMIN_PASSWORD",
+      "expected": "Browser lands on /dashboard (admin is the only role that does); the logout control is visible",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V14",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R01"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2",
+        "@smoke"
       ],
       "automationStatus": "Automated",
       "spec": "tests/ui/auth.spec.js"

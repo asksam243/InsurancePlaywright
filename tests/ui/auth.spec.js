@@ -3,7 +3,7 @@ const M = require('../../config/messages');
 const routes = require('../../config/routes');
 const { S } = require('../../config/selectors');
 
-const { validAgent, lockedAgent, invalidAgent, lockoutAgent, resetAgent, mfaAgent } = env.users;
+const { validAgent, lockedAgent, invalidAgent, lockoutAgent, resetAgent, mfaAgent, adminUser } = env.users;
 const otp = env.otpCode;
 const wrongOtp = otp === '111111' ? '222222' : '111111';
 
@@ -12,8 +12,15 @@ test.describe('Authentication & Session', () => {
   test(...tc('AUTH-V01'), async ({ page, pages }) => {
     await pages.login.loginViaUi(validAgent);
     await pages.login.expectLoggedIn();
-    await expect(page).toHaveURL(/dashboard/);
-    await expect(pages.dashboard.$(S.dashboard.greeting)).toBeVisible();
+    // BR-AUTH-010 (confirmed): an agent lands on their draft's Client Information page; only admin lands on /dashboard.
+    await expect(page).toHaveURL(/\/applications\/[^/]+\/client/);
+  });
+
+  test(...tc('AUTH-V14'), async ({ page, pages }) => {
+    await pages.login.loginViaUi(adminUser);
+    await pages.login.expectLoggedIn();
+    // BR-AUTH-010 (confirmed): admin is the one role that lands on /dashboard.
+    await expect(page).toHaveURL(/\/dashboard/);
   });
 
   test(...tc('AUTH-V02'), async ({ page, pages }) => {

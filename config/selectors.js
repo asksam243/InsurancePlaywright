@@ -25,9 +25,9 @@ const S = {
   },
 
   login: {
-    email: t('login-email', { label: /e-?mail|user ?name/i }), // CONFIRMED
-    password: t('login-password', { label: /^password/i }), // CONFIRMED
-    submit: t('login-submit', { role: 'button', name: /log ?in|sign ?in/i }), // CONFIRMED
+    email: t('login-email-input', { label: /e-?mail|user ?name/i }), // CONFIRMED
+    password: t('login-password-input', { label: /^password/i }), // CONFIRMED
+    submit: t('login-submit-button', { role: 'button', name: /log ?in|sign ?in/i }), // CONFIRMED
     error: t('login-error', { css: '.field-error, .alert-danger, [role="alert"]' }),
     otpInput: t('login-otp', { label: /otp|verification code|one.?time/i }),
     otpSubmit: t('login-otp-submit', { role: 'button', name: /verify|submit|continue/i }),

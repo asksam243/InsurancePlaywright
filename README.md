@@ -74,3 +74,11 @@ Known defects already logged: `EXPECT_FAIL_DEFECTS=RI-05,RI-07` marks them expec
 Not yet run on the real app; selectors, API payload shapes and message wording unconfirmed; database layer blocked (Q04); Chromium primary
 (Firefox/WebKit smoke with `CROSS_BROWSER=true`). Full list: *Limitations* sheet. Troubleshooting: timeouts on the first `goto` mean a stale
 `INSURANCE_BASE_URL` (run `npm run health`); `Flow could not leave the step "X"` lists the on-screen messages that stopped it.
+
+## 9. Merged from two projects
+
+This repository is the Submission 2 build with the earlier 32-test starter project folded in.
+- Lab facts the starter project confirmed (login testids, `X-API-Key` auth, seeded accounts, rider / upload limits, where an agent
+  lands after login) are applied in `config/` and listed, with the still-open questions, in `docs/confirmed-environment-facts.md`.
+- Old environment variable names (`BASE_URL`, `API_KEY`, `VALID_AGENT_EMAIL` ...) still work as fallbacks.
+- The starter project itself is kept, not run, under `legacy/starter/`. Delete it when you no longer need to diff against it.
