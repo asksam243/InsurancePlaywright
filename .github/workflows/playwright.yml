@@ -1,0 +1,46 @@
+# CI plan (Submission 1, section 6) adapted for a SHARED LAB environment.
+#  - The runner must be able to REACH the lab VM. GitHub-hosted runners usually cannot reach a private lab IP:
+#    use a self-hosted runner (or VPN) inside the lab network. The reachability step fails fast and says why.
+#  - One worker by default (WORKERS=1). Secrets, never the repo, hold URLs and credentials.
+name: playwright
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      grep: { description: 'Tag filter', default: '@smoke' }
+  schedule:
+    - cron: '0 2 * * *'   # nightly regression
+concurrency: { group: lab-environment, cancel-in-progress: false }   # never two runs against the lab at once
+jobs:
+  test:
+    runs-on: [self-hosted, lab]          # change to ubuntu-latest ONLY if that runner can reach the lab
+    timeout-minutes: 60
+    env:
+      CI: 'true'
+      WORKERS: '1'
+      INSURANCE_BASE_URL: ${{ secrets.INSURANCE_BASE_URL }}
+      INSURANCE_API_KEY: ${{ secrets.INSURANCE_API_KEY }}
+      AGENT_VALID_EMAIL: ${{ secrets.AGENT_VALID_EMAIL }}
+      AGENT_VALID_PASSWORD: ${{ secrets.AGENT_VALID_PASSWORD }}
+      AGENT_LOCKED_EMAIL: ${{ secrets.AGENT_LOCKED_EMAIL }}
+      AGENT_LOCKED_PASSWORD: ${{ secrets.AGENT_LOCKED_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Offline checks (no lab needed)
+        run: npm run test:unit && npm run check:traceability
+      - name: Can the runner reach the lab?   # classifies ENVIRONMENT vs APPLICATION, fails fast
+        run: npm run health
+      - name: Run tests
+        run: npx playwright test --project=chromium --project=api --grep "${{ github.event.inputs.grep || (github.event_name == 'schedule' && '@regression' || '@smoke') }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            reports/html-report
+            reports/junit.xml
+          retention-days: 14

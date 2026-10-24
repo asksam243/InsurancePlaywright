@@ -1,0 +1,5106 @@
+{
+  "generated": "2026-10-14",
+  "releaseGate": [
+    "AUTH-V01",
+    "AUTH-V05",
+    "AUTH-V06",
+    "DASH-V02",
+    "CLI-V05",
+    "CLI-V08",
+    "PROD-V01",
+    "PROD-V05",
+    "PROD-V06",
+    "RIDER-V02",
+    "BEN-V02",
+    "BEN-V05",
+    "DOC-V04",
+    "VAL-V03",
+    "WF-V01",
+    "WF-V03",
+    "WF-V06",
+    "API-V02",
+    "API-V05"
+  ],
+  "cases": [
+    {
+      "id": "AUTH-V01",
+      "prefix": "AUTH",
+      "title": "Valid agent logs in; dashboard URL and greeting asserted",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P1",
+      "severity": "Critical",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [
+        "RI-01"
+      ],
+      "pre": "Seeded valid agent exists and is active; browser has no session",
+      "steps": [
+        "Open /login",
+        "Enter valid agent email and password",
+        "Click Log in"
+      ],
+      "data": "AGENT_VALID_EMAIL / AGENT_VALID_PASSWORD",
+      "expected": "Browser leaves /login and lands on the dashboard; the logout control is visible",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V01",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R01"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p1",
+        "@smoke",
+        "@release-gate",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V02",
+      "prefix": "AUTH",
+      "title": "Invalid password shows correct error message",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-02"
+      ],
+      "pre": "Seeded valid agent exists; browser has no session",
+      "steps": [
+        "Open /login",
+        "Enter valid email with a WRONG password",
+        "Click Log in"
+      ],
+      "data": "AGENT_VALID_EMAIL + AGENT_INVALID_PASSWORD",
+      "expected": "Stays on /login; an invalid-credentials message is shown (config/messages.js invalidCredentials); dashboard is not reachable",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V02",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R02"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V03",
+      "prefix": "AUTH",
+      "title": "Blank username/password show mandatory field errors",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Browser has no session",
+      "steps": [
+        "Open /login",
+        "Leave email and password empty",
+        "Click Log in"
+      ],
+      "data": "none",
+      "expected": "Stays on /login; each empty field is flagged as required (inline message or browser validity state)",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V03",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R02"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V04",
+      "prefix": "AUTH",
+      "title": "Logout clears session; protected route redirects to login",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Open the dashboard",
+        "Click Log out",
+        "Navigate directly to /dashboard"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "After logout the login page is shown; navigating to /dashboard redirects back to /login (no stale session)",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V04",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R05"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2",
+        "@smoke"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V05",
+      "prefix": "AUTH",
+      "title": "Direct /dashboard access without login is blocked",
+      "source": "S1",
+      "type": "UI Security",
+      "priority": "P1",
+      "severity": "Critical",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Fresh browser context with no cookies or storage",
+      "steps": [
+        "Navigate directly to /dashboard without logging in"
+      ],
+      "data": "none",
+      "expected": "Redirected to /login; no dashboard content is rendered",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V05",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R04"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p1",
+        "@smoke",
+        "@release-gate"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V06",
+      "prefix": "AUTH",
+      "title": "Locked user cannot access dashboard; lock message shown",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-02"
+      ],
+      "pre": "Seeded locked agent (AGENT_LOCKED) exists",
+      "steps": [
+        "Open /login",
+        "Enter locked agent credentials",
+        "Click Log in",
+        "Navigate to /dashboard"
+      ],
+      "data": "AGENT_LOCKED_EMAIL / AGENT_LOCKED_PASSWORD",
+      "expected": "Stays on /login with an account-locked message (not a generic \"invalid password\"); /dashboard redirects to login",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V06",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R02"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p1",
+        "@release-gate",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V07",
+      "prefix": "AUTH",
+      "title": "Account locks after five failed attempts",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-02"
+      ],
+      "pre": "DISPOSABLE agent (AGENT_LOCKOUT) that may be left locked; lock rule per assumption A06/Q07",
+      "steps": [
+        "Attempt login with a wrong password 4 times",
+        "Confirm the message is still \"invalid credentials\"",
+        "Attempt a 5th wrong login (either message is acceptable - Q07)",
+        "Attempt login with the CORRECT password"
+      ],
+      "data": "AGENT_LOCKOUT_EMAIL; LOCKOUT_ATTEMPTS (default 5)",
+      "expected": "Attempts 1-4 show invalid-credentials; after the 5th failure the CORRECT password is refused with the account-locked message",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "Set AGENT_LOCKOUT_EMAIL (destructive: locks the account)",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V07",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R03"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V08",
+      "prefix": "AUTH",
+      "title": "Password policy rejects weak password (reset/change)",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-03"
+      ],
+      "pre": "DISPOSABLE reset agent (AGENT_RESET); simulated OTP known (OTP_CODE)",
+      "steps": [
+        "Open /forgot-password and request a reset for the reset agent",
+        "Enter the OTP",
+        "For each weak password (short, no digit, no uppercase, common word) set it as the new password"
+      ],
+      "data": "AGENT_RESET_EMAIL; OTP_CODE; weak password list in tests/ui/auth.spec.js",
+      "expected": "Every weak password is rejected with a password-policy message; the password is not changed",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "Set AGENT_RESET_EMAIL and OTP_CODE (Q08, Q09)",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V08",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q08",
+        "Q09"
+      ],
+      "module": "Authentication & Session",
+      "risks": [
+        "R06"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V09",
+      "prefix": "AUTH",
+      "title": "MFA/OTP simulation login",
+      "source": "S1+",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Seeded MFA agent (AGENT_MFA); simulated OTP known (OTP_CODE)",
+      "steps": [
+        "Log in with MFA agent credentials",
+        "Confirm OTP prompt",
+        "Enter a WRONG OTP",
+        "Enter the correct OTP"
+      ],
+      "data": "AGENT_MFA_EMAIL; OTP_CODE",
+      "expected": "OTP prompt appears; wrong OTP is rejected; correct OTP completes login to the dashboard",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set AGENT_MFA_EMAIL and OTP_CODE (Q06, Q08)",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V09",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q06",
+        "Q08"
+      ],
+      "module": "Authentication & Session",
+      "risks": [
+        "R01"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V10",
+      "prefix": "AUTH",
+      "title": "Session timeout redirects to login",
+      "source": "S1+",
+      "type": "UI Boundary",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Log in",
+        "Stay idle for SESSION_TIMEOUT_SECONDS + 2 seconds",
+        "Navigate to a protected page"
+      ],
+      "data": "SESSION_TIMEOUT_SECONDS (short value on a test environment)",
+      "expected": "The expired session is redirected to /login",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set SESSION_TIMEOUT_SECONDS (Q07); keep it small",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V10",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q07"
+      ],
+      "module": "Authentication & Session",
+      "risks": [
+        "R05"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V11",
+      "prefix": "AUTH",
+      "title": "Forgot-password flow (/forgot-password)",
+      "source": "S1+",
+      "type": "UI Positive",
+      "priority": "P3",
+      "severity": "Low",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Browser has no session",
+      "steps": [
+        "Open /login",
+        "Click the forgot-password link",
+        "Enter the agent email",
+        "Submit"
+      ],
+      "data": "AGENT_VALID_EMAIL / AGENT_VALID_PASSWORD",
+      "expected": "The forgot-password page opens and submitting a known email shows a confirmation or the OTP step (no error)",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V11",
+      "submission1Priority": "P3",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R06"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p3"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V12",
+      "prefix": "AUTH",
+      "title": "Reset OTP: wrong OTP rejected; correct OTP reaches new-password step",
+      "source": "S2+",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "DISPOSABLE reset agent (AGENT_RESET); simulated OTP known (OTP_CODE)",
+      "steps": [
+        "Open /forgot-password and request a reset",
+        "Enter a WRONG OTP",
+        "Enter the correct OTP"
+      ],
+      "data": "AGENT_RESET_EMAIL; OTP_CODE",
+      "expected": "Wrong OTP shows an OTP error and does not advance; correct OTP shows the new-password fields (password is NOT changed by this test)",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set AGENT_RESET_EMAIL and OTP_CODE (Q08)",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V12",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q08"
+      ],
+      "module": "Authentication & Session",
+      "risks": [
+        "R06"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "AUTH-V13",
+      "prefix": "AUTH",
+      "title": "New password identical to the current password is rejected",
+      "source": "S2+",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-03"
+      ],
+      "pre": "DISPOSABLE reset agent (AGENT_RESET); OTP_CODE known",
+      "steps": [
+        "Request reset and pass the OTP step",
+        "Enter the CURRENT password as the new password and confirm",
+        "Submit"
+      ],
+      "data": "AGENT_RESET_EMAIL / AGENT_RESET_PASSWORD; OTP_CODE",
+      "expected": "Rejected with a \"must differ from current password\" style message",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "Set AGENT_RESET_EMAIL and OTP_CODE",
+      "blockedReason": "",
+      "tcId": "TC-AUTH-V13",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Authentication & Session",
+      "risks": [
+        "R06"
+      ],
+      "tags": [
+        "@regression",
+        "@authentication",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/auth.spec.js"
+    },
+    {
+      "id": "DASH-V01",
+      "prefix": "DASH",
+      "title": "Dashboard loads: draft/submitted summary and New Application CTA",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Open the dashboard"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "New Application control is visible; draft and submitted summary figures are displayed as numbers",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-DASH-V01",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Agent Dashboard",
+      "risks": [
+        "R07"
+      ],
+      "tags": [
+        "@regression",
+        "@dashboard",
+        "@p2",
+        "@smoke"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/dashboard.spec.js"
+    },
+    {
+      "id": "DASH-V02",
+      "prefix": "DASH",
+      "title": "Agent sees only own applications (multi-agent isolation)",
+      "source": "S1",
+      "type": "UI Security",
+      "priority": "P1",
+      "severity": "Critical",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [],
+      "pre": "Two seeded agents (AGENT_VALID, AGENT_SECOND), each with applications",
+      "steps": [
+        "Open dashboard as agent A and collect row identifiers",
+        "Open dashboard as agent B and collect row identifiers",
+        "Compare the two sets"
+      ],
+      "data": "AGENT_VALID_*, AGENT_SECOND_*",
+      "expected": "The two sets of application rows do not overlap",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set AGENT_SECOND_EMAIL (Q06)",
+      "blockedReason": "",
+      "tcId": "TC-DASH-V02",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [
+        "Q06"
+      ],
+      "module": "Agent Dashboard",
+      "risks": [
+        "R08"
+      ],
+      "tags": [
+        "@regression",
+        "@dashboard",
+        "@p1",
+        "@release-gate",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/dashboard.spec.js"
+    },
+    {
+      "id": "DASH-V03",
+      "prefix": "DASH",
+      "title": "New agent sees empty-state copy and CTA",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P3",
+      "severity": "Low",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Seeded NEW agent (AGENT_NEW) with zero applications",
+      "steps": [
+        "Sign in as the new agent",
+        "Open the dashboard"
+      ],
+      "data": "AGENT_NEW_*",
+      "expected": "Empty-state text and the New Application control are visible; no application rows",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set AGENT_NEW_EMAIL (Q06)",
+      "blockedReason": "",
+      "tcId": "TC-DASH-V03",
+      "submission1Priority": "P3",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q06"
+      ],
+      "module": "Agent Dashboard",
+      "risks": [
+        "R07"
+      ],
+      "tags": [
+        "@regression",
+        "@dashboard",
+        "@p3"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/dashboard.spec.js"
+    },
+    {
+      "id": "DASH-V04",
+      "prefix": "DASH",
+      "title": "Draft can be resumed from dashboard with saved data",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-16"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; client step reachable",
+      "steps": [
+        "Start a new application",
+        "Fill the client step and Save draft",
+        "Go to the dashboard",
+        "Resume the draft row",
+        "Read the client first name"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "The resumed draft shows the client first name that was saved",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-DASH-V04",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Agent Dashboard",
+      "risks": [
+        "R09"
+      ],
+      "tags": [
+        "@regression",
+        "@dashboard",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/dashboard.spec.js"
+    },
+    {
+      "id": "DASH-V05",
+      "prefix": "DASH",
+      "title": "Status filters (Draft/Submitted/Approved) return correct rows",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Open the dashboard",
+        "For each status filter value (Draft, Submitted, Approved) apply the filter",
+        "Read the status of every visible row"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Every visible row has the selected status (an empty result is acceptable only if no such applications exist)",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-DASH-V05",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Agent Dashboard",
+      "risks": [
+        "R07"
+      ],
+      "tags": [
+        "@regression",
+        "@dashboard",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/dashboard.spec.js"
+    },
+    {
+      "id": "DASH-V06",
+      "prefix": "DASH",
+      "title": "Dashboard status matches Application Status API",
+      "source": "S1",
+      "type": "UI-API Integration",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-18"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Open the dashboard and read id and status of up to 5 rows",
+        "Call GET /applications/{id}/status for each",
+        "Compare"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "UI status equals API status for every compared application",
+      "evidence": "Screenshot + API response attached",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-DASH-V06",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Agent Dashboard",
+      "risks": [
+        "R07"
+      ],
+      "tags": [
+        "@regression",
+        "@dashboard",
+        "@p2",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/integration/ui-api.spec.js"
+    },
+    {
+      "id": "DASH-V07",
+      "prefix": "DASH",
+      "title": "Dashboard search returns matching applications",
+      "source": "S1+",
+      "type": "UI Positive",
+      "priority": "P3",
+      "severity": "Low",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; at least one application exists",
+      "steps": [
+        "Open the dashboard",
+        "Take a search term from the first row",
+        "Search for it"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "At least one row is shown and every shown row contains the term",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-DASH-V07",
+      "submission1Priority": "P3",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Agent Dashboard",
+      "risks": [
+        "R07"
+      ],
+      "tags": [
+        "@regression",
+        "@dashboard",
+        "@p3"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/dashboard.spec.js"
+    },
+    {
+      "id": "CLI-V01",
+      "prefix": "CLI",
+      "title": "Valid insured personal information enables next step",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "Critical",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
+      "steps": [
+        "Fill every client field with valid data",
+        "Click Next"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Navigation moves to the next step (step title changes) with no validation errors",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V01",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R10"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2",
+        "@smoke"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V02",
+      "prefix": "CLI",
+      "title": "Mandatory personal fields validated inline",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
+      "steps": [
+        "Leave all client fields empty",
+        "Click Next"
+      ],
+      "data": "none",
+      "expected": "User stays on the step; first name, last name and date of birth each show a required message",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V02",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R10"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V03",
+      "prefix": "CLI",
+      "title": "DOB under 18 rejected (age boundary)",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-04"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
+      "steps": [
+        "Enter DOB for a person who turns 18 TOMORROW (age 17) and click Next",
+        "Enter DOB for a person exactly 18 today and click Next"
+      ],
+      "data": "dobForAge(18,{dayOffset:1}) and dobForAge(18)",
+      "expected": "Age 17 is rejected with an eligibility message and the step does not advance; age 18 is accepted (inclusive rule - assumption A06 / Q10)",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V03",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R10"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V04",
+      "prefix": "CLI",
+      "title": "DOB over 65 rejected (age boundary)",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-04"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
+      "steps": [
+        "Enter DOB for a person exactly 66 years old and click Next",
+        "Enter DOB for a person exactly 65 today and click Next"
+      ],
+      "data": "dobForAge(66) and dobForAge(65)",
+      "expected": "Age 66 is rejected with an eligibility message; age 65 is accepted (inclusive rule - A06 / Q10)",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V04",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R10"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V05",
+      "prefix": "CLI",
+      "title": "Future DOB rejected",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-05"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
+      "steps": [
+        "Enter a DOB of tomorrow and click Next",
+        "Enter a DOB 5 years in the future and click Next"
+      ],
+      "data": "futureDate(1), futureDate(1825)",
+      "expected": "Both dates are rejected with an invalid-date message and the step does not advance",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V05",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R11"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p1",
+        "@release-gate",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V06",
+      "prefix": "CLI",
+      "title": "Same-as-residential copies address to mailing address",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P3",
+      "severity": "Low",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the address step with every earlier step completed using valid data",
+      "steps": [
+        "Fill the residential address",
+        "Tick \"same as residential\"",
+        "Read the mailing address fields"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Mailing line 1, city and ZIP equal the residential values",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V06",
+      "submission1Priority": "P3",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R15"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p3"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V07",
+      "prefix": "CLI",
+      "title": "Invalid email and phone formats rejected",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the address step with every earlier step completed using valid data",
+      "steps": [
+        "Fill a valid address",
+        "For each invalid email (no @, no domain, spaces) enter it and click Next",
+        "For each invalid phone (letters, too short) enter it and click Next"
+      ],
+      "data": "Invalid email / phone lists in tests/ui/client.spec.js",
+      "expected": "Each invalid value shows a format error next to the field and the step does not advance",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V07",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R15"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V08",
+      "prefix": "CLI",
+      "title": "SSN masked after entry (only last four digits visible)",
+      "source": "S1",
+      "type": "UI Security",
+      "priority": "P1",
+      "severity": "Critical",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-07"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the kyc step with every earlier step completed using valid data",
+      "steps": [
+        "Enter the synthetic SSN 900-12-3456",
+        "Leave the field (blur)",
+        "Read what is visible for the SSN"
+      ],
+      "data": "Synthetic SSN 900-12-3456 (900-series is never issued)",
+      "expected": "Only the last four digits (3456) are visible; the first five digits are masked",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V08",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": true,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R12"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p1",
+        "@release-gate",
+        "@sensitive",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client-kyc-sensitive.spec.js"
+    },
+    {
+      "id": "CLI-V09",
+      "prefix": "CLI",
+      "title": "KYC upload rejects unsupported file type",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the kyc step with every earlier step completed using valid data",
+      "steps": [
+        "Upload an .exe file in the KYC document control"
+      ],
+      "data": "In-memory malware-test.exe",
+      "expected": "An unsupported-type message is shown and the file is not accepted",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Skips if the KYC step has no upload control",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V09",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": true,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R30"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2",
+        "@sensitive"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client-kyc-sensitive.spec.js"
+    },
+    {
+      "id": "CLI-V10",
+      "prefix": "CLI",
+      "title": "PEP = Yes makes additional details mandatory",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the kyc step with every earlier step completed using valid data",
+      "steps": [
+        "Select PEP = Yes",
+        "Confirm the PEP details field appears",
+        "Click Next without details"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "PEP details field becomes visible and Next is blocked with a required message until it is filled",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V10",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": true,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R14"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2",
+        "@sensitive"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client-kyc-sensitive.spec.js"
+    },
+    {
+      "id": "CLI-V11",
+      "prefix": "CLI",
+      "title": "Postal code format validated",
+      "source": "S1+",
+      "type": "UI Negative",
+      "priority": "P3",
+      "severity": "Low",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the address step with every earlier step completed using valid data",
+      "steps": [
+        "Fill a valid address with an invalid ZIP (letters, too short, too long)",
+        "Click Next"
+      ],
+      "data": "ZIPs: ABCDE, 123, 0211000000",
+      "expected": "Each invalid ZIP is rejected with a postal-code message",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V11",
+      "submission1Priority": "P3",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R15"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p3"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V12",
+      "prefix": "CLI",
+      "title": "Income vs premium affordability validation",
+      "source": "S1+",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-08"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the kyc step with every earlier step completed using valid data",
+      "steps": [
+        "Enter a very LOW annual income",
+        "Continue to Product and select a product with a very HIGH face value",
+        "Click Next"
+      ],
+      "data": "income 12000; face value 5,000,000 (rule undefined - Q11)",
+      "expected": "An affordability warning or block referring to income/premium is shown (formula TBC with the product owner)",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V12",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": true,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R13"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2",
+        "@sensitive",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client-kyc-sensitive.spec.js"
+    },
+    {
+      "id": "CLI-V13",
+      "prefix": "CLI",
+      "title": "Calculated age is displayed after DOB entry",
+      "source": "S2+",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
+      "steps": [
+        "Enter a DOB for each of ages 18, 35 and 65",
+        "Read the displayed age"
+      ],
+      "data": "dobForAge(18|35|65)",
+      "expected": "The age shown equals the age calculated from the DOB (calcAge in utils/dates.js)",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V13",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R10"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V14",
+      "prefix": "CLI",
+      "title": "Name validation rejects digits and special characters",
+      "source": "S2+",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
+      "steps": [
+        "Enter a first name containing digits, click Next",
+        "Enter a last name containing special characters, click Next"
+      ],
+      "data": "First name \"J0hn123\"; last name \"O@#$%\"",
+      "expected": "Each invalid name is rejected with a name-format message and the step does not advance",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V14",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R15"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "CLI-V15",
+      "prefix": "CLI",
+      "title": "State is required and validated",
+      "source": "S2+",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the address step with every earlier step completed using valid data",
+      "steps": [
+        "Fill a valid address but clear the state selection",
+        "Click Next"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "A state-required message is shown and the step does not advance",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Skips if the state control has no empty option",
+      "blockedReason": "",
+      "tcId": "TC-CLI-V15",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Client / Insured Information",
+      "risks": [
+        "R15"
+      ],
+      "tags": [
+        "@regression",
+        "@client",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/client.spec.js"
+    },
+    {
+      "id": "PROD-V01",
+      "prefix": "PROD",
+      "title": "Catalog displays expected Whole Life products",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Open the product step",
+        "Read the product cards"
+      ],
+      "data": "PRODUCT_NAME_PATTERN (default \"whole life\")",
+      "expected": "At least one product card is shown and at least one matches the Whole Life pattern",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V01",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R16"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p1",
+        "@smoke",
+        "@release-gate"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V02",
+      "prefix": "PROD",
+      "title": "Product details page shows features, eligibility, limits",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Open the details of the first product"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Details mention features/benefits and eligibility or limits",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Skips if no details link exists",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V02",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R16"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V03",
+      "prefix": "PROD",
+      "title": "Face value below minimum rejected",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Select a product",
+        "Enter face value = minimum - 1",
+        "Click Next",
+        "Enter face value = minimum and click Next"
+      ],
+      "data": "FACE_VALUE_MIN",
+      "expected": "minimum-1 is rejected; exactly minimum is accepted",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set FACE_VALUE_MIN (Q13)",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V03",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q13"
+      ],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R17"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V04",
+      "prefix": "PROD",
+      "title": "Face value above maximum rejected",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Select a product",
+        "Enter face value = maximum + 1",
+        "Click Next"
+      ],
+      "data": "FACE_VALUE_MAX",
+      "expected": "maximum+1 is rejected with a limit message",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set FACE_VALUE_MAX (Q13)",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V04",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q13"
+      ],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R17"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V05",
+      "prefix": "PROD",
+      "title": "Premium recalculates when frequency changes",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-12"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Select a product and set face value",
+        "Read the premium for Monthly",
+        "Change frequency to Annual and read the premium",
+        "Change back to Monthly"
+      ],
+      "data": "FACE_VALUE_DEFAULT; frequencies Monthly / Annual",
+      "expected": "The displayed premium changes when frequency changes and returns to the original value when switched back",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V05",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R18"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p1",
+        "@release-gate",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V06",
+      "prefix": "PROD",
+      "title": "Review-page premium matches configuration page",
+      "source": "S1",
+      "type": "UI Consistency",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI + DB",
+      "smoke": false,
+      "defects": [
+        "RI-12"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Select product, configure and read the premium",
+        "Complete riders (none), beneficiaries and documents",
+        "Open the review step and read the premium"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Review premium equals the configured premium",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V06",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R18",
+        "R19"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p1",
+        "@release-gate",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V07",
+      "prefix": "PROD",
+      "title": "Suitability warning shown for risk-profile mismatch",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-09"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the kyc step with every earlier step completed using valid data",
+      "steps": [
+        "Set a Conservative risk profile in KYC",
+        "Select the product whose risk is a known mismatch",
+        "Observe the product step"
+      ],
+      "data": "SUITABILITY_PRODUCT_PATTERN",
+      "expected": "A suitability warning is displayed",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set SUITABILITY_PRODUCT_PATTERN (Q13)",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V07",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q13"
+      ],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R16"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V08",
+      "prefix": "PROD",
+      "title": "Product eligibility validated against client age",
+      "source": "S1+",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-09"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
+      "steps": [
+        "Create a client of the ineligible age",
+        "Continue to Product",
+        "Select the age-restricted product"
+      ],
+      "data": "INELIGIBLE_AGE, INELIGIBLE_AGE_PRODUCT_PATTERN",
+      "expected": "The product is disabled, or selecting it shows an eligibility message and does not advance",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "Set INELIGIBLE_AGE and INELIGIBLE_AGE_PRODUCT_PATTERN (Q13)",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V08",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q13"
+      ],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R16"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p2",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V09",
+      "prefix": "PROD",
+      "title": "Payment term and policy term options follow product rules",
+      "source": "S1+",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Select a product",
+        "Read payment-term and policy-term options"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Both lists are non-empty and contain no duplicate options (term-combination rules TBC - Q14)",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Skips if the terms are not dropdowns",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V09",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R18"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V10",
+      "prefix": "PROD",
+      "title": "Inactive product cannot be selected",
+      "source": "S2+",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Find product cards marked inactive",
+        "Try to select one"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "The select control is disabled (or selection is refused) for every inactive product",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Skips if the environment shows no inactive product",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V10",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R16"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "PROD-V11",
+      "prefix": "PROD",
+      "title": "Product configuration persists after save draft and reload",
+      "source": "S2+",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + DB",
+      "smoke": false,
+      "defects": [
+        "RI-16"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Select a product and set face value and frequency",
+        "Save draft",
+        "Reload the page",
+        "Read face value and frequency"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Face value and frequency are unchanged after reload",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-PROD-V11",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Product Selection & Policy Configuration",
+      "risks": [
+        "R33",
+        "R18"
+      ],
+      "tags": [
+        "@regression",
+        "@product",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/product.spec.js"
+    },
+    {
+      "id": "RIDER-V01",
+      "prefix": "RIDER",
+      "title": "Eligible protection rider (ADB) added to premium summary",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the riders step with every earlier step completed using valid data",
+      "steps": [
+        "Add the Accidental Death Benefit rider",
+        "Read the rider premium summary"
+      ],
+      "data": "RIDER_ADB_PATTERN",
+      "expected": "The rider shows as added and a rider premium greater than zero appears in the summary",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-RIDER-V01",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Rider Selection",
+      "risks": [
+        "R23"
+      ],
+      "tags": [
+        "@regression",
+        "@rider",
+        "@p2",
+        "@smoke"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/riders.spec.js"
+    },
+    {
+      "id": "RIDER-V02",
+      "prefix": "RIDER",
+      "title": "Rider coverage cannot exceed base face value",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-10"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the riders step with every earlier step completed using valid data",
+      "steps": [
+        "Add the ADB rider",
+        "Enter rider coverage = face value + 1"
+      ],
+      "data": "FACE_VALUE_DEFAULT + 1",
+      "expected": "A rider-exceeds-face-value message is shown and the value is not accepted",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-RIDER-V02",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Rider Selection",
+      "risks": [
+        "R20"
+      ],
+      "tags": [
+        "@regression",
+        "@rider",
+        "@p1",
+        "@release-gate",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/riders.spec.js"
+    },
+    {
+      "id": "RIDER-V03",
+      "prefix": "RIDER",
+      "title": "Age-ineligible rider disabled or blocked",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; client step completed with a client of the age that makes the rider ineligible",
+      "steps": [
+        "Open the rider step",
+        "Try to add the age-restricted rider"
+      ],
+      "data": "RIDER_AGE_RESTRICTED_PATTERN; client age 64",
+      "expected": "The rider control is disabled, or adding it shows an eligibility message",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set RIDER_AGE_RESTRICTED_PATTERN (Q15)",
+      "blockedReason": "",
+      "tcId": "TC-RIDER-V03",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q15"
+      ],
+      "module": "Rider Selection",
+      "risks": [
+        "R22"
+      ],
+      "tags": [
+        "@regression",
+        "@rider",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/riders.spec.js"
+    },
+    {
+      "id": "RIDER-V04",
+      "prefix": "RIDER",
+      "title": "Maximum rider count enforced with message",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the riders step with every earlier step completed using valid data",
+      "steps": [
+        "Add riders up to the maximum",
+        "Try to add one more"
+      ],
+      "data": "MAX_RIDERS",
+      "expected": "The extra rider is refused with a maximum-count message",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set MAX_RIDERS (Q15); needs more rider cards than the maximum",
+      "blockedReason": "",
+      "tcId": "TC-RIDER-V04",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q15"
+      ],
+      "module": "Rider Selection",
+      "risks": [
+        "R22"
+      ],
+      "tags": [
+        "@regression",
+        "@rider",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/riders.spec.js"
+    },
+    {
+      "id": "RIDER-V05",
+      "prefix": "RIDER",
+      "title": "Mutually exclusive waiver riders cannot both be selected",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-11"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the riders step with every earlier step completed using valid data",
+      "steps": [
+        "Add waiver rider A",
+        "Try to add waiver rider B"
+      ],
+      "data": "RIDER_WAIVER_A_PATTERN / RIDER_WAIVER_B_PATTERN",
+      "expected": "Rider B is disabled or refused with a message; both are never selected at once",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "Set RIDER_WAIVER_A_PATTERN and RIDER_WAIVER_B_PATTERN (Q15)",
+      "blockedReason": "",
+      "tcId": "TC-RIDER-V05",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q15"
+      ],
+      "module": "Rider Selection",
+      "risks": [
+        "R21"
+      ],
+      "tags": [
+        "@regression",
+        "@rider",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/riders.spec.js"
+    },
+    {
+      "id": "RIDER-V06",
+      "prefix": "RIDER",
+      "title": "Critical illness rider triggers health questionnaire",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the riders step with every earlier step completed using valid data",
+      "steps": [
+        "Add the Critical Illness rider"
+      ],
+      "data": "RIDER_CRITICAL_ILLNESS_PATTERN",
+      "expected": "The health questionnaire is displayed",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Skips if no critical illness rider is offered",
+      "blockedReason": "",
+      "tcId": "TC-RIDER-V06",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Rider Selection",
+      "risks": [
+        "R22"
+      ],
+      "tags": [
+        "@regression",
+        "@rider",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/riders.spec.js"
+    },
+    {
+      "id": "RIDER-V07",
+      "prefix": "RIDER",
+      "title": "Rider premium itemized and total premium updated",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-12"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the riders step with every earlier step completed using valid data",
+      "steps": [
+        "Read total premium",
+        "Add the ADB rider",
+        "Read the rider premium and the new total"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "New total = old total + rider premium (to 2 decimals)",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-RIDER-V07",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Rider Selection",
+      "risks": [
+        "R23"
+      ],
+      "tags": [
+        "@regression",
+        "@rider",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/riders.spec.js"
+    },
+    {
+      "id": "BEN-V01",
+      "prefix": "BEN",
+      "title": "Valid primary beneficiary added (card/row appears)",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Fill an individual primary beneficiary with 100% allocation",
+        "Save"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "One beneficiary row appears containing the entered name",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V01",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R24"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p2",
+        "@smoke"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V02",
+      "prefix": "BEN",
+      "title": "Primary allocation below 100% blocks progression",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI + API + DB",
+      "smoke": false,
+      "defects": [
+        "RI-13"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Add one primary beneficiary with 60% (and 99%)",
+        "Click Next"
+      ],
+      "data": "Allocations 60 and 99",
+      "expected": "Progression is blocked with an allocation message (total must equal 100)",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V02",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R24"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p1",
+        "@release-gate",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V03",
+      "prefix": "BEN",
+      "title": "Primary allocation above 100% blocks progression",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + API + DB",
+      "smoke": false,
+      "defects": [
+        "RI-13"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Add primary beneficiaries with 60% and 60% (total 120%)",
+        "Click Next"
+      ],
+      "data": "Allocations 60 + 60 (and a single 101)",
+      "expected": "Progression is blocked with an allocation message",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V03",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R24"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p2",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V04",
+      "prefix": "BEN",
+      "title": "Secondary allocation validated separately",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Add a primary beneficiary with 100%",
+        "Add a secondary with 50%",
+        "Click Next",
+        "Add a second secondary with 50%",
+        "Click Next"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Secondary total of 50% blocks progression; with secondary total 100% progression succeeds",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V04",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R24"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V05",
+      "prefix": "BEN",
+      "title": "Minor beneficiary requires guardian details",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI + API + DB",
+      "smoke": false,
+      "defects": [
+        "RI-14"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Add a beneficiary aged 10 WITHOUT guardian details and save/continue",
+        "Add guardian name and relationship and continue"
+      ],
+      "data": "dobForAge(10)",
+      "expected": "Missing guardian is refused with a guardian message; with guardian details it is accepted",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V05",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R25"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p1",
+        "@release-gate",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V06",
+      "prefix": "BEN",
+      "title": "Trust type shows Trust Name, Trustee Name, Trust Date",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P3",
+      "severity": "Low",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Open the add form",
+        "Select beneficiary type Trust"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Trust name, trustee name and trust date fields are visible",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V06",
+      "submission1Priority": "P3",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R27"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p3"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V07",
+      "prefix": "BEN",
+      "title": "Organization type shows registration and contact fields",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P3",
+      "severity": "Low",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Open the add form",
+        "Select beneficiary type Organization"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Organization name, registration and contact fields are visible",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V07",
+      "submission1Priority": "P3",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R27"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p3"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V08",
+      "prefix": "BEN",
+      "title": "Duplicate beneficiary (Name + DOB + Relationship) blocked",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-15"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Add a beneficiary (50%)",
+        "Add a second with the SAME name, DOB and relationship"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "The duplicate is refused with a duplicate message and only one row remains",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V08",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R26"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p2",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V09",
+      "prefix": "BEN",
+      "title": "Removing a beneficiary updates running allocation total",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Add two primary beneficiaries (60% and 40%)",
+        "Remove the first"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Row count drops from 2 to 1; where the page shows a running total it becomes 40",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V09",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R28"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V10",
+      "prefix": "BEN",
+      "title": "At least one primary beneficiary is mandatory",
+      "source": "S1+",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Click Next with no beneficiaries",
+        "Add only a SECONDARY beneficiary and click Next"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Progression is blocked in both cases",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V10",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R24"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "BEN-V11",
+      "prefix": "BEN",
+      "title": "Irrevocable beneficiary triggers legal confirmation modal",
+      "source": "S1+",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the beneficiaries step with every earlier step completed using valid data",
+      "steps": [
+        "Fill a beneficiary and tick irrevocable",
+        "Save"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "A legal confirmation dialog appears and can be confirmed",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-BEN-V11",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Beneficiary Management",
+      "risks": [
+        "R27"
+      ],
+      "tags": [
+        "@regression",
+        "@beneficiary",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/beneficiaries.spec.js"
+    },
+    {
+      "id": "DOC-V01",
+      "prefix": "DOC",
+      "title": "Valid KYC document (PDF/JPG/PNG) uploads successfully",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the documents step with every earlier step completed using valid data",
+      "steps": [
+        "Upload a valid PDF",
+        "Upload a valid JPG",
+        "Upload a valid PNG"
+      ],
+      "data": "In-memory files (utils/files.js)",
+      "expected": "Each upload is accepted: no error is shown and an uploaded-document entry is present",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-DOC-V01",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Document Upload",
+      "risks": [
+        "R30"
+      ],
+      "tags": [
+        "@regression",
+        "@document",
+        "@p2",
+        "@smoke"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/documents.spec.js"
+    },
+    {
+      "id": "DOC-V02",
+      "prefix": "DOC",
+      "title": "Unsupported file type rejected",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the documents step with every earlier step completed using valid data",
+      "steps": [
+        "Upload an .exe file",
+        "Upload a .txt file"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Each is rejected with a file-type message and no uploaded entry is created",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-DOC-V02",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Document Upload",
+      "risks": [
+        "R30"
+      ],
+      "tags": [
+        "@regression",
+        "@document",
+        "@p2",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/documents.spec.js"
+    },
+    {
+      "id": "DOC-V03",
+      "prefix": "DOC",
+      "title": "File above maximum size rejected",
+      "source": "S1",
+      "type": "UI Boundary",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the documents step with every earlier step completed using valid data",
+      "steps": [
+        "Upload a PDF of (maximum + 1) MB"
+      ],
+      "data": "MAX_UPLOAD_MB",
+      "expected": "Rejected with a file-size message",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Set MAX_UPLOAD_MB (Q17)",
+      "blockedReason": "",
+      "tcId": "TC-DOC-V03",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q17"
+      ],
+      "module": "Document Upload",
+      "risks": [
+        "R30"
+      ],
+      "tags": [
+        "@regression",
+        "@document",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/documents.spec.js"
+    },
+    {
+      "id": "DOC-V04",
+      "prefix": "DOC",
+      "title": "Missing mandatory document blocks submission",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P1",
+      "severity": "Critical",
+      "layer": "UI + API + DB",
+      "smoke": false,
+      "defects": [
+        "RI-06"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the documents step with every earlier step completed using valid data",
+      "steps": [
+        "Do NOT upload any document",
+        "Click Next",
+        "If the review step is reached, try to submit"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Either Next is blocked with a document message, or the review step cannot be submitted and no reference number is issued",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-DOC-V04",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Document Upload",
+      "risks": [
+        "R29"
+      ],
+      "tags": [
+        "@regression",
+        "@document",
+        "@p1",
+        "@release-gate",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/documents.spec.js"
+    },
+    {
+      "id": "VAL-V01",
+      "prefix": "VAL",
+      "title": "Validation summary lists all unresolved errors, grouped",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; review step reached with the mandatory documents missing",
+      "steps": [
+        "Reach the review step without documents",
+        "Read the validation summary"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "The summary shows at least one item and one refers to documents",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Skips if the app does not allow reaching review with errors",
+      "blockedReason": "",
+      "tcId": "TC-VAL-V01",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Validation Summary",
+      "risks": [
+        "R32"
+      ],
+      "tags": [
+        "@regression",
+        "@validation",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/documents.spec.js"
+    },
+    {
+      "id": "VAL-V02",
+      "prefix": "VAL",
+      "title": "Clicking a summary item navigates to the field/section",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P3",
+      "severity": "Low",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; review step reached with errors",
+      "steps": [
+        "Click the first validation summary item"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "The browser moves to the section that owns the error (step title or URL changes)",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "Skips if the app does not allow reaching review with errors",
+      "blockedReason": "",
+      "tcId": "TC-VAL-V02",
+      "submission1Priority": "P3",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Validation Summary",
+      "risks": [
+        "R32"
+      ],
+      "tags": [
+        "@regression",
+        "@validation",
+        "@p3"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/documents.spec.js"
+    },
+    {
+      "id": "VAL-V03",
+      "prefix": "VAL",
+      "title": "Submit stays disabled until critical errors are resolved",
+      "source": "S1",
+      "type": "UI Negative",
+      "priority": "P1",
+      "severity": "Critical",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [
+        "RI-17"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; review step reached with the mandatory documents missing",
+      "steps": [
+        "Confirm Submit is disabled",
+        "Resolve the error (upload documents)",
+        "Return to review"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Submit is disabled while errors exist and enabled once they are resolved",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "Skips if the app does not allow reaching review with errors",
+      "blockedReason": "",
+      "tcId": "TC-VAL-V03",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Validation Summary",
+      "risks": [
+        "R31"
+      ],
+      "tags": [
+        "@regression",
+        "@validation",
+        "@p1",
+        "@release-gate",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/ui/documents.spec.js"
+    },
+    {
+      "id": "WF-V01",
+      "prefix": "WF",
+      "title": "Partial application saved as draft; draft row on dashboard",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [
+        "RI-16"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Start a new application",
+        "Complete the client step and move on",
+        "Save draft on the address step",
+        "Open the dashboard"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "A row with status Draft exists on the dashboard",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-WF-V01",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Submission & Status Tracking",
+      "risks": [
+        "R33"
+      ],
+      "tags": [
+        "@regression",
+        "@workflow",
+        "@p1",
+        "@smoke",
+        "@release-gate",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/e2e/workflow.spec.js"
+    },
+    {
+      "id": "WF-V02",
+      "prefix": "WF",
+      "title": "Draft resumed with previously saved data intact",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + DB",
+      "smoke": false,
+      "defects": [
+        "RI-16"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Start a new application and fill the client step",
+        "Save draft",
+        "Go to the dashboard and resume the draft",
+        "Return to the client step"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "First name, last name and date of birth equal the saved values",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-WF-V02",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Submission & Status Tracking",
+      "risks": [
+        "R09",
+        "R33"
+      ],
+      "tags": [
+        "@regression",
+        "@workflow",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/e2e/workflow.spec.js"
+    },
+    {
+      "id": "WF-V03",
+      "prefix": "WF",
+      "title": "Full E2E: valid application submitted; reference number shown",
+      "source": "S1",
+      "type": "E2E",
+      "priority": "P1",
+      "severity": "Critical",
+      "layer": "UI + API + DB",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Log in",
+        "Start a new application",
+        "Complete every step with valid data",
+        "Submit on the review step"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "A non-empty reference number is displayed",
+      "evidence": "Screenshot (review + confirmation) attached on pass and fail",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-WF-V03",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Submission & Status Tracking",
+      "risks": [
+        "R34"
+      ],
+      "tags": [
+        "@regression",
+        "@workflow",
+        "@p1",
+        "@smoke",
+        "@release-gate",
+        "@e2e",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/e2e/workflow.spec.js"
+    },
+    {
+      "id": "WF-V04",
+      "prefix": "WF",
+      "title": "Submitted application is read-only",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Complete and submit an application",
+        "Inspect the page for editable controls"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "No editable input remains and the submit control is gone or disabled",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-WF-V04",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Submission & Status Tracking",
+      "risks": [
+        "R36"
+      ],
+      "tags": [
+        "@regression",
+        "@workflow",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/e2e/workflow.spec.js"
+    },
+    {
+      "id": "WF-V05",
+      "prefix": "WF",
+      "title": "Confirmation / status message shown after submission",
+      "source": "S1",
+      "type": "UI Positive",
+      "priority": "P3",
+      "severity": "Low",
+      "layer": "UI",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Complete and submit an application"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "A confirmation message matching the submitted pattern is displayed",
+      "evidence": "Screenshot + trace on failure",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-WF-V05",
+      "submission1Priority": "P3",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Submission & Status Tracking",
+      "risks": [
+        "R34"
+      ],
+      "tags": [
+        "@regression",
+        "@workflow",
+        "@p3"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/e2e/workflow.spec.js"
+    },
+    {
+      "id": "WF-V06",
+      "prefix": "WF",
+      "title": "Dashboard status becomes Submitted after submission",
+      "source": "S1",
+      "type": "E2E",
+      "priority": "P1",
+      "severity": "High",
+      "layer": "UI + API + DB",
+      "smoke": false,
+      "defects": [
+        "RI-18"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Complete and submit an application",
+        "Open the dashboard",
+        "Find the application row"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "The application row shows status Submitted",
+      "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-WF-V06",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "Submission & Status Tracking",
+      "risks": [
+        "R07",
+        "R34"
+      ],
+      "tags": [
+        "@regression",
+        "@workflow",
+        "@p1",
+        "@release-gate",
+        "@seeded",
+        "@e2e",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/e2e/workflow.spec.js"
+    },
+    {
+      "id": "WF-V07",
+      "prefix": "WF",
+      "title": "Application detail status matches Status API",
+      "source": "S1",
+      "type": "UI-API Integration",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + API + DB",
+      "smoke": false,
+      "defects": [
+        "RI-18"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Submit an application and read the status on the page",
+        "Call GET /applications/{id}/status"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "UI status text equals the API status",
+      "evidence": "Screenshot + API response attached",
+      "automation": "Automated",
+      "cond": "Skips if the application id cannot be read from the URL",
+      "blockedReason": "",
+      "tcId": "TC-WF-V07",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Submission & Status Tracking",
+      "risks": [
+        "R07",
+        "R34"
+      ],
+      "tags": [
+        "@regression",
+        "@workflow",
+        "@p2",
+        "@seeded",
+        "@api"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/integration/ui-api.spec.js"
+    },
+    {
+      "id": "WF-V08",
+      "prefix": "WF",
+      "title": "Review page reflects the entered client, product and beneficiary data",
+      "source": "S2+",
+      "type": "UI Consistency",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Complete every step with valid data",
+        "Open the review step",
+        "Read the review text"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Review shows the client name, the beneficiary name and a premium equal to the configured premium",
+      "evidence": "Screenshot of review attached on pass and fail",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-WF-V08",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Submission & Status Tracking",
+      "risks": [
+        "R19"
+      ],
+      "tags": [
+        "@regression",
+        "@workflow",
+        "@p2",
+        "@smoke"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/e2e/workflow.spec.js"
+    },
+    {
+      "id": "API-V01",
+      "prefix": "API",
+      "title": "Products API returns 200 and expected schema",
+      "source": "S1",
+      "type": "API",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "API",
+      "smoke": true,
+      "defects": [],
+      "pre": "Valid agent authenticated through POST /auth/login",
+      "steps": [
+        "GET /products"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "200, JSON, non-empty list; each product has an id and a name",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-API-V01",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "API Validation",
+      "risks": [
+        "R37"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2",
+        "@smoke"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V02",
+      "prefix": "API",
+      "title": "Applications API requires authorization (401/403)",
+      "source": "S1",
+      "type": "API Security",
+      "priority": "P1",
+      "severity": "Critical",
+      "layer": "API",
+      "smoke": true,
+      "defects": [],
+      "pre": "No token / no session",
+      "steps": [
+        "GET /applications without credentials"
+      ],
+      "data": "none",
+      "expected": "401 or 403; no application data in the body",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-API-V02",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [],
+      "module": "API Validation",
+      "risks": [
+        "R04"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p1",
+        "@smoke",
+        "@release-gate"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V03",
+      "prefix": "API",
+      "title": "Client API rejects future / underage DOB",
+      "source": "S1",
+      "type": "API Negative",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "API",
+      "smoke": false,
+      "defects": [
+        "RI-05",
+        "RI-19"
+      ],
+      "pre": "Authenticated agent; a DISPOSABLE draft application id (created via API or taken from the first draft)",
+      "steps": [
+        "POST /applications/{id}/client with DOB tomorrow",
+        "POST with DOB of an age-17 person"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Both are rejected with a 4xx validation response",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "Needs a draft application id (Q21)",
+      "blockedReason": "",
+      "tcId": "TC-API-V03",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q21"
+      ],
+      "module": "API Validation",
+      "risks": [
+        "R11"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V04",
+      "prefix": "API",
+      "title": "Validate API returns beneficiary allocation error",
+      "source": "S1",
+      "type": "API Negative",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "API",
+      "smoke": false,
+      "defects": [
+        "RI-13",
+        "RI-19"
+      ],
+      "pre": "Authenticated agent; DISPOSABLE draft application id",
+      "steps": [
+        "POST /applications/{id}/beneficiaries with a single 60% primary",
+        "POST /applications/{id}/validate"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "The validation result contains an allocation error",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "Needs a draft application id (Q21)",
+      "blockedReason": "",
+      "tcId": "TC-API-V04",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q21"
+      ],
+      "module": "API Validation",
+      "risks": [
+        "R24"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V05",
+      "prefix": "API",
+      "title": "Submit API rejects incomplete application",
+      "source": "S1",
+      "type": "API Negative",
+      "priority": "P1",
+      "severity": "Critical",
+      "layer": "API + DB",
+      "smoke": false,
+      "defects": [
+        "RI-06"
+      ],
+      "pre": "Authenticated agent; a draft application that is INCOMPLETE",
+      "steps": [
+        "POST /applications/{id}/submit"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "4xx response; no reference number in the body",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "Needs a draft application id (Q21)",
+      "blockedReason": "",
+      "tcId": "TC-API-V05",
+      "submission1Priority": "P1",
+      "gate": true,
+      "sensitive": false,
+      "explore": [
+        "Q21"
+      ],
+      "module": "API Validation",
+      "risks": [
+        "R29",
+        "R35"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p1",
+        "@release-gate",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V06",
+      "prefix": "API",
+      "title": "Status API matches the applications list",
+      "source": "S1",
+      "type": "UI-API Integration",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "API",
+      "smoke": false,
+      "defects": [
+        "RI-18"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "GET /applications",
+        "For up to 5 items GET /applications/{id}/status",
+        "Compare status"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "List status equals status-endpoint status for each application",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-API-V06",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "API Validation",
+      "risks": [
+        "R07"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V07",
+      "prefix": "API",
+      "title": "Product detail API matches UI detail page",
+      "source": "S1",
+      "type": "UI-API Integration",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-19"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the product step with every earlier step completed using valid data",
+      "steps": [
+        "Read the first product name on the UI",
+        "GET /products and find the same product",
+        "GET /products/{id}"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "The API product name appears in the UI product card text",
+      "evidence": "Screenshot + API response attached",
+      "automation": "Automated",
+      "cond": "Needs product ids in the API response",
+      "blockedReason": "",
+      "tcId": "TC-API-V07",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "API Validation",
+      "risks": [
+        "R37"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/integration/ui-api.spec.js"
+    },
+    {
+      "id": "API-V08",
+      "prefix": "API",
+      "title": "Applications API returns only logged-in agent records",
+      "source": "S1",
+      "type": "API Security",
+      "priority": "P2",
+      "severity": "Critical",
+      "layer": "API",
+      "smoke": false,
+      "defects": [],
+      "pre": "Two seeded agents (AGENT_VALID, AGENT_SECOND)",
+      "steps": [
+        "GET /applications as agent A",
+        "GET /applications as agent B",
+        "Compare ids"
+      ],
+      "data": "AGENT_VALID_*, AGENT_SECOND_*",
+      "expected": "The id sets are disjoint",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "Set AGENT_SECOND_EMAIL (Q06)",
+      "blockedReason": "",
+      "tcId": "TC-API-V08",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q06"
+      ],
+      "module": "API Validation",
+      "risks": [
+        "R08"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V09",
+      "prefix": "API",
+      "title": "Riders API schema, eligibility and dependency rules",
+      "source": "S1+",
+      "type": "API",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "API",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "GET /riders"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "200, JSON, non-empty list; each rider has an id and a name",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-API-V09",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "API Validation",
+      "risks": [
+        "R37"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V10",
+      "prefix": "API",
+      "title": "Documents API rejects invalid type and oversized file",
+      "source": "S1+",
+      "type": "API Negative",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "API",
+      "smoke": false,
+      "defects": [],
+      "pre": "Authenticated agent; DISPOSABLE draft application id",
+      "steps": [
+        "POST /applications/{id}/documents with an .exe",
+        "POST with an oversize PDF"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Both are rejected with 4xx",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "Needs a draft application id; oversize part needs MAX_UPLOAD_MB",
+      "blockedReason": "",
+      "tcId": "TC-API-V10",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "API Validation",
+      "risks": [
+        "R30"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V11",
+      "prefix": "API",
+      "title": "Status API returns history and timestamps",
+      "source": "S1+",
+      "type": "API",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "API",
+      "smoke": false,
+      "defects": [],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "GET /applications",
+        "GET /applications/{id}/status for the first application"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "200 and a status value; where a history is returned each entry has a timestamp",
+      "evidence": "Response status/body attached",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-API-V11",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "API Validation",
+      "risks": [
+        "R34"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/api/applications.api.spec.js"
+    },
+    {
+      "id": "API-V12",
+      "prefix": "API",
+      "title": "UI/API validation parity for the same invalid input",
+      "source": "S1+",
+      "type": "UI-API Integration",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "UI + API",
+      "smoke": false,
+      "defects": [
+        "RI-19",
+        "RI-05"
+      ],
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
+      "steps": [
+        "Enter a future DOB in the UI and click Next",
+        "Send the same DOB to POST /applications/{id}/client"
+      ],
+      "data": "Generated synthetic data (utils/dataBuilder.js)",
+      "expected": "Both the UI and the API reject the future DOB",
+      "evidence": "Screenshot + API response attached",
+      "automation": "Automated",
+      "cond": "Needs the application id from the URL",
+      "blockedReason": "",
+      "tcId": "TC-API-V12",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "API Validation",
+      "risks": [
+        "R37"
+      ],
+      "tags": [
+        "@regression",
+        "@api",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/integration/ui-api.spec.js"
+    },
+    {
+      "id": "DB-01",
+      "prefix": "DB",
+      "title": "Draft row exists with fields entered so far; resume matches stored data",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): WF-V01, WF-V02",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-01",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R33",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "DB-02",
+      "prefix": "DB",
+      "title": "Submitted application has unique reference number and status = Submitted",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): WF-V03, WF-V06",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-02",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R34",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "DB-03",
+      "prefix": "DB",
+      "title": "Status history has a new timestamped entry for each transition",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): API-V11",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-03",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R07",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "DB-04",
+      "prefix": "DB",
+      "title": "Primary / secondary allocations each sum to 100; no duplicate Name+DOB+Relationship",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): BEN-V02..V09",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-04",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R24",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "DB-05",
+      "prefix": "DB",
+      "title": "Minor beneficiary has a linked guardian record",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): BEN-V05",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-05",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R25",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "DB-06",
+      "prefix": "DB",
+      "title": "Stored premium equals the premium on the review page, including itemized riders",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): PROD-V06, RIDER-V07",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-06",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R19",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "DB-07",
+      "prefix": "DB",
+      "title": "SSN is not stored or logged in clear text",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): CLI-V08",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-07",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R12",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "DB-08",
+      "prefix": "DB",
+      "title": "Document records exist with status for each mandatory document",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): DOC-V01, DOC-V04",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-08",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R29",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "DB-09",
+      "prefix": "DB",
+      "title": "Application rows are keyed to the owning agent",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): DASH-V02, API-V08",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-09",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R08",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "DB-10",
+      "prefix": "DB",
+      "title": "Failed-attempt counter and lock state update at the fifth failed login",
+      "source": "DB",
+      "type": "Database",
+      "priority": "P2",
+      "severity": "High",
+      "layer": "DB",
+      "smoke": false,
+      "defects": [],
+      "pre": "Read-only database access granted (Q04); schema / data dictionary shared",
+      "steps": [
+        "Run the UI or API scenario that creates the data",
+        "Run the read-only validation query for this check",
+        "Compare the result with the UI/API value"
+      ],
+      "data": "Linked scenario(s): AUTH-V07",
+      "expected": "Query result matches the UI/API outcome (see the illustrative query pattern in Submission 1, section 3.4)",
+      "evidence": "Query text + result attached to the report",
+      "automation": "Blocked",
+      "cond": "",
+      "blockedReason": "No database engine, schema or credentials supplied (Submission 1 question Q04 / dependency D06). API-read proxy is used where the linked API scenario exists.",
+      "tcId": "TC-DB-10",
+      "submission1Priority": "P2",
+      "gate": false,
+      "sensitive": false,
+      "explore": [
+        "Q04"
+      ],
+      "module": "Database Validation",
+      "risks": [
+        "R03",
+        "R41"
+      ],
+      "tags": [
+        "@regression",
+        "@database",
+        "@p2"
+      ],
+      "automationStatus": "Blocked",
+      "spec": ""
+    },
+    {
+      "id": "FW-01",
+      "prefix": "FW",
+      "title": "Evidence: diagnostics, screenshots, traces and videos are configured for debugging",
+      "source": "FW",
+      "type": "Framework",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "Framework",
+      "smoke": false,
+      "defects": [
+        "RI-20"
+      ],
+      "pre": "None - runs without the application",
+      "steps": [
+        "Load playwright.config.js",
+        "Assert screenshot, video, trace, HTML/JSON/JUnit reporters are enabled",
+        "Assert the diagnostics fixture is registered as an automatic fixture"
+      ],
+      "data": "none",
+      "expected": "All evidence settings are present",
+      "evidence": "Unit test output",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-FW-01",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Framework Self-Checks",
+      "risks": [
+        "R38"
+      ],
+      "tags": [
+        "@regression",
+        "@framework",
+        "@p2",
+        "@seeded"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/unit/framework.spec.js"
+    },
+    {
+      "id": "FW-02",
+      "prefix": "FW",
+      "title": "Environment: configuration is externalised and the health check classifies failures",
+      "source": "FW",
+      "type": "Framework",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "Framework",
+      "smoke": false,
+      "defects": [],
+      "pre": "None - runs without the application",
+      "steps": [
+        "Scan the repository for hard-coded URLs, IPs and credentials outside config / .env.example",
+        "Check the health-check classifier maps timeouts and 5xx to ENVIRONMENT"
+      ],
+      "data": "none",
+      "expected": "No hard-coded base URL, IP address or password outside the config layer; failures are classified as ENVIRONMENT vs APPLICATION",
+      "evidence": "Unit test output",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-FW-02",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Framework Self-Checks",
+      "risks": [
+        "R39"
+      ],
+      "tags": [
+        "@regression",
+        "@framework",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/unit/framework.spec.js"
+    },
+    {
+      "id": "FW-03",
+      "prefix": "FW",
+      "title": "Test data: builders are unique per call and date boundaries are calculated correctly",
+      "source": "FW",
+      "type": "Framework",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "Framework",
+      "smoke": false,
+      "defects": [],
+      "pre": "None - runs without the application",
+      "steps": [
+        "Generate 500 clients and beneficiaries and check name uniqueness",
+        "Check dobForAge / calcAge for ages 17/18/65/66, leap years and the day-before/after birthday"
+      ],
+      "data": "none",
+      "expected": "No duplicates; boundary dates produce exactly the intended ages",
+      "evidence": "Unit test output",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-FW-03",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Framework Self-Checks",
+      "risks": [
+        "R40"
+      ],
+      "tags": [
+        "@regression",
+        "@framework",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/unit/framework.spec.js"
+    },
+    {
+      "id": "FW-04",
+      "prefix": "FW",
+      "title": "Traceability: every automated test maps to a case; every case maps to a risk",
+      "source": "FW",
+      "type": "Framework",
+      "priority": "P2",
+      "severity": "Medium",
+      "layer": "Framework",
+      "smoke": false,
+      "defects": [],
+      "pre": "None - runs without the application",
+      "steps": [
+        "Load the case registry and the risk register",
+        "Check each non-framework case links to at least one risk",
+        "Check reported issues RI-01..RI-20 each link to at least one case"
+      ],
+      "data": "none",
+      "expected": "No orphan cases, risks or reported issues",
+      "evidence": "Unit test output",
+      "automation": "Automated",
+      "cond": "",
+      "blockedReason": "",
+      "tcId": "TC-FW-04",
+      "submission1Priority": "P1",
+      "gate": false,
+      "sensitive": false,
+      "explore": [],
+      "module": "Framework Self-Checks",
+      "risks": [
+        "R39"
+      ],
+      "tags": [
+        "@regression",
+        "@framework",
+        "@p2"
+      ],
+      "automationStatus": "Automated",
+      "spec": "tests/unit/framework.spec.js"
+    }
+  ],
+  "risks": [
+    {
+      "id": "R01",
+      "module": "Authentication",
+      "layer": "UI",
+      "risk": "Valid agents cannot log in after authentication changes",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "AUTH-V01"
+    },
+    {
+      "id": "R02",
+      "module": "Authentication",
+      "layer": "UI",
+      "risk": "Locked or invalid users see incorrect or misleading messages",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "AUTH-V02, V06"
+    },
+    {
+      "id": "R03",
+      "module": "Authentication",
+      "layer": "API/DB",
+      "risk": "Lockout after five failures not enforced server-side or counter not stored",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "AUTH-V07, DB-10"
+    },
+    {
+      "id": "R04",
+      "module": "Authentication",
+      "layer": "API",
+      "risk": "Protected pages or endpoints reachable without authentication",
+      "likelihood": "Low",
+      "impact": "High",
+      "rating": "Medium",
+      "coveredBy": "AUTH-V05, API-V02"
+    },
+    {
+      "id": "R05",
+      "module": "Authentication",
+      "layer": "UI/API",
+      "risk": "Session not cleared on logout; no session timeout",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "AUTH-V04, AUTH-V10"
+    },
+    {
+      "id": "R06",
+      "module": "Authentication",
+      "layer": "UI",
+      "risk": "Password policy inconsistently enforced",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "AUTH-V08"
+    },
+    {
+      "id": "R07",
+      "module": "Dashboard",
+      "layer": "UI/API/DB",
+      "risk": "Dashboard status differs from backend status",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "DASH-V06, API-V06, DB-03"
+    },
+    {
+      "id": "R08",
+      "module": "Dashboard",
+      "layer": "API/DB",
+      "risk": "Agent sees another agent's applications",
+      "likelihood": "Low",
+      "impact": "High",
+      "rating": "Medium",
+      "coveredBy": "DASH-V02, API-V08, DB-09"
+    },
+    {
+      "id": "R09",
+      "module": "Dashboard",
+      "layer": "UI",
+      "risk": "Resumed draft shows missing or stale data",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "DASH-V04, WF-V02"
+    },
+    {
+      "id": "R10",
+      "module": "Client / KYC",
+      "layer": "UI/API",
+      "risk": "Age eligibility (18-65) rules missed",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "CLI-V03, V04"
+    },
+    {
+      "id": "R11",
+      "module": "Client / KYC",
+      "layer": "UI/API",
+      "risk": "Future date of birth accepted",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "CLI-V05, API-V03"
+    },
+    {
+      "id": "R12",
+      "module": "Client / KYC",
+      "layer": "UI/DB",
+      "risk": "SSN displayed unmasked, or stored/logged in clear text",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "CLI-V08, DB-07"
+    },
+    {
+      "id": "R13",
+      "module": "Client / KYC",
+      "layer": "UI/API",
+      "risk": "Income vs premium affordability not applied",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "CLI-V12"
+    },
+    {
+      "id": "R14",
+      "module": "Client / KYC",
+      "layer": "UI",
+      "risk": "PEP details not enforced; PEP not flagged",
+      "likelihood": "Low",
+      "impact": "Medium",
+      "rating": "Low",
+      "coveredBy": "CLI-V10"
+    },
+    {
+      "id": "R15",
+      "module": "Client / KYC",
+      "layer": "UI",
+      "risk": "Address copy or email/phone format errors",
+      "likelihood": "Low",
+      "impact": "Low",
+      "rating": "Low",
+      "coveredBy": "CLI-V06, V07"
+    },
+    {
+      "id": "R16",
+      "module": "Product / Policy",
+      "layer": "UI/API",
+      "risk": "Product eligibility not validated against age or suitability",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "PROD-V07, PROD-V08"
+    },
+    {
+      "id": "R17",
+      "module": "Product / Policy",
+      "layer": "UI/API",
+      "risk": "Face value min/max not enforced",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "PROD-V03, V04"
+    },
+    {
+      "id": "R18",
+      "module": "Product / Policy",
+      "layer": "UI/API",
+      "risk": "Premium not recalculated after configuration change",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "PROD-V05, V06"
+    },
+    {
+      "id": "R19",
+      "module": "Product / Policy",
+      "layer": "UI/DB",
+      "risk": "Premium on review page differs from stored premium",
+      "likelihood": "Low",
+      "impact": "High",
+      "rating": "Medium",
+      "coveredBy": "PROD-V06, DB-06"
+    },
+    {
+      "id": "R20",
+      "module": "Riders",
+      "layer": "UI/API",
+      "risk": "Rider coverage exceeds base face value",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "RIDER-V02"
+    },
+    {
+      "id": "R21",
+      "module": "Riders",
+      "layer": "UI",
+      "risk": "Mutually exclusive waiver riders both selectable",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "RIDER-V05"
+    },
+    {
+      "id": "R22",
+      "module": "Riders",
+      "layer": "UI/API",
+      "risk": "Age-ineligible rider or maximum count not enforced",
+      "likelihood": "Low",
+      "impact": "Medium",
+      "rating": "Low",
+      "coveredBy": "RIDER-V03, V04"
+    },
+    {
+      "id": "R23",
+      "module": "Riders",
+      "layer": "UI",
+      "risk": "Rider premium not itemized or total not updated",
+      "likelihood": "Low",
+      "impact": "Medium",
+      "rating": "Low",
+      "coveredBy": "RIDER-V07"
+    },
+    {
+      "id": "R24",
+      "module": "Beneficiaries",
+      "layer": "UI/API/DB",
+      "risk": "Allocation below or above 100% accepted",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "BEN-V02, V03, API-V04, DB-04"
+    },
+    {
+      "id": "R25",
+      "module": "Beneficiaries",
+      "layer": "UI/API/DB",
+      "risk": "Minor beneficiary saved without guardian",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "BEN-V05, DB-05"
+    },
+    {
+      "id": "R26",
+      "module": "Beneficiaries",
+      "layer": "UI/API",
+      "risk": "Duplicate beneficiary not blocked",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "BEN-V08"
+    },
+    {
+      "id": "R27",
+      "module": "Beneficiaries",
+      "layer": "UI",
+      "risk": "Trust/Organization fields wrong; irrevocable confirmation missing",
+      "likelihood": "Low",
+      "impact": "Medium",
+      "rating": "Low",
+      "coveredBy": "BEN-V06, V07, BEN-V11"
+    },
+    {
+      "id": "R28",
+      "module": "Beneficiaries",
+      "layer": "UI/DB",
+      "risk": "Removing beneficiary leaves wrong running total or stale data",
+      "likelihood": "Low",
+      "impact": "Medium",
+      "rating": "Low",
+      "coveredBy": "BEN-V09"
+    },
+    {
+      "id": "R29",
+      "module": "Documents / Validation",
+      "layer": "UI/API/DB",
+      "risk": "Mandatory KYC documents not enforced before submission",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "DOC-V04, API-V05, DB-08"
+    },
+    {
+      "id": "R30",
+      "module": "Documents / Validation",
+      "layer": "UI/API",
+      "risk": "Unsupported file type or oversize file accepted",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "DOC-V02, V03, API-V10"
+    },
+    {
+      "id": "R31",
+      "module": "Documents / Validation",
+      "layer": "UI",
+      "risk": "Submit button enabled while validation errors exist",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "VAL-V03"
+    },
+    {
+      "id": "R32",
+      "module": "Documents / Validation",
+      "layer": "UI",
+      "risk": "Validation summary incomplete or navigation wrong",
+      "likelihood": "Low",
+      "impact": "Low",
+      "rating": "Low",
+      "coveredBy": "VAL-V01, V02"
+    },
+    {
+      "id": "R33",
+      "module": "Submission / Status",
+      "layer": "UI/DB",
+      "risk": "Draft data not persisted correctly",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "WF-V01, V02, DB-01"
+    },
+    {
+      "id": "R34",
+      "module": "Submission / Status",
+      "layer": "API/DB",
+      "risk": "Wrong status transition or missing/duplicate reference number",
+      "likelihood": "Low",
+      "impact": "High",
+      "rating": "Medium",
+      "coveredBy": "WF-V03, DB-02"
+    },
+    {
+      "id": "R35",
+      "module": "Submission / Status",
+      "layer": "API",
+      "risk": "Incomplete application accepted by submit API",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "API-V05"
+    },
+    {
+      "id": "R36",
+      "module": "Submission / Status",
+      "layer": "UI",
+      "risk": "Submitted application remains editable",
+      "likelihood": "Low",
+      "impact": "Medium",
+      "rating": "Low",
+      "coveredBy": "WF-V04"
+    },
+    {
+      "id": "R37",
+      "module": "Cross-cutting",
+      "layer": "UI/API",
+      "risk": "API validation differs from UI validation",
+      "likelihood": "Medium",
+      "impact": "High",
+      "rating": "High",
+      "coveredBy": "API-V12"
+    },
+    {
+      "id": "R38",
+      "module": "Cross-cutting",
+      "layer": "Framework",
+      "risk": "Failures hard to debug (inconsistent screenshots, traces, reports)",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "FW-01"
+    },
+    {
+      "id": "R39",
+      "module": "Cross-cutting",
+      "layer": "Environment",
+      "risk": "Shared lab instability, SSO or network restrictions block runs",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "FW-02"
+    },
+    {
+      "id": "R40",
+      "module": "Cross-cutting",
+      "layer": "Test data",
+      "risk": "Seeded data collisions or exhausted users in parallel runs",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "FW-03"
+    },
+    {
+      "id": "R41",
+      "module": "Cross-cutting",
+      "layer": "DB",
+      "risk": "Database access or schema not available for backend validation",
+      "likelihood": "Medium",
+      "impact": "Medium",
+      "rating": "Medium",
+      "coveredBy": "DB-01..DB-10"
+    }
+  ],
+  "reportedIssues": [
+    {
+      "id": "RI-01",
+      "module": "Authentication",
+      "description": "Valid agents cannot log in after authentication changes",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-02",
+      "module": "Authentication",
+      "description": "Locked or invalid agents get incorrect / misleading messages",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-03",
+      "module": "Authentication",
+      "description": "Password policy not consistently enforced",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-04",
+      "module": "Client / KYC",
+      "description": "Client age eligibility rules (18-65) missed",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-05",
+      "module": "Client / KYC",
+      "description": "Future date of birth accepted",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-06",
+      "module": "Documents / Validation",
+      "description": "Mandatory KYC documents not enforced",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-07",
+      "module": "Client / KYC",
+      "description": "SSN not masked properly",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-08",
+      "module": "Client / KYC",
+      "description": "Income vs premium affordability not applied",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-09",
+      "module": "Product / Policy",
+      "description": "Product eligibility not validated against age / suitability",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-10",
+      "module": "Riders",
+      "description": "Rider coverage exceeds base face value",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-11",
+      "module": "Riders",
+      "description": "Exclusive waiver riders both selectable",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-12",
+      "module": "Product / Policy",
+      "description": "Premium not updated after configuration change",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-13",
+      "module": "Beneficiaries",
+      "description": "Allocation below / above 100% allowed",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-14",
+      "module": "Beneficiaries",
+      "description": "Minor beneficiary guardian not required",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-15",
+      "module": "Beneficiaries",
+      "description": "Duplicate beneficiaries not blocked",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-16",
+      "module": "Submission / Status",
+      "description": "Draft data not persisted",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-17",
+      "module": "Documents / Validation",
+      "description": "Submit enabled despite validation errors",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-18",
+      "module": "Dashboard",
+      "description": "Dashboard status differs from backend status",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-19",
+      "module": "Cross-cutting",
+      "description": "API validation differs from UI validation",
+      "catalogCode": ""
+    },
+    {
+      "id": "RI-20",
+      "module": "Cross-cutting",
+      "description": "Failures hard to debug (no consistent evidence)",
+      "catalogCode": ""
+    }
+  ],
+  "exploration": [
+    {
+      "q": "Q02",
+      "find": "Base URL / port of the UI and API; reachable from the machine AND from the CI runner",
+      "record": ".env INSURANCE_BASE_URL, INSURANCE_API_URL",
+      "minutes": 5,
+      "dependents": []
+    },
+    {
+      "q": "Q03",
+      "find": "API authentication (bearer token vs session cookie), header names, login response shape; payload field names for client / beneficiary / document calls",
+      "record": ".env API_AUTH_MODE, INSURANCE_API_KEY; api/helpers.js payloads",
+      "minutes": 10,
+      "dependents": []
+    },
+    {
+      "q": "Q04",
+      "find": "Is read-only database access available? Engine, schema / data dictionary",
+      "record": "Unblocks DB-01..DB-10 (Blocked until then)",
+      "minutes": 5,
+      "dependents": [
+        "DB-01",
+        "DB-02",
+        "DB-03",
+        "DB-04",
+        "DB-05",
+        "DB-06",
+        "DB-07",
+        "DB-08",
+        "DB-09",
+        "DB-10"
+      ]
+    },
+    {
+      "q": "Q06",
+      "find": "Which seeded users exist: new agent, second agent, MFA agent; which can be locked / reset safely (disposable)",
+      "record": ".env AGENT_*_EMAIL",
+      "minutes": 10,
+      "dependents": [
+        "AUTH-V09",
+        "DASH-V02",
+        "DASH-V03",
+        "API-V08"
+      ]
+    },
+    {
+      "q": "Q07",
+      "find": "Lockout behaviour (5th failure locks? duration / unlock) and session timeout length",
+      "record": ".env LOCKOUT_ATTEMPTS, SESSION_TIMEOUT_SECONDS",
+      "minutes": 5,
+      "dependents": [
+        "AUTH-V10"
+      ]
+    },
+    {
+      "q": "Q08",
+      "find": "How OTP is simulated (fixed code?) for login MFA and password reset",
+      "record": ".env OTP_CODE",
+      "minutes": 5,
+      "dependents": [
+        "AUTH-V08",
+        "AUTH-V09",
+        "AUTH-V12"
+      ]
+    },
+    {
+      "q": "Q09",
+      "find": "Exact password policy rules and the change / reset page route",
+      "record": "config/messages.js passwordPolicy; tests/ui/auth.spec.js weak list",
+      "minutes": 5,
+      "dependents": [
+        "AUTH-V08"
+      ]
+    },
+    {
+      "q": "Q10",
+      "find": "Age 18 and 65 inclusive? Age calculated on which date?",
+      "record": ".env AGE_BOUNDARY_INCLUSIVE",
+      "minutes": 3,
+      "dependents": []
+    },
+    {
+      "q": "Q11",
+      "find": "Income vs premium affordability rule: block or warning, threshold, where it appears",
+      "record": "tests/ui/client.spec.js CLI-V12 data; config/messages.js affordability",
+      "minutes": 5,
+      "dependents": []
+    },
+    {
+      "q": "Q13",
+      "find": "Face value min / max per product, product eligibility by age, suitability mismatch example, exact Whole Life product names",
+      "record": ".env FACE_VALUE_MIN/MAX, PRODUCT_NAME_PATTERN, INELIGIBLE_AGE*, SUITABILITY_PRODUCT_PATTERN",
+      "minutes": 10,
+      "dependents": [
+        "PROD-V03",
+        "PROD-V04",
+        "PROD-V07",
+        "PROD-V08"
+      ]
+    },
+    {
+      "q": "Q14",
+      "find": "Valid payment-term / policy-term combinations",
+      "record": "tests/ui/product.spec.js PROD-V09",
+      "minutes": 3,
+      "dependents": []
+    },
+    {
+      "q": "Q15",
+      "find": "Maximum rider count, age-restricted rider, which waiver riders are exclusive, rider names",
+      "record": ".env MAX_RIDERS, RIDER_*_PATTERN",
+      "minutes": 5,
+      "dependents": [
+        "RIDER-V03",
+        "RIDER-V04",
+        "RIDER-V05"
+      ]
+    },
+    {
+      "q": "Q17",
+      "find": "Maximum upload size and which documents are mandatory",
+      "record": ".env MAX_UPLOAD_MB",
+      "minutes": 3,
+      "dependents": [
+        "DOC-V03"
+      ]
+    },
+    {
+      "q": "Q21",
+      "find": "Can tests create their own draft applications (UI and API)? Is cleanup possible?",
+      "record": "api/helpers.js disposableDraft()",
+      "minutes": 5,
+      "dependents": [
+        "API-V03",
+        "API-V04",
+        "API-V05"
+      ]
+    },
+    {
+      "q": "ROUTES",
+      "find": "Walk the full journey once; note the URL of every step, the application id pattern in the URL, and the exact wording of validation messages",
+      "record": "config/routes.js, config/messages.js, config/selectors.js (run npm run discover)",
+      "minutes": 20,
+      "dependents": []
+    }
+  ]
+}

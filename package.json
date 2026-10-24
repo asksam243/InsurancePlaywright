@@ -1,0 +1,36 @@
+{
+  "name": "insurance-order-entry-playwright",
+  "version": "1.0.0",
+  "description": "Playwright QA automation for the Insurance Order Entry Platform (Whole Life) - Submission 2: Test Design and Automation Build",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:seeded": "playwright test --grep @seeded",
+    "test:ui": "playwright test --project=chromium",
+    "test:api": "playwright test --project=api",
+    "test:unit": "playwright test --project=unit",
+    "test:auth": "playwright test --grep @authentication",
+    "test:client": "playwright test --grep @client",
+    "test:product": "playwright test --grep @product",
+    "test:rider": "playwright test --grep @rider",
+    "test:beneficiary": "playwright test --grep @beneficiary",
+    "test:document": "playwright test --grep \"@document|@validation\"",
+    "test:workflow": "playwright test --grep @workflow",
+    "test:headed": "playwright test --project=chromium --headed",
+    "test:debug": "playwright test --project=chromium --debug",
+    "health": "node scripts/healthcheck.js",
+    "discover": "node scripts/discover-testids.js",
+    "verify:selectors": "node scripts/verify-selectors.js",
+    "check:traceability": "node scripts/check-traceability.js",
+    "export:testdesign": "node scripts/export-test-design.js",
+    "report": "playwright show-report reports/html-report",
+    "install:browsers": "playwright install --with-deps chromium",
+    "test:gate": "playwright test --grep @release-gate"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "dotenv": "^16.4.5"
+  }
+}
