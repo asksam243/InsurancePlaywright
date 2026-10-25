@@ -166,10 +166,10 @@ title(lm, 'Known limitations and blocked areas')
 header(lm, 3, ['#', 'Area', 'Limitation / blocked item', 'Impact', 'Resolution'], [5, 22, 70, 40, 46])
 items = [
  ('Execution', 'The automation has not been run against the real lab application (no access when it was built).', 'Selectors, routes and messages are unconfirmed', 'Complete the Exploration Log, run npm run discover and npm run verify:selectors, then run the smoke suite'),
- ('Selectors', 'Only login-email, login-password, login-submit are confirmed. Other test ids are conventions; every control has a role/label fallback.', 'Some locators may need correcting', 'config/selectors.js is the only file to edit'),
+ ('Selectors', 'Only the login ids (login-email-input, login-password-input, login-submit-button) are confirmed. Other test ids are conventions; every control has a role/label fallback.', 'Some locators may need correcting', 'config/selectors.js is the only file to edit'),
  ('Database', 'No DB engine, schema or access (Q04). DB-01..DB-10 are Blocked.', '10 cases not automated', 'API reads are used as a proxy where the linked scenario has an API test'),
- ('Business rules', 'Face value limits, max riders, upload size, lockout, age boundary, affordability rule are TBC.', 'Dependent tests skip with a reason instead of failing', 'Resolve in exploration and set the .env values'),
- ('Users', 'Only agent.valid and agent.locked are confirmed. New / second / MFA / lockout / reset users need names (Q06).', 'Isolation, empty-state, MFA, lockout, reset tests skip', 'Set AGENT_*_EMAIL in .env'),
+ ('Business rules', 'Max riders (4), upload size (5 MB) and lockout (5 attempts) are confirmed. Face value limits, age boundary and affordability rule are still TBC.', 'Dependent tests skip with a reason instead of failing', 'Resolve in exploration and set the .env values'),
+ ('Users', 'Seeded accounts agent.valid/locked/new/mfa/draft/submitted, admin and learner001-030 are confirmed. Disposable lockout and reset users are not (Q06).', 'Lockout and reset tests skip until disposable users are set', 'Set AGENT_LOCKOUT_* and AGENT_RESET_* in .env'),
  ('Destructive tests', 'AUTH-V07 locks an account; AUTH-V08/V13 may change a password if the app is defective.', 'Disposable users required', 'Use AGENT_LOCKOUT_* and AGENT_RESET_* only with throw-away users'),
  ('API payloads', 'API field names are unconfirmed (Q03). Tests send a valid control request first and skip if it is rejected.', 'No false defects, but some API tests may skip', 'Adjust api/helpers.js after exploration'),
  ('Shared lab', 'One worker by default. Parallel runs add load and can collide on shared data.', 'Slower runs', 'Raise WORKERS only after a stable single-worker baseline'),
@@ -177,6 +177,8 @@ items = [
  ('Cross-browser', 'Chromium primary. Firefox / WebKit smoke only when CROSS_BROWSER=true.', 'Limited cross-browser coverage', 'Enable per the plan before release'),
  ('Priorities', 'P1 re-cut from 52 to 19 cases by author judgement.', 'Mentor / product owner should confirm the gate', 'Review the Release Gate sheet'),
  ('Risk links', '36 cases were not named in the Submission 1 "Covered by" column and were linked to the closest risk by judgement.', 'Traceability partly judgemental', 'Review in the Traceability - Risks sheet'),
+ ('Agent dashboard access', 'The starter project proved agents are not LANDED on /dashboard after login; it did not prove they cannot open it. Journeys and DASH-* cases start from the dashboard.', 'If agents are redirected away, many UI cases fail for one reason', 'Verify on the lab first; if redirected, start journeys from the draft application page'),
+ ('Merged projects', 'Built from two projects. Confirmed lab facts from the starter project override Submission 2 guesses (login ids, X-API-Key auth, seeded users, landing page). AUTH-V14 was carried over from the starter as AUTH-V01b.', 'None if the lab matches the starter project documentation', 'See docs/confirmed-environment-facts.md'),
 ]
 for r, it in enumerate(items, 4): put(lm, r, [r - 3, *it])
 

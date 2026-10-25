@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-24",
+  "generated": "2026-10-25",
   "releaseGate": [
     "AUTH-V01",
     "AUTH-V05",
@@ -389,14 +389,13 @@
       "expected": "OTP prompt appears; wrong OTP is rejected; correct OTP completes login to the dashboard",
       "evidence": "Screenshot + trace on failure",
       "automation": "Automated",
-      "cond": "Set AGENT_MFA_EMAIL and OTP_CODE (Q06, Q08)",
+      "cond": "Set OTP_CODE (Q08). agent.mfa is a confirmed seeded account",
       "blockedReason": "",
       "tcId": "TC-AUTH-V09",
       "submission1Priority": "P2",
       "gate": false,
       "sensitive": false,
       "explore": [
-        "Q06",
         "Q08"
       ],
       "module": "Authentication & Session",
@@ -415,7 +414,7 @@
       "id": "AUTH-V14",
       "prefix": "AUTH",
       "title": "Admin logs in and lands on the dashboard (carried over from the starter project as AUTH-V01b)",
-      "source": "S1",
+      "source": "S2+",
       "type": "UI Positive",
       "priority": "P2",
       "severity": "High",
@@ -680,15 +679,13 @@
       "expected": "The two sets of application rows do not overlap",
       "evidence": "Screenshot + trace on failure",
       "automation": "Automated",
-      "cond": "Set AGENT_SECOND_EMAIL (Q06)",
+      "cond": "Second agent defaults to learner001 (confirmed seeded); override with AGENT_SECOND_EMAIL",
       "blockedReason": "",
       "tcId": "TC-DASH-V02",
       "submission1Priority": "P1",
       "gate": true,
       "sensitive": false,
-      "explore": [
-        "Q06"
-      ],
+      "explore": [],
       "module": "Agent Dashboard",
       "risks": [
         "R08"
@@ -723,15 +720,13 @@
       "expected": "Empty-state text and the New Application control are visible; no application rows",
       "evidence": "Screenshot + trace on failure",
       "automation": "Automated",
-      "cond": "Set AGENT_NEW_EMAIL (Q06)",
+      "cond": "agent.new is a confirmed seeded account, but login auto-creates a draft (BR-AUTH-010) so the empty state may never appear - verify on the lab",
       "blockedReason": "",
       "tcId": "TC-DASH-V03",
       "submission1Priority": "P3",
       "gate": false,
       "sensitive": false,
-      "explore": [
-        "Q06"
-      ],
+      "explore": [],
       "module": "Agent Dashboard",
       "risks": [
         "R07"
@@ -2142,15 +2137,13 @@
       "expected": "The extra rider is refused with a maximum-count message",
       "evidence": "Screenshot + trace on failure",
       "automation": "Automated",
-      "cond": "Set MAX_RIDERS (Q15); needs more rider cards than the maximum",
+      "cond": "MAX_RIDERS defaults to the confirmed 4; needs more rider cards than the maximum",
       "blockedReason": "",
       "tcId": "TC-RIDER-V04",
       "submission1Priority": "P2",
       "gate": false,
       "sensitive": false,
-      "explore": [
-        "Q15"
-      ],
+      "explore": [],
       "module": "Rider Selection",
       "risks": [
         "R22"
@@ -2839,15 +2832,13 @@
       "expected": "Rejected with a file-size message",
       "evidence": "Screenshot + trace on failure",
       "automation": "Automated",
-      "cond": "Set MAX_UPLOAD_MB (Q17)",
+      "cond": "MAX_UPLOAD_MB defaults to the confirmed 5 MB",
       "blockedReason": "",
       "tcId": "TC-DOC-V03",
       "submission1Priority": "P2",
       "gate": false,
       "sensitive": false,
-      "explore": [
-        "Q17"
-      ],
+      "explore": [],
       "module": "Document Upload",
       "risks": [
         "R30"
@@ -3692,15 +3683,13 @@
       "expected": "The id sets are disjoint",
       "evidence": "Response status/body attached",
       "automation": "Automated",
-      "cond": "Set AGENT_SECOND_EMAIL (Q06)",
+      "cond": "Second agent defaults to learner001 (confirmed seeded); override with AGENT_SECOND_EMAIL",
       "blockedReason": "",
       "tcId": "TC-API-V08",
       "submission1Priority": "P1",
       "gate": false,
       "sensitive": false,
-      "explore": [
-        "Q06"
-      ],
+      "explore": [],
       "module": "API Validation",
       "risks": [
         "R08"
@@ -5036,12 +5025,7 @@
       "find": "Which seeded users exist: new agent, second agent, MFA agent; which can be locked / reset safely (disposable)",
       "record": ".env AGENT_*_EMAIL",
       "minutes": 10,
-      "dependents": [
-        "AUTH-V09",
-        "DASH-V02",
-        "DASH-V03",
-        "API-V08"
-      ]
+      "dependents": []
     },
     {
       "q": "Q07",
@@ -5112,7 +5096,6 @@
       "minutes": 5,
       "dependents": [
         "RIDER-V03",
-        "RIDER-V04",
         "RIDER-V05"
       ]
     },
@@ -5121,9 +5104,7 @@
       "find": "Maximum upload size and which documents are mandatory",
       "record": ".env MAX_UPLOAD_MB",
       "minutes": 3,
-      "dependents": [
-        "DOC-V03"
-      ]
+      "dependents": []
     },
     {
       "q": "Q21",

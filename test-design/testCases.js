@@ -9,7 +9,7 @@
  * IDs: scenario ids (AUTH-V01 ...) come from Submission 1. Test case id = "TC-" + scenario id.
  * source:  'S1'   scenario in the Submission 1 inventory (69)
  *          'S1+'  scenario PROPOSED in Submission 1 (14)
- *          'S2+'  scenario ADDED in this submission to cover the coverage list in the Submission 2 guide (8)
+ *          'S2+'  scenario ADDED in this submission to cover the coverage list in the Submission 2 guide (8), plus AUTH-V14 carried over from the starter project when the two projects were merged
  *          'DB'   database validation check from the Submission 1 validation strategy (10)
  *          'FW'   framework self-check (4)
  */
@@ -126,10 +126,10 @@ const cases = [
     steps: ['Log in with MFA agent credentials', 'Confirm OTP prompt', 'Enter a WRONG OTP', 'Enter the correct OTP'],
     data: 'AGENT_MFA_EMAIL; OTP_CODE',
     expected: 'OTP prompt appears; wrong OTP is rejected; correct OTP completes login to the dashboard',
-    cond: 'Set AGENT_MFA_EMAIL and OTP_CODE (Q06, Q08)',
+    cond: 'Set OTP_CODE (Q08). agent.mfa is a confirmed seeded account',
   }),
   T('AUTH-V14', 'Admin logs in and lands on the dashboard (carried over from the starter project as AUTH-V01b)', {
-    type: 'UI Positive', priority: 'P2', severity: 'High', smoke: true,
+    source: 'S2+', type: 'UI Positive', priority: 'P2', severity: 'High', smoke: true,
     pre: 'Seeded admin user exists and is active; browser has no session',
     steps: ['Open /login', 'Enter admin email and password', 'Click Log in'],
     data: 'ADMIN_EMAIL + ADMIN_PASSWORD',
@@ -179,7 +179,7 @@ const cases = [
     steps: ['Open dashboard as agent A and collect row identifiers', 'Open dashboard as agent B and collect row identifiers', 'Compare the two sets'],
     data: 'AGENT_VALID_*, AGENT_SECOND_*',
     expected: 'The two sets of application rows do not overlap',
-    cond: 'Set AGENT_SECOND_EMAIL (Q06)',
+    cond: 'Second agent defaults to learner001 (confirmed seeded); override with AGENT_SECOND_EMAIL',
   }),
   T('DASH-V03', 'New agent sees empty-state copy and CTA', {
     priority: 'P3', severity: 'Low',
@@ -187,7 +187,7 @@ const cases = [
     steps: ['Sign in as the new agent', 'Open the dashboard'],
     data: 'AGENT_NEW_*',
     expected: 'Empty-state text and the New Application control are visible; no application rows',
-    cond: 'Set AGENT_NEW_EMAIL (Q06)',
+    cond: 'agent.new is a confirmed seeded account, but login auto-creates a draft (BR-AUTH-010) so the empty state may never appear - verify on the lab',
   }),
   T('DASH-V04', 'Draft can be resumed from dashboard with saved data', {
     defects: ['RI-16'], priority: 'P2', severity: 'High',
@@ -438,7 +438,7 @@ const cases = [
     steps: ['Add riders up to the maximum', 'Try to add one more'],
     data: 'MAX_RIDERS',
     expected: 'The extra rider is refused with a maximum-count message',
-    cond: 'Set MAX_RIDERS (Q15); needs more rider cards than the maximum',
+    cond: 'MAX_RIDERS defaults to the confirmed 4; needs more rider cards than the maximum',
   }),
   T('RIDER-V05', 'Mutually exclusive waiver riders cannot both be selected', {
     type: 'UI Negative', priority: 'P1', severity: 'High', defects: ['RI-11'],
@@ -559,7 +559,7 @@ const cases = [
     steps: ['Upload a PDF of (maximum + 1) MB'],
     data: 'MAX_UPLOAD_MB',
     expected: 'Rejected with a file-size message',
-    cond: 'Set MAX_UPLOAD_MB (Q17)',
+    cond: 'MAX_UPLOAD_MB defaults to the confirmed 5 MB',
   }),
   T('DOC-V04', 'Missing mandatory document blocks submission', {
     type: 'UI Negative', priority: 'P1', severity: 'Critical', defects: ['RI-06'], layer: 'UI + API + DB',
@@ -694,7 +694,7 @@ const cases = [
     steps: ['GET /applications as agent A', 'GET /applications as agent B', 'Compare ids'],
     data: 'AGENT_VALID_*, AGENT_SECOND_*',
     expected: 'The id sets are disjoint',
-    evidence: 'Response status/body attached', cond: 'Set AGENT_SECOND_EMAIL (Q06)',
+    evidence: 'Response status/body attached', cond: 'Second agent defaults to learner001 (confirmed seeded); override with AGENT_SECOND_EMAIL',
   }),
   T('API-V09', 'Riders API schema, eligibility and dependency rules', {
     source: 'S1+', type: 'API', layer: 'API', priority: 'P2', severity: 'Medium',
