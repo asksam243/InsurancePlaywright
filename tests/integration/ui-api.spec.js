@@ -9,7 +9,7 @@ const M = require('../../config/messages');
 const { attachApi, captureEvidence, expectBlocked } = require('../../utils/assertions');
 
 test.describe('UI <-> API integration', () => {
-  test.use({ agentRole: 'validAgent' });
+  test.use({ agentRole: 'learnerAgent' });
 
   test(...tc('DASH-V06'), async ({ pages, api }, testInfo) => {
     await pages.dashboard.goto();
@@ -52,9 +52,9 @@ test.describe('UI <-> API integration', () => {
     const detailRes = await api.get(ep.product(idOf(list[0])));
     const detail = await api.json(detailRes);
     await attachApi(testInfo, 'product-detail', detailRes, detail);
-    const name = detail.name ?? detail.productName ?? detail.data?.name ?? list[0].name ?? list[0].productName;
+    const name = detail.data?.product_name ?? detail.product_name ?? detail.name ?? detail.productName ?? detail.data?.name ?? list[0].product_name ?? list[0].name ?? list[0].productName;
     expect(name, 'product name in the API response').toBeTruthy();
-    await expect(pages.product.cards.filter({ hasText: String(name) }).first(), `UI card for API product "${name}"`).toBeVisible();
+    expect(await pages.product.names(), `UI product dropdown lists API product "${name}"`).toContain(String(name));
   });
 
   test(...tc('API-V12'), async ({ pages, page, api }, testInfo) => {

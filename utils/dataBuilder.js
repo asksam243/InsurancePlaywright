@@ -26,38 +26,42 @@ function buildClient(overrides = {}) {
     firstName: `Qa${s.slice(0, 8)}`,
     lastName: `Tester${s}`,
     dob: dobForAge(35),
-    gender: 'Male',
-    maritalStatus: 'Married',
-    nationality: 'United States',
-    occupation: 'Engineer',
+    // Values are the app's <select> option VALUES (enums); the page object also accepts visible text.
+    gender: 'MALE',
+    maritalStatus: 'MARRIED',
+    nationality: 'United States', // a text input in the real form
+    occupation: 'Software Engineer',
     employer: 'Example QA Inc',
+    employerAddress: '1 Corporate Way, New York, NY 10001', // mandatory in the real form
     ...overrides,
   };
 }
 
 function buildAddress(overrides = {}) {
   return {
-    line1: '1 Test Street',
-    city: 'Boston',
-    state: 'MA',
-    zip: '02110',
+    line1: '10 Main St',
+    city: 'New York',
+    state: 'NY',
+    zip: '10001', // must be 12345 or 12345-6789
     email: `qa.${uniqueSuffix().toLowerCase()}@example.test`,
-    phone: '6175550123',
+    phone: '(212) 555-0147', // must be a valid US phone number
+    preferredMode: 'EMAIL',
     ...overrides,
   };
 }
 
 function buildKyc(overrides = {}) {
   return {
-    idType: 'Passport',
-    idNumber: `P${uniqueSuffix()}`,
-    // 900-series SSNs are never issued, so this is safe synthetic data.
-    ssn: '900-12-3456',
+    // The real form has no separate SSN field: choose ID type SSN and enter the number as the ID number.
+    // Synthetic value (not a real person). Change it only if the application's format rules reject it.
+    idType: 'SSN',
+    idNumber: '123-45-6789',
     income: 120000,
     netWorth: 500000,
-    sourceOfFunds: 'Salary',
-    riskProfile: 'Moderate',
+    sourceOfFunds: 'SALARY',
+    riskProfile: 'MODERATE',
     pep: false,
+    declaration: true, // the compliance declaration must be ticked to save the step
     ...overrides,
   };
 }
@@ -66,19 +70,26 @@ function buildProduct(overrides = {}) {
   return {
     namePattern: env.rules.patterns.product,
     faceValue: env.rules.faceValueDefault,
-    frequency: 'Monthly',
+    frequency: 'MONTHLY',
+    paymentTerm: 20, // mandatory dropdown: 10 / 15 / 20 / 25 / 30
+    policyTerm: 'WHOLE_LIFE', // mandatory dropdown: WHOLE_LIFE / TO_AGE_100
     ...overrides,
   };
 }
 
 function buildBeneficiary(overrides = {}) {
   const s = alphaSuffix();
+  const firstName = `Ben${s.slice(0, 6)}`;
+  const lastName = `Payee${s.slice(0, 6)}`;
   return {
-    type: 'Individual',
-    designation: 'Primary',
-    name: `Ben ${s}`,
+    type: 'INDIVIDUAL',
+    designation: 'PRIMARY', // primary / secondary level
+    firstName,
+    lastName,
+    name: `${firstName} ${lastName}`, // full name, as shown in the table row
     dob: dobForAge(34),
-    relationship: 'Spouse',
+    gender: 'FEMALE',
+    relationship: 'SPOUSE',
     allocation: 100,
     ...overrides,
   };

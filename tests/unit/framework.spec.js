@@ -81,7 +81,9 @@ test.describe('Framework self-checks', () => {
     }
     expect(names.size).toBe(1000);
     expect(new Set(Array.from({ length: 200 }, () => buildAddress().email)).size).toBe(200);
-    expect(new Set(Array.from({ length: 200 }, () => buildKyc().idNumber)).size).toBe(200);
+    // The real form takes the SSN as the ID number (ID type SSN) and the app's own reference data uses one fixed synthetic value,
+    // so the ID number is intentionally constant; what must hold is that it is a well-formed SYNTHETIC SSN.
+    expect(buildKyc().idNumber).toMatch(/^\d{3}-\d{2}-\d{4}$/);
 
     // boundary dates produce exactly the intended ages, including leap-day and year-end "today"
     const todays = ['2026-10-14', '2024-02-29', '2025-12-31', '2026-01-01', '2028-02-29', '2025-03-01'].map((d) => new Date(`${d}T00:00:00Z`));
@@ -128,7 +130,7 @@ test.describe('Framework self-checks', () => {
     const linkedIssues = new Set(cases.flatMap((c) => c.defects));
     expect(reportedIssues.filter((r) => !linkedIssues.has(r.id)).map((r) => r.id), 'reported issues (seeded-defect themes) with no test case').toEqual([]);
     expect(cases.filter((c) => c.priority === 'P1').length, 'P1 = release gate, kept to about 15-20 cases').toBeLessThanOrEqual(20);
-    expect(buildKyc().ssn, 'synthetic SSN only (900-series is never issued)').toMatch(/^900-/);
+    expect(buildKyc().idNumber, 'synthetic SSN only (123-45-6789 is the well-known placeholder, never a real person)').toBe('123-45-6789');
     expect(buildAddress().email).toMatch(/@example\.test$/);
     expect(risks.length).toBe(41);
     expect(reportedIssues.length).toBe(20);

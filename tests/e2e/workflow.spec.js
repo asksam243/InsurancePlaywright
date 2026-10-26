@@ -16,7 +16,7 @@ async function submitValidApplication(pages) {
 }
 
 test.describe('Submission & Status Tracking', () => {
-  test.use({ agentRole: 'validAgent' });
+  test.use({ agentRole: 'learnerAgent' });
 
   test(...tc('WF-V01'), async ({ pages }) => {
     const { id, data } = await progressTo(pages, 'address');

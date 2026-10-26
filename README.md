@@ -45,7 +45,7 @@ or P3. Smoke is a separate subset. Confirm the gate with your mentor / product o
 - Destructive tests need **disposable** users: lockout (`AGENT_LOCKOUT_*`) and password reset (`AGENT_RESET_*`).
 
 ## 5. Sensitive data in evidence
-1. **Synthetic data only**: 900-series SSNs (never issued), `@example.test` emails, generated names. A self-check enforces it.
+1. **Synthetic data only**: the well-known placeholder SSN 123-45-6789 (never a real person), `@example.test` emails, generated names. A self-check enforces it.
 2. **Masked screenshots**: the built-in Playwright screenshot is off; failures and seeded-defect checks attach a screenshot with SSN, ID, income, net worth, DOB and password fields painted over (`utils/evidence.js`).
 3. **No trace or video for KYC/SSN tests**: they cannot be masked, so `tests/ui/client-kyc-sensitive.spec.js` (CLI-V08/V09/V10/V12) switches them off.
 4. **API attachments are redacted** (`ssn`, `idNumber`, `token`, `password`, `income`, `dob` ...).
@@ -75,10 +75,18 @@ Not yet run on the real app; selectors, API payload shapes and message wording u
 (Firefox/WebKit smoke with `CROSS_BROWSER=true`). Full list: *Limitations* sheet. Troubleshooting: timeouts on the first `goto` mean a stale
 `INSURANCE_BASE_URL` (run `npm run health`); `Flow could not leave the step "X"` lists the on-screen messages that stopped it.
 
-## 9. Merged from two projects
+## 9. Merged from three projects
 
 This repository is the Submission 2 build with the earlier 32-test starter project folded in.
 - Lab facts the starter project confirmed (login testids, `X-API-Key` auth, seeded accounts, rider / upload limits, where an agent
   lands after login) are applied in `config/` and listed, with the still-open questions, in `docs/confirmed-environment-facts.md`.
 - Old environment variable names (`BASE_URL`, `API_KEY`, `VALID_AGENT_EMAIL` ...) still work as fallbacks.
 - The starter project itself is kept, not run, under `legacy/starter/`. Delete it when you no longer need to diff against it.
+
+### Live-run history and the third project
+
+The first live runs (26 Oct: smoke 5/15, full 10/96) used guessed selectors and a journey that skipped the Create Draft page. A third project,
+`Insurance-order-demo-playwright-automation`, carried the application's real `data-testid` values and API contract; they are now in
+`config/selectors.js`, `config/endpoints.js` and the page objects. Results and the classified defect list are in
+`test-design/Test_Case_Design_Sheet.xlsx` (sheets **Run Results** and **Defect Log**); the source is `test-design/runs.js`.
+Set `LEARNER_USER` in `.env`; write flows run as that account.

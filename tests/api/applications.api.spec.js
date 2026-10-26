@@ -1,12 +1,13 @@
 const { apiTest: test, apiTc: tc, expect, env } = require('../../fixtures');
 const ep = require('../../config/endpoints');
 const { asList, idOf, statusOf } = require('../../api/ApiClient');
-const { clientPayload, disposableDraft, is4xxValidation } = require('../../api/helpers');
+const { clientPayload, beneficiaryPayload, disposableDraft, is4xxValidation } = require('../../api/helpers');
 const { dobForAge, futureDate, formatDate } = require('../../utils/dates');
 const { files } = require('../../utils/files');
 const { attachApi } = require('../../utils/assertions');
 
-const nameOf = (o) => o?.name ?? o?.productName ?? o?.title ?? o?.riderName;
+// Real field names: products have product_name, riders have rider_name (third project's API tests).
+const nameOf = (o) => o?.product_name ?? o?.rider_name ?? o?.name ?? o?.productName ?? o?.title ?? o?.riderName;
 
 test.describe('API validation', () => {
   test(...tc('API-V01'), async ({ api }, testInfo) => {
@@ -23,7 +24,8 @@ test.describe('API validation', () => {
   });
 
   test(...tc('API-V02'), async ({ anonApi }, testInfo) => {
-    const res = await anonApi.get(ep.applications);
+    // No key at all: the API must answer 401 (a 302 to /login or a 200 would be a defect). The acting agent is still named.
+    const res = await anonApi.get(ep.applications, { params: { agent_email: env.users.learnerAgent.email } });
     const text = await res.text();
     await attachApi(testInfo, 'unauthenticated-applications', res, text.slice(0, 500));
     expect([401, 403], `unauthenticated GET /applications returned ${res.status()}`).toContain(res.status());
@@ -48,10 +50,7 @@ test.describe('API validation', () => {
 
     test(...tc('API-V04'), async ({ api }, testInfo) => {
       test.skip(!draftId, 'No draft application available - Q21');
-      const benPayload = (allocation) => ({
-        type: 'Individual', designation: 'Primary', name: 'Api Beneficiary', firstName: 'Api', lastName: 'Beneficiary',
-        dateOfBirth: formatDate(dobForAge(34)), dob: formatDate(dobForAge(34)), relationship: 'Spouse', allocation, allocationPercent: allocation,
-      });
+      const benPayload = (allocation) => beneficiaryPayload(allocation);
       const control = await api.post(ep.beneficiaries(draftId), benPayload(100));
       test.skip(!control.ok(), `Control (valid, 100%) beneficiary payload was rejected with HTTP ${control.status()} - payload shape unconfirmed`);
       const bad = await api.post(ep.beneficiaries(draftId), benPayload(60));
@@ -74,7 +73,7 @@ test.describe('API validation', () => {
     test(...tc('API-V10'), async ({ api }, testInfo) => {
       test.skip(!draftId, 'No draft application available - Q21');
       const upload = (file) => api.post(ep.documents(draftId), undefined, {
-        multipart: { file, documentType: 'KYC', type: 'KYC' },
+        multipart: { document_type: 'KYC_ID', document: file },
       });
       const control = await upload(files.validPdf());
       test.skip(!control.ok(), `Control (valid PDF) upload was rejected with HTTP ${control.status()} - multipart shape unconfirmed`);
@@ -104,6 +103,7 @@ test.describe('API validation', () => {
 
   test(...tc('API-V08'), async ({ api, apiAs }, testInfo) => {
     test.skip(!env.users.secondAgent.email, 'Set AGENT_SECOND_EMAIL to run (Q06)');
+    test.skip(env.users.secondAgent.email === env.users.learnerAgent.email, 'AGENT_SECOND_EMAIL must differ from LEARNER_USER');
     const other = await apiAs('secondAgent');
     const a = (await api.listApplications()).items.map(idOf);
     const b = (await other.listApplications()).items.map(idOf);
@@ -133,7 +133,7 @@ test.describe('API validation', () => {
     await attachApi(testInfo, 'status', res, body);
     expect(res.status()).toBe(200);
     expect(statusOf(body), 'status value').toBeTruthy();
-    const history = body.history ?? body.statusHistory ?? body.data?.history;
+    const history = body.history ?? body.status_history ?? body.statusHistory ?? body.data?.status_history ?? body.data?.history;
     if (Array.isArray(history)) {
       for (const h of history) expect.soft(h.timestamp ?? h.changedAt ?? h.createdAt ?? h.date, `timestamp on history entry ${JSON.stringify(h)}`).toBeTruthy();
     }

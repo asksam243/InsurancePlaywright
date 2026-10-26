@@ -532,11 +532,11 @@ const cases = [
     steps: ['Click Next with no beneficiaries', 'Add only a SECONDARY beneficiary and click Next'],
     expected: 'Progression is blocked in both cases',
   }),
-  T('BEN-V11', 'Irrevocable beneficiary triggers legal confirmation modal', {
+  T('BEN-V11', 'Irrevocable beneficiary triggers legal confirmation dialog', {
     source: 'S1+', priority: 'P2', severity: 'Medium',
     pre: atStep('beneficiaries'),
     steps: ['Fill a beneficiary and tick irrevocable', 'Save'],
-    expected: 'A legal confirmation dialog appears and can be confirmed',
+    expected: 'A native browser confirm() dialog mentioning the irrevocable designation appears; accepting it saves the beneficiary',
   }),
 
   // ------------------------------------------------------------------ DOC / VAL

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-25",
+  "generated": "2026-10-26",
   "releaseGate": [
     "AUTH-V01",
     "AUTH-V05",
@@ -65,7 +65,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Passed",
+      "run2": "Passed",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V02",
@@ -108,7 +111,12 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Passed",
+      "defectLogIds": [
+        "AD-07"
+      ]
     },
     {
       "id": "AUTH-V03",
@@ -148,7 +156,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Passed",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V04",
@@ -189,7 +200,12 @@
         "@smoke"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Passed",
+      "run2": "Not passed - investigate",
+      "defectLogIds": [
+        "AD-07"
+      ]
     },
     {
       "id": "AUTH-V05",
@@ -229,7 +245,10 @@
         "@release-gate"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Passed",
+      "run2": "Passed",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V06",
@@ -274,7 +293,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V07",
@@ -319,7 +341,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V08",
@@ -365,7 +390,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V09",
@@ -408,7 +436,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V14",
@@ -449,7 +480,10 @@
         "@smoke"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Passed",
+      "run2": "Passed",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V10",
@@ -491,7 +525,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V11",
@@ -532,7 +569,10 @@
         "@p3"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Passed",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V12",
@@ -574,7 +614,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "AUTH-V13",
@@ -617,7 +660,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/auth.spec.js"
+      "spec": "tests/ui/auth.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "DASH-V01",
@@ -656,7 +702,12 @@
         "@smoke"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/dashboard.spec.js"
+      "spec": "tests/ui/dashboard.spec.js",
+      "run1": "Passed",
+      "run2": "Not passed - investigate",
+      "defectLogIds": [
+        "AD-07"
+      ]
     },
     {
       "id": "DASH-V02",
@@ -698,7 +749,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/dashboard.spec.js"
+      "spec": "tests/ui/dashboard.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "DASH-V03",
@@ -737,7 +791,12 @@
         "@p3"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/dashboard.spec.js"
+      "spec": "tests/ui/dashboard.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "CL-02"
+      ]
     },
     {
       "id": "DASH-V04",
@@ -782,7 +841,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/dashboard.spec.js"
+      "spec": "tests/ui/dashboard.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "DASH-V05",
@@ -822,7 +884,12 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/dashboard.spec.js"
+      "spec": "tests/ui/dashboard.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "CL-01"
+      ]
     },
     {
       "id": "DASH-V06",
@@ -866,7 +933,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/integration/ui-api.spec.js"
+      "spec": "tests/integration/ui-api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "DASH-V07",
@@ -906,7 +976,12 @@
         "@p3"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/dashboard.spec.js"
+      "spec": "tests/ui/dashboard.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "CL-01"
+      ]
     },
     {
       "id": "CLI-V01",
@@ -946,7 +1021,15 @@
         "@smoke"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-01",
+        "AD-02",
+        "AD-05",
+        "AD-06"
+      ]
     },
     {
       "id": "CLI-V02",
@@ -985,7 +1068,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V03",
@@ -1028,7 +1114,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V04",
@@ -1071,7 +1160,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V05",
@@ -1115,7 +1207,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V06",
@@ -1155,7 +1250,10 @@
         "@p3"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V07",
@@ -1195,7 +1293,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V08",
@@ -1240,7 +1341,12 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client-kyc-sensitive.spec.js"
+      "spec": "tests/ui/client-kyc-sensitive.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "AD-08"
+      ]
     },
     {
       "id": "CLI-V09",
@@ -1279,7 +1385,10 @@
         "@sensitive"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client-kyc-sensitive.spec.js"
+      "spec": "tests/ui/client-kyc-sensitive.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V10",
@@ -1320,7 +1429,10 @@
         "@sensitive"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client-kyc-sensitive.spec.js"
+      "spec": "tests/ui/client-kyc-sensitive.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V11",
@@ -1359,7 +1471,10 @@
         "@p3"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V12",
@@ -1404,7 +1519,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client-kyc-sensitive.spec.js"
+      "spec": "tests/ui/client-kyc-sensitive.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V13",
@@ -1443,7 +1561,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V14",
@@ -1482,7 +1603,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "CLI-V15",
@@ -1521,7 +1645,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/client.spec.js"
+      "spec": "tests/ui/client.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V01",
@@ -1562,7 +1689,14 @@
         "@release-gate"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-01",
+        "AD-02",
+        "AD-04"
+      ]
     },
     {
       "id": "PROD-V02",
@@ -1600,7 +1734,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V03",
@@ -1643,7 +1780,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V04",
@@ -1685,7 +1825,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V05",
@@ -1731,7 +1874,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V06",
@@ -1776,7 +1922,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V07",
@@ -1821,7 +1970,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V08",
@@ -1867,7 +2019,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V09",
@@ -1906,7 +2061,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V10",
@@ -1945,7 +2103,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "PROD-V11",
@@ -1990,7 +2151,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/product.spec.js"
+      "spec": "tests/ui/product.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "RIDER-V01",
@@ -2030,7 +2194,14 @@
         "@smoke"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/riders.spec.js"
+      "spec": "tests/ui/riders.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-01",
+        "AD-02",
+        "AD-04"
+      ]
     },
     {
       "id": "RIDER-V02",
@@ -2074,7 +2245,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/riders.spec.js"
+      "spec": "tests/ui/riders.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "RIDER-V03",
@@ -2115,7 +2289,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/riders.spec.js"
+      "spec": "tests/ui/riders.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "RIDER-V04",
@@ -2154,7 +2331,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/riders.spec.js"
+      "spec": "tests/ui/riders.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "RIDER-V05",
@@ -2198,7 +2378,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/riders.spec.js"
+      "spec": "tests/ui/riders.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "RIDER-V06",
@@ -2236,7 +2419,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/riders.spec.js"
+      "spec": "tests/ui/riders.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "RIDER-V07",
@@ -2279,7 +2465,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/riders.spec.js"
+      "spec": "tests/ui/riders.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V01",
@@ -2319,7 +2508,15 @@
         "@smoke"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-01",
+        "AD-02",
+        "AD-04",
+        "AD-06"
+      ]
     },
     {
       "id": "BEN-V02",
@@ -2363,7 +2560,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V03",
@@ -2406,7 +2606,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V04",
@@ -2448,7 +2651,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V05",
@@ -2492,7 +2698,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V06",
@@ -2531,7 +2740,10 @@
         "@p3"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V07",
@@ -2570,7 +2782,10 @@
         "@p3"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V08",
@@ -2613,7 +2828,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V09",
@@ -2652,7 +2870,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V10",
@@ -2691,12 +2912,15 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "BEN-V11",
       "prefix": "BEN",
-      "title": "Irrevocable beneficiary triggers legal confirmation modal",
+      "title": "Irrevocable beneficiary triggers legal confirmation dialog",
       "source": "S1+",
       "type": "UI Positive",
       "priority": "P2",
@@ -2710,7 +2934,7 @@
         "Save"
       ],
       "data": "Generated synthetic data (utils/dataBuilder.js)",
-      "expected": "A legal confirmation dialog appears and can be confirmed",
+      "expected": "A native browser confirm() dialog mentioning the irrevocable designation appears; accepting it saves the beneficiary",
       "evidence": "Screenshot + trace on failure",
       "automation": "Automated",
       "cond": "",
@@ -2730,7 +2954,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/beneficiaries.spec.js"
+      "spec": "tests/ui/beneficiaries.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "DOC-V01",
@@ -2771,7 +2998,14 @@
         "@smoke"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/documents.spec.js"
+      "spec": "tests/ui/documents.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-01",
+        "AD-02",
+        "AD-04"
+      ]
     },
     {
       "id": "DOC-V02",
@@ -2811,7 +3045,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/documents.spec.js"
+      "spec": "tests/ui/documents.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "DOC-V03",
@@ -2849,7 +3086,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/documents.spec.js"
+      "spec": "tests/ui/documents.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "DOC-V04",
@@ -2894,7 +3134,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/documents.spec.js"
+      "spec": "tests/ui/documents.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "VAL-V01",
@@ -2933,7 +3176,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/documents.spec.js"
+      "spec": "tests/ui/documents.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "VAL-V02",
@@ -2971,7 +3217,12 @@
         "@p3"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/documents.spec.js"
+      "spec": "tests/ui/documents.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "AC-01"
+      ]
     },
     {
       "id": "VAL-V03",
@@ -3015,7 +3266,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/ui/documents.spec.js"
+      "spec": "tests/ui/documents.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "WF-V01",
@@ -3061,7 +3315,14 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/e2e/workflow.spec.js"
+      "spec": "tests/e2e/workflow.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-01",
+        "AD-04",
+        "AD-06"
+      ]
     },
     {
       "id": "WF-V02",
@@ -3106,7 +3367,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/e2e/workflow.spec.js"
+      "spec": "tests/e2e/workflow.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "WF-V03",
@@ -3151,7 +3415,15 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/e2e/workflow.spec.js"
+      "spec": "tests/e2e/workflow.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-01",
+        "AD-02",
+        "AD-05",
+        "AD-06"
+      ]
     },
     {
       "id": "WF-V04",
@@ -3190,7 +3462,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/e2e/workflow.spec.js"
+      "spec": "tests/e2e/workflow.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "WF-V05",
@@ -3228,7 +3503,10 @@
         "@p3"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/e2e/workflow.spec.js"
+      "spec": "tests/e2e/workflow.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "WF-V06",
@@ -3275,7 +3553,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/e2e/workflow.spec.js"
+      "spec": "tests/e2e/workflow.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "WF-V07",
@@ -3319,7 +3600,10 @@
         "@api"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/integration/ui-api.spec.js"
+      "spec": "tests/integration/ui-api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "WF-V08",
@@ -3360,7 +3644,13 @@
         "@smoke"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/e2e/workflow.spec.js"
+      "spec": "tests/e2e/workflow.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-01",
+        "AD-02"
+      ]
     },
     {
       "id": "API-V01",
@@ -3399,7 +3689,12 @@
         "@smoke"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-03"
+      ]
     },
     {
       "id": "API-V02",
@@ -3439,7 +3734,12 @@
         "@release-gate"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Failed",
+      "run2": "Failed",
+      "defectLogIds": [
+        "AD-03"
+      ]
     },
     {
       "id": "API-V03",
@@ -3484,7 +3784,12 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "AD-03"
+      ]
     },
     {
       "id": "API-V04",
@@ -3529,7 +3834,12 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "AD-03"
+      ]
     },
     {
       "id": "API-V05",
@@ -3574,7 +3884,12 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "AD-03"
+      ]
     },
     {
       "id": "API-V06",
@@ -3617,7 +3932,12 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "AD-03"
+      ]
     },
     {
       "id": "API-V07",
@@ -3660,7 +3980,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/integration/ui-api.spec.js"
+      "spec": "tests/integration/ui-api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "API-V08",
@@ -3700,7 +4023,13 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "AD-03",
+        "AC-02"
+      ]
     },
     {
       "id": "API-V09",
@@ -3738,7 +4067,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "API-V10",
@@ -3777,7 +4109,12 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "AD-03"
+      ]
     },
     {
       "id": "API-V11",
@@ -3816,7 +4153,12 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/api/applications.api.spec.js"
+      "spec": "tests/api/applications.api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": [
+        "AD-03"
+      ]
     },
     {
       "id": "API-V12",
@@ -3859,7 +4201,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/integration/ui-api.spec.js"
+      "spec": "tests/integration/ui-api.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Failed or skipped (not itemised)",
+      "defectLogIds": []
     },
     {
       "id": "DB-01",
@@ -3902,7 +4247,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "DB-02",
@@ -3945,7 +4293,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "DB-03",
@@ -3988,7 +4339,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "DB-04",
@@ -4031,7 +4385,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "DB-05",
@@ -4074,7 +4431,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "DB-06",
@@ -4117,7 +4477,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "DB-07",
@@ -4160,7 +4523,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "DB-08",
@@ -4203,7 +4569,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "DB-09",
@@ -4246,7 +4615,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "DB-10",
@@ -4289,7 +4661,10 @@
         "@p2"
       ],
       "automationStatus": "Blocked",
-      "spec": ""
+      "spec": "",
+      "run1": "Not automated",
+      "run2": "Not automated",
+      "defectLogIds": []
     },
     {
       "id": "FW-01",
@@ -4332,7 +4707,10 @@
         "@seeded"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/unit/framework.spec.js"
+      "spec": "tests/unit/framework.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Passed",
+      "defectLogIds": []
     },
     {
       "id": "FW-02",
@@ -4371,7 +4749,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/unit/framework.spec.js"
+      "spec": "tests/unit/framework.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Passed",
+      "defectLogIds": []
     },
     {
       "id": "FW-03",
@@ -4410,7 +4791,10 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/unit/framework.spec.js"
+      "spec": "tests/unit/framework.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Passed",
+      "defectLogIds": []
     },
     {
       "id": "FW-04",
@@ -4450,9 +4834,275 @@
         "@p2"
       ],
       "automationStatus": "Automated",
-      "spec": "tests/unit/framework.spec.js"
+      "spec": "tests/unit/framework.spec.js",
+      "run1": "Not in smoke scope",
+      "run2": "Passed",
+      "defectLogIds": []
     }
   ],
+  "liveRuns": [
+    {
+      "id": "RUN-1",
+      "when": "2026-10-26 11:38",
+      "scope": "Smoke (@smoke), chromium + api",
+      "code": "Merged repo v1 (guessed selectors, no Create Draft step)",
+      "total": 15,
+      "passed": 5,
+      "failed": 10,
+      "skipped": 0,
+      "durationMin": 3.6,
+      "note": "Failures are automation defects (see Defect Log AD-01..AD-04). Login and dashboard were correct."
+    },
+    {
+      "id": "RUN-2",
+      "when": "2026-10-26 11:51",
+      "scope": "Full suite",
+      "code": "Merged repo v1 (same code as RUN-1)",
+      "total": 96,
+      "passed": 10,
+      "failed": 73,
+      "skipped": 13,
+      "durationMin": 14.1,
+      "note": "Passed: AUTH-V01/V02/V03/V05/V11/V14 and FW-01..04. AUTH-V04 and DASH-V01 passed in RUN-1 but are not in RUN-2's passed list - failure text not captured (see AD-11)."
+    }
+  ],
+  "defectLog": [
+    {
+      "id": "AD-01",
+      "type": "Automation defect",
+      "module": "Dashboard / Workflow",
+      "title": "Start-new-application flow skipped the \"Create Draft\" page",
+      "cases": [
+        "WF-V01",
+        "WF-V03",
+        "WF-V08",
+        "BEN-V01",
+        "CLI-V01",
+        "DOC-V01",
+        "PROD-V01",
+        "RIDER-V01"
+      ],
+      "evidence": "RUN-1: every test that begins with \"Start New Application\" failed; AUTH and DASH tests passed. RUN-2: 73 failures, all in journey specs.",
+      "analysis": "The real app shows an application-start page with a Create Draft button between the dashboard and the client form. The flow clicked New Application and waited for client fields that never appeared.",
+      "severity": "High",
+      "priority": "P1",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "pages/DashboardPage.js startNewApplication()",
+      "defects": []
+    },
+    {
+      "id": "AD-02",
+      "type": "Automation defect",
+      "module": "All UI steps",
+      "title": "Guessed data-testid values did not match the application",
+      "cases": [
+        "CLI-V01",
+        "PROD-V01",
+        "RIDER-V01",
+        "BEN-V01",
+        "DOC-V01",
+        "WF-V03",
+        "WF-V08"
+      ],
+      "evidence": "RUN-1 and RUN-2 journey failures; third project's page objects list the real ids (e.g. client-first-name-input, product-select, rider-row-<id>).",
+      "analysis": "Only login and dashboard ids were confirmed. Every other id followed a guessed convention.",
+      "severity": "High",
+      "priority": "P1",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "config/selectors.js (ids FROM MARKUP; run npm run verify:selectors to prove them)",
+      "defects": []
+    },
+    {
+      "id": "AD-03",
+      "type": "Automation defect",
+      "module": "API",
+      "title": "API client did not follow the real contract (agent_email, field names, redirects, payload shapes)",
+      "cases": [
+        "API-V01",
+        "API-V02",
+        "API-V03",
+        "API-V04",
+        "API-V05",
+        "API-V06",
+        "API-V08",
+        "API-V10",
+        "API-V11"
+      ],
+      "evidence": "RUN-1: API-V01 failed in 343 ms, API-V02 in 446 ms (no response text captured).",
+      "analysis": "PROBABLE (failure text not supplied): products expose product_name not name; the acting agent must be sent as agent_email on every call (the API silently acts as learner001 otherwise); redirects must not be followed so a 302 to /login cannot look like success; payloads are snake_case.",
+      "severity": "High",
+      "priority": "P1",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "api/ApiClient.js, api/helpers.js, config/endpoints.js, tests/api/applications.api.spec.js",
+      "defects": [
+        "RI-19"
+      ]
+    },
+    {
+      "id": "AD-04",
+      "type": "Automation defect",
+      "module": "Product / Riders / Beneficiaries / Documents",
+      "title": "Page objects modelled the wrong controls (product and rider cards, Add-beneficiary modal, per-document file inputs, Save draft)",
+      "cases": [
+        "PROD-V01",
+        "RIDER-V01",
+        "BEN-V01",
+        "DOC-V01",
+        "WF-V01"
+      ],
+      "evidence": "Third project's page objects: product step is a dropdown, riders are table rows, beneficiaries are an always-open form using native alert()/confirm(), documents are one type dropdown + one file input + Upload, and there is no Save draft button.",
+      "analysis": "The wizard model assumed in Submission 2 does not match the application.",
+      "severity": "High",
+      "priority": "P1",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "pages/ProductPage.js, RiderPage.js, BeneficiaryPage.js, DocumentsPage.js, BasePage.js",
+      "defects": []
+    },
+    {
+      "id": "AD-05",
+      "type": "Test-data issue",
+      "module": "Client / Address / KYC / Product",
+      "title": "Test data omitted mandatory fields and used display text instead of the app's option values",
+      "cases": [
+        "CLI-V01",
+        "WF-V03"
+      ],
+      "evidence": "Third project's data builders: employer address, preferred contact mode, compliance declaration, payment term and coverage term are all required; selects use enum values (MALE, SSN, MONTHLY).",
+      "analysis": "Steps could not be saved without these fields even with correct locators.",
+      "severity": "Medium",
+      "priority": "P2",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "utils/dataBuilder.js, pages/KycFinancialPage.js",
+      "defects": []
+    },
+    {
+      "id": "AD-06",
+      "type": "Test-data issue",
+      "module": "Test isolation",
+      "title": "Write flows ran as the seeded agent.valid, whose draft is shared and seeded",
+      "cases": [
+        "WF-V01",
+        "WF-V03",
+        "BEN-V01",
+        "CLI-V01"
+      ],
+      "evidence": "Login resumes or creates the agent's single draft (BR-AUTH-010); third project runs all write flows as a learner account.",
+      "analysis": "Shared state between tests and with seeded data DASH-* relies on.",
+      "severity": "Medium",
+      "priority": "P2",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "config/env.js learnerAgent (set LEARNER_USER to your assigned account); specs use agentRole learnerAgent",
+      "defects": []
+    },
+    {
+      "id": "AD-07",
+      "type": "Test-data issue",
+      "module": "Authentication",
+      "title": "AUTH-V02 tried a wrong password on agent.valid; failed attempts count toward the 5-attempt lock (BR-AUTH-005)",
+      "cases": [
+        "AUTH-V02",
+        "AUTH-V04",
+        "DASH-V01"
+      ],
+      "evidence": "AUTH-V04 and DASH-V01 passed in RUN-1 but are missing from RUN-2's passed list.",
+      "analysis": "HYPOTHESIS only: repeated failed attempts may have locked or disturbed agent.valid. Not confirmed - RUN-2 gives no failure text for those two tests.",
+      "severity": "Medium",
+      "priority": "P2",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "tests/ui/auth.spec.js AUTH-V02 now uses the second agent",
+      "defects": [
+        "RI-02"
+      ]
+    },
+    {
+      "id": "AD-08",
+      "type": "Automation defect",
+      "module": "Client / KYC",
+      "title": "CLI-V08 (SSN masking, release gate) silently skipped: it looked for an SSN field the real form does not have",
+      "cases": [
+        "CLI-V08"
+      ],
+      "evidence": "The real KYC form takes the SSN as the ID number when the ID type is SSN.",
+      "analysis": "A P1 release-gate scenario was not executing.",
+      "severity": "High",
+      "priority": "P1",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "tests/ui/client-kyc-sensitive.spec.js CLI-V08 rewritten (masked after reload, on review, no full SSN in page content)",
+      "defects": [
+        "RI-07"
+      ]
+    },
+    {
+      "id": "AC-01",
+      "type": "Application defect (candidate)",
+      "module": "Review / Validation",
+      "title": "Validation errors on the review page render as plain text, not links to the owning section",
+      "cases": [
+        "VAL-V02"
+      ],
+      "evidence": "Third project's ReviewPage notes \"the app currently renders plain text\". VAL-V02 expects clicking an item to navigate.",
+      "analysis": "Either the requirement (links) is unmet or VAL-V02 over-specifies. Confirm the requirement, then reproduce on the lab.",
+      "severity": "Low",
+      "priority": "P3",
+      "status": "Candidate - not reproduced",
+      "fix": "",
+      "defects": [
+        "RI-17"
+      ]
+    },
+    {
+      "id": "AC-02",
+      "type": "Application defect (candidate)",
+      "module": "API",
+      "title": "API silently acts as learner001 when agent_email is omitted",
+      "cases": [
+        "API-V08"
+      ],
+      "evidence": "Stated in the third project's README and ApiClient notes; not observed by the team.",
+      "analysis": "Possible data-scoping weakness: confirm with a call that omits agent_email.",
+      "severity": "Medium",
+      "priority": "P2",
+      "status": "Candidate - not reproduced",
+      "fix": "",
+      "defects": [
+        "RI-19"
+      ]
+    },
+    {
+      "id": "CL-01",
+      "type": "Clarification",
+      "module": "Dashboard",
+      "title": "No search or status-filter control is known on the dashboard",
+      "cases": [
+        "DASH-V05",
+        "DASH-V07"
+      ],
+      "evidence": "Third project's dashboard page object exposes only status counters and the latest 10 applications.",
+      "analysis": "Ask the product owner whether search / filters are in scope before treating DASH-V05/V07 as defects.",
+      "severity": "Low",
+      "priority": "P3",
+      "status": "Open",
+      "fix": "",
+      "defects": []
+    },
+    {
+      "id": "CL-02",
+      "type": "Clarification",
+      "module": "Dashboard / Authentication",
+      "title": "Login auto-creates a draft, so a brand-new agent never sees the empty dashboard state",
+      "cases": [
+        "DASH-V03"
+      ],
+      "evidence": "BR-AUTH-010 (login resumes or creates the agent's draft).",
+      "analysis": "DASH-V03 may be unreachable by design. Confirm with the product owner.",
+      "severity": "Low",
+      "priority": "P3",
+      "status": "Open",
+      "fix": "",
+      "defects": []
+    }
+  ],
+  "sdcNote": "SDC = \"seeded-defect-candidate\" id used by the third project's tests. The official DEF-* catalogue codes have still not been received.",
   "risks": [
     {
       "id": "R01",
@@ -4870,13 +5520,13 @@
       "id": "RI-01",
       "module": "Authentication",
       "description": "Valid agents cannot log in after authentication changes",
-      "catalogCode": ""
+      "catalogCode": "SDC-01"
     },
     {
       "id": "RI-02",
       "module": "Authentication",
       "description": "Locked or invalid agents get incorrect / misleading messages",
-      "catalogCode": ""
+      "catalogCode": "SDC-02"
     },
     {
       "id": "RI-03",
@@ -4888,31 +5538,31 @@
       "id": "RI-04",
       "module": "Client / KYC",
       "description": "Client age eligibility rules (18-65) missed",
-      "catalogCode": ""
+      "catalogCode": "SDC-04"
     },
     {
       "id": "RI-05",
       "module": "Client / KYC",
       "description": "Future date of birth accepted",
-      "catalogCode": ""
+      "catalogCode": "SDC-05"
     },
     {
       "id": "RI-06",
       "module": "Documents / Validation",
       "description": "Mandatory KYC documents not enforced",
-      "catalogCode": ""
+      "catalogCode": "SDC-06"
     },
     {
       "id": "RI-07",
       "module": "Client / KYC",
       "description": "SSN not masked properly",
-      "catalogCode": ""
+      "catalogCode": "SDC-07"
     },
     {
       "id": "RI-08",
       "module": "Client / KYC",
       "description": "Income vs premium affordability not applied",
-      "catalogCode": ""
+      "catalogCode": "SDC-08"
     },
     {
       "id": "RI-09",
@@ -4924,7 +5574,7 @@
       "id": "RI-10",
       "module": "Riders",
       "description": "Rider coverage exceeds base face value",
-      "catalogCode": ""
+      "catalogCode": "SDC-10"
     },
     {
       "id": "RI-11",
@@ -4936,49 +5586,49 @@
       "id": "RI-12",
       "module": "Product / Policy",
       "description": "Premium not updated after configuration change",
-      "catalogCode": ""
+      "catalogCode": "SDC-12"
     },
     {
       "id": "RI-13",
       "module": "Beneficiaries",
       "description": "Allocation below / above 100% allowed",
-      "catalogCode": ""
+      "catalogCode": "SDC-13"
     },
     {
       "id": "RI-14",
       "module": "Beneficiaries",
       "description": "Minor beneficiary guardian not required",
-      "catalogCode": ""
+      "catalogCode": "SDC-14"
     },
     {
       "id": "RI-15",
       "module": "Beneficiaries",
       "description": "Duplicate beneficiaries not blocked",
-      "catalogCode": ""
+      "catalogCode": "SDC-15"
     },
     {
       "id": "RI-16",
       "module": "Submission / Status",
       "description": "Draft data not persisted",
-      "catalogCode": ""
+      "catalogCode": "SDC-16"
     },
     {
       "id": "RI-17",
       "module": "Documents / Validation",
       "description": "Submit enabled despite validation errors",
-      "catalogCode": ""
+      "catalogCode": "SDC-17"
     },
     {
       "id": "RI-18",
       "module": "Dashboard",
       "description": "Dashboard status differs from backend status",
-      "catalogCode": ""
+      "catalogCode": "SDC-18"
     },
     {
       "id": "RI-19",
       "module": "Cross-cutting",
       "description": "API validation differs from UI validation",
-      "catalogCode": ""
+      "catalogCode": "SDC-19"
     },
     {
       "id": "RI-20",

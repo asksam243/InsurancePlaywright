@@ -24,7 +24,9 @@ test.describe('Authentication & Session', () => {
   });
 
   test(...tc('AUTH-V02'), async ({ page, pages }) => {
-    await pages.login.loginViaUi({ email: validAgent.email, password: invalidAgent.password });
+    // A wrong password counts towards the 5-attempt lock (BR-AUTH-005), so it must never be tried on agent.valid, which every
+    // other test needs. A spare seeded account (secondAgent, default learner002) takes the failed attempt instead.
+    await pages.login.loginViaUi({ email: env.users.secondAgent.email, password: invalidAgent.password });
     await pages.login.expectRejected(M.invalidCredentials);
     await page.goto(routes.dashboard);
     await expect(page).toHaveURL(/\/login/);

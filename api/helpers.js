@@ -4,32 +4,50 @@ const { formatDate } = require('../utils/dates');
 const { buildClient } = require('../utils/dataBuilder');
 
 /**
- * Client payload. The real field names are not documented (Q03), so common aliases are sent together.
- * The API tests ALWAYS send a valid "control" request first: if the control is rejected the payload shape is wrong,
- * and the test skips instead of reporting a false application defect.
+ * Client payload in the REAL API shape (snake_case, third project's applicationBuilder). The API tests still send a valid
+ * "control" request first: if the control is rejected the payload shape is wrong and the test skips instead of
+ * reporting a false application defect.
  */
 function clientPayload(overrides = {}) {
   const c = buildClient(overrides);
-  const iso = formatDate(c.dob, 'iso');
   return {
-    firstName: c.firstName,
-    lastName: c.lastName,
-    dateOfBirth: iso,
-    dob: iso,
+    first_name: c.firstName,
+    middle_name: c.middleName ?? null,
+    last_name: c.lastName,
+    date_of_birth: formatDate(c.dob, 'iso'),
     gender: c.gender,
-    maritalStatus: c.maritalStatus,
+    marital_status: c.maritalStatus,
     nationality: c.nationality,
     occupation: c.occupation,
-    employer: c.employer,
+    employer_name: c.employer,
+    employer_address: c.employerAddress,
   };
 }
 
-/** Creates a draft application via the API if the app allows it, otherwise falls back to an existing draft. */
+/** Individual beneficiary in the real API shape. */
+function beneficiaryPayload(allocation, overrides = {}) {
+  return {
+    beneficiary_level: 'PRIMARY',
+    beneficiary_type: 'INDIVIDUAL',
+    relationship: 'SPOUSE',
+    allocation_percentage: allocation,
+    first_name: 'Api',
+    last_name: 'Beneficiary',
+    date_of_birth: formatDate(require('../utils/dates').dobForAge(34), 'iso'),
+    gender: 'FEMALE',
+    is_irrevocable: 0,
+    irrevocable_confirmation: 0,
+    legal_acknowledgement: null,
+    ...overrides,
+  };
+}
+
+/** Creates a draft application through the API (the acting agent is added by the client). Falls back to an existing draft. */
 async function disposableDraft(api) {
   const res = await api.post(ep.applications, {});
   if (res.ok()) {
     const body = await api.json(res);
-    const id = idOf(body) ?? idOf(body?.data || {});
+    const id = idOf(body?.data || {}) ?? idOf(body);
     if (id) return id;
   }
   return api.firstApplicationId('draft');
@@ -37,4 +55,4 @@ async function disposableDraft(api) {
 
 const is4xxValidation = (status) => status >= 400 && status < 500 && ![401, 403, 404].includes(status);
 
-module.exports = { clientPayload, disposableDraft, is4xxValidation };
+module.exports = { clientPayload, beneficiaryPayload, disposableDraft, is4xxValidation };

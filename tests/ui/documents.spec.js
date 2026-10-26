@@ -2,10 +2,12 @@ const { test, tc, expect, env } = require('../../fixtures');
 const M = require('../../config/messages');
 const { files } = require('../../utils/files');
 const { progressTo } = require('../../utils/flows');
+const routes = require('../../config/routes');
+const { applicationIdFromUrl } = require('../../pages/DashboardPage');
 const { expectBlocked, captureEvidence } = require('../../utils/assertions');
 
 test.describe('Document Upload & Validation Summary', () => {
-  test.use({ agentRole: 'validAgent' });
+  test.use({ agentRole: 'learnerAgent' });
 
   test(...tc('DOC-V01'), async ({ pages }) => {
     await progressTo(pages, 'documents');
@@ -59,7 +61,7 @@ test.describe('Document Upload & Validation Summary', () => {
 });
 
 test.describe('Validation Summary (review step with unresolved errors)', () => {
-  test.use({ agentRole: 'validAgent' });
+  test.use({ agentRole: 'learnerAgent' });
 
   /** Reaches review WITHOUT uploading documents; skips if the app refuses to show review with errors. */
   async function reviewWithMissingDocuments(pages) {
@@ -93,7 +95,7 @@ test.describe('Validation Summary (review step with unresolved errors)', () => {
       await expect(pages.review.submitButton).toBeDisabled();
     });
     await test.step('Submit becomes enabled once the errors are resolved', async () => {
-      await pages.review.back();
+      await page.goto(routes.step(applicationIdFromUrl(page.url()), 'documents')); // the real review page has no Back button
       await pages.documents.uploadAllRequired(files.validPdf());
       await pages.documents.next();
       await expect(pages.review.submitButton).toBeEnabled();

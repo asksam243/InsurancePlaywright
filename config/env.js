@@ -13,7 +13,8 @@
  */
 require('dotenv').config();
 
-const DEFAULT_PASSWORD = 'Password@123';
+// INSURANCE_PASSWORD is the third project's name for the shared lab password (Lab Manual 3.1); honoured as a fallback.
+const DEFAULT_PASSWORD = process.env.INSURANCE_PASSWORD || 'Password@123';
 
 const bool = (v, dflt = false) => (v === undefined || v === '' ? dflt : String(v).toLowerCase() === 'true');
 const num = (v) => (v === undefined || v === '' || Number.isNaN(Number(v)) ? null : Number(v));
@@ -28,7 +29,7 @@ const firstEnv = (...names) => names.map((n) => process.env[n]).find((v) => v !=
 const baseUrl = trimSlash(str(firstEnv('INSURANCE_BASE_URL', 'BASE_URL'), 'http://localhost:8081'));
 // Trailing slash matters: relative endpoint paths ("applications") then APPEND to /api instead of
 // replacing it (lesson carried over from the FinServe starter project).
-const rawApi = trimSlash(str(process.env.INSURANCE_API_URL, `${baseUrl}/api`));
+const rawApi = trimSlash(str(firstEnv('INSURANCE_API_URL', 'INSURANCE_API_BASE_URL'), `${baseUrl}/api`));
 
 /** { email, password } from <PREFIX>_EMAIL / _PASSWORD, falling back to the starter project's <LEGACY>_EMAIL / _PASSWORD. */
 const user = (prefix, dfltEmail = '', dfltPassword = DEFAULT_PASSWORD, legacyPrefix = '') => ({
@@ -77,9 +78,11 @@ module.exports = {
     draftAgent: user('AGENT_DRAFT', 'agent.draft@insurance.test', DEFAULT_PASSWORD, 'DRAFT_AGENT'), // seeded with an existing draft
     submittedAgent: user('AGENT_SUBMITTED', 'agent.submitted@insurance.test', DEFAULT_PASSWORD, 'SUBMITTED_AGENT'), // seeded with a submitted application
     adminUser: user('ADMIN', 'admin@insurance.test', DEFAULT_PASSWORD, 'ADMIN'), // the only role that lands on /dashboard
-    // A second, independent agent for the multi-agent isolation checks. Any seeded account works; learner001 is
-    // confirmed to exist and is not used by another scenario. Override with AGENT_SECOND_EMAIL.
-    secondAgent: user('AGENT_SECOND', 'learner001@insurance.test'),
+    // WRITE FLOWS RUN AS THE LEARNER ACCOUNT, not agent.valid, so the seeded agents' drafts stay untouched (the third
+    // project's rule). Set LEARNER_USER to YOUR assigned account (Lab Manual); learner001 is only the default.
+    learnerAgent: { email: str(process.env.LEARNER_USER, 'learner001@insurance.test'), password: DEFAULT_PASSWORD },
+    // A second, independent agent for the multi-agent isolation checks. Override with AGENT_SECOND_EMAIL.
+    secondAgent: user('AGENT_SECOND', 'learner002@insurance.test'),
     // NOT confirmed as seeded: these are DISPOSABLE accounts that get locked / have their password reset.
     // No defaults, so a guessed account is never burned; those tests skip until the variable is set.
     lockoutAgent: user('AGENT_LOCKOUT'),

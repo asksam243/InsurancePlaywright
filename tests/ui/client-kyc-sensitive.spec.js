@@ -1,7 +1,7 @@
 /**
  * KYC / SSN / income tests. SENSITIVE-DATA RULE: Playwright traces and videos record typed values and cannot be masked,
  * so they are OFF for this whole file (test.use must be top-level for trace/video). Masked screenshots from
- * utils/evidence.js are still attached on failure. Data is synthetic (900-series SSN, example.test emails) regardless.
+ * utils/evidence.js are still attached on failure. Data is synthetic (123-45-6789 placeholder SSN, example.test emails) regardless.
  */
 const { test, expect } = require('../../fixtures');
 const { tc } = require('../../fixtures');
@@ -10,20 +10,41 @@ const { S } = require('../../config/selectors');
 const { files } = require('../../utils/files');
 const { buildKyc, buildProduct } = require('../../utils/dataBuilder');
 const { progressTo } = require('../../utils/flows');
+const routes = require('../../config/routes');
+const { applicationIdFromUrl } = require('../../pages/DashboardPage');
 const { expectBlocked, captureEvidence } = require('../../utils/assertions');
 
-test.use({ agentRole: 'validAgent', trace: 'off', video: 'off' });
+test.use({ agentRole: 'learnerAgent', trace: 'off', video: 'off' });
 
 test.describe('Client / KYC - sensitive data', () => {
   test(...tc('CLI-V08'), async ({ pages, page }, testInfo) => {
+    // The real KYC form has NO separate SSN field: the SSN is the ID number when the ID type is SSN. The app must show it
+    // masked once saved - on the KYC page after a reload, on the review page and in the API response.
     await progressTo(pages, 'kyc');
-    test.skip(!(await pages.kyc.$(S.kyc.ssn).count()), 'No SSN field on the KYC step');
-    await pages.kyc.fill(buildKyc({ ssn: '900-12-3456' }));
-    const visible = await pages.kyc.visibleSsn();
-    await captureEvidence(page, testInfo, 'ssn-as-displayed');
-    expect(visible.replace(/\D/g, ''), 'only the last four digits may be visible').not.toContain('90012');
-    expect(visible).not.toContain('900-12');
-    expect(visible, 'last four digits should remain visible').toMatch(/3456$/);
+    const id = applicationIdFromUrl(page.url());
+    const kyc = buildKyc({ idType: 'SSN' });
+    const digitsOnly = kyc.idNumber.replace(/-/g, '');
+    await pages.kyc.fill(kyc);
+    const before = await pages.kyc.stepTitle();
+    await pages.kyc.next();
+    await pages.kyc.expectAdvanced(before);
+    const expectMasked = async (label) => {
+      const html = await page.content();
+      expect(html, `${label}: the full SSN must not appear`).not.toContain(kyc.idNumber);
+      expect(html, `${label}: the unformatted SSN must not appear`).not.toContain(digitsOnly);
+    };
+    await test.step('KYC page after reload', async () => {
+      await page.goto(routes.step(id, 'kyc-financial'));
+      await expectMasked('KYC page');
+      const shown = await pages.kyc.visibleSsn();
+      await captureEvidence(page, testInfo, 'ssn-as-displayed');
+      expect(shown, 'only the last four digits may be visible').not.toContain(kyc.idNumber.slice(0, 6));
+      expect(shown, 'last four digits should remain visible').toMatch(/6789$/);
+    });
+    await test.step('review page', async () => {
+      await page.goto(routes.step(id, 'review'));
+      await expectMasked('review page');
+    });
   });
 
   test(...tc('CLI-V09'), async ({ pages }) => {

@@ -7,7 +7,7 @@ const { progressTo } = require('../../utils/flows');
 const { expectBlocked, expectAdvanced, captureEvidence } = require('../../utils/assertions');
 
 test.describe('Beneficiary Management', () => {
-  test.use({ agentRole: 'validAgent' });
+  test.use({ agentRole: 'learnerAgent' });
 
   test(...tc('BEN-V01'), async ({ pages }) => {
     await progressTo(pages, 'beneficiaries');
@@ -134,11 +134,10 @@ test.describe('Beneficiary Management', () => {
 
   test(...tc('BEN-V11'), async ({ pages }) => {
     await progressTo(pages, 'beneficiaries');
-    await pages.beneficiary.fillForm(buildBeneficiary({ irrevocable: true }));
-    await pages.beneficiary.$(S.beneficiary.save).click();
-    const modal = pages.beneficiary.$(S.beneficiary.legalModal);
-    await expect(modal).toBeVisible();
-    await pages.beneficiary.$(S.beneficiary.legalConfirm).click();
-    await expect(modal).toBeHidden();
+    // The real app asks with a NATIVE browser confirm() (not an HTML modal): capture its text, then accept it.
+    const b = buildBeneficiary({ irrevocable: true });
+    const { dialogs } = await pages.beneficiary.add(b, 'accept');
+    expect(dialogs.join(' | '), 'a confirmation dialog mentioning irrevocable').toMatch(/irrevocable/i);
+    await expect(pages.beneficiary.rows).toHaveCount(1);
   });
 });

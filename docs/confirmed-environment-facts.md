@@ -24,7 +24,8 @@ Submission 2 build was written without, so where the two disagreed, the starter 
 - **Product / rider ids** used in payloads. Confirm with `GET /api/products` and `GET /api/riders`.
 - **Whether agent-scoped endpoints need a session cookie as well as the API key** (open question Q03; API-V08 assumes they do).
   Try `API_AUTH_MODE=session` if `/api/applications` returns another agent's rows or a 401 in key mode.
-- **Whether an agent can open `/dashboard` at all.** `utils/flows.js` `startApplication()` and the DASH-* scenarios do
+- **RESOLVED by the live smoke run: an agent CAN open `/dashboard`** (DASH-V01 passed). The note below is kept for history.
+- ~~Whether an agent can open `/dashboard` at all.~~ `utils/flows.js` `startApplication()` and the DASH-* scenarios do
   `pages.dashboard.goto()`, which asserts the URL contains `dashboard`. The starter project only proved that agents are not *landed* there.
   If the dashboard scenarios fail with a redirect to the client page, that is this, not a locator problem.
 - **DASH-V03 (new agent sees an empty dashboard).** Because login resumes-or-creates a draft, `agent.new` may already have one after its
@@ -45,3 +46,14 @@ Map these to the RI-01..RI-20 reported issues in `test-design/` and list the one
 Login resumes-or-creates the agent's one draft, so two tests (or workers, or learners on the shared lab) logging in as the same agent share
 that draft. Use `env.learnerAccount(n)` for flows that need a clean draft, or coordinate a `php artisan demo:reset` before a graded run.
 The lockout test needs a disposable account (a real lock lasts `DEMO_LOCKOUT_MINUTES`, default 30).
+
+## Added after the live smoke and full runs (26 Oct) and the third project
+
+- **Journey shape.** Dashboard -> Start New Application (`application-start-page`) -> **Create Draft** -> client -> address-contact -> kyc-financial -> product -> riders -> beneficiaries -> documents -> review -> confirmation. The Create Draft page was the missing step that failed every journey test in the first runs.
+- **No "Save draft" button.** Each step's Save & Continue persists the draft. `pages.X.saveDraft()` therefore presses Save & Continue.
+- **Controls.** Product is a dropdown of names; riders are table rows with a checkbox and coverage input; beneficiaries use an always-open form with native `alert()`/`confirm()` dialogs; documents are one type dropdown + one file input + Upload (KYC_ID is the mandatory type); the SSN is entered as the ID number when the ID type is SSN and is shown masked once saved.
+- **Forms use HTML `required`.** A blank mandatory field is blocked by the browser before the server answers; pass `next({ ignoreBrowserValidation: true })` to reach the server-side message.
+- **API.** Static `X-API-Key`; the acting agent is `agent_email` (omitting it silently acts as learner001 - candidate defect AC-02); envelope `{ status, data, message, errors }`; products have `product_name`, status is `data.application_status`.
+- **Write flows run as the learner account** (`LEARNER_USER`), never as the seeded agents.
+- **A wrong password counts toward the 5-attempt lock**, so AUTH-V02 uses the second agent, not agent.valid.
+- **Still unproven on the lab:** every id other than login/dashboard (run `npm run verify:selectors`), exact message wording, and the rules the offline mock could not model (duplicate beneficiary, affordability, guardian, file size, filters).

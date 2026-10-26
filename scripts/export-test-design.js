@@ -5,13 +5,26 @@ const path = require('path');
 const { cases, RELEASE_GATE } = require('../test-design/testCases');
 const { risks, reportedIssues } = require('../test-design/risks');
 const exploration = require('../test-design/exploration');
+const runs = require('../test-design/runs');
 const { ROOT, declaredTests } = require('./lib/specs');
 
 const declared = declaredTests();
 const out = {
   generated: new Date().toISOString().slice(0, 10),
   releaseGate: RELEASE_GATE,
-  cases: cases.map((c) => ({ ...c, automationStatus: declared[c.id] ? 'Automated' : c.automation === 'Blocked' ? 'Blocked' : 'Planned', spec: declared[c.id] || '' })),
+  cases: cases.map((c) => {
+    const automationStatus = declared[c.id] ? 'Automated' : c.automation === 'Blocked' ? 'Blocked' : 'Planned';
+    const automated = automationStatus === 'Automated';
+    return {
+      ...c, automationStatus, spec: declared[c.id] || '',
+      run1: runs.resultFor('RUN-1', c.id, c.smoke, automated),
+      run2: runs.resultFor('RUN-2', c.id, c.smoke, automated),
+      defectLogIds: runs.defectLog.filter((d) => d.cases.includes(c.id)).map((d) => d.id),
+    };
+  }),
+  liveRuns: runs.liveRuns,
+  defectLog: runs.defectLog,
+  sdcNote: runs.SDC_NOTE,
   risks,
   reportedIssues,
   exploration: exploration.map((e) => ({ ...e, dependents: cases.filter((c) => c.explore.includes(e.q)).map((c) => c.id) })),

@@ -1,0 +1,173 @@
+/**
+ * EVIDENCE FROM LIVE RUNS AND THE DEFECT LOG (single source of truth; the Excel sheet is generated from this file).
+ *
+ * Rules for this file:
+ *  - Only results the team actually observed on the lab VM go in `liveRuns` / `results`. Offline dry-runs against a mock are
+ *    NOT evidence about the application and are never recorded here.
+ *  - A failure is classified before it is logged (README section 6): application defect, automation defect, test-data issue,
+ *    environment issue or unstable test. Nothing below is an APPLICATION defect that has been reproduced on the lab:
+ *    the first two live runs failed before reaching any validation rule.
+ *  - Where the failure text was not captured, the root cause is marked PROBABLE, not confirmed.
+ */
+
+const liveRuns = [
+  {
+    id: 'RUN-1',
+    when: '2026-10-26 11:38',
+    scope: 'Smoke (@smoke), chromium + api',
+    code: 'Merged repo v1 (guessed selectors, no Create Draft step)',
+    total: 15, passed: 5, failed: 10, skipped: 0, durationMin: 3.6,
+    note: 'Failures are automation defects (see Defect Log AD-01..AD-04). Login and dashboard were correct.',
+  },
+  {
+    id: 'RUN-2',
+    when: '2026-10-26 11:51',
+    scope: 'Full suite',
+    code: 'Merged repo v1 (same code as RUN-1)',
+    total: 96, passed: 10, failed: 73, skipped: 13, durationMin: 14.1,
+    note: 'Passed: AUTH-V01/V02/V03/V05/V11/V14 and FW-01..04. AUTH-V04 and DASH-V01 passed in RUN-1 but are not in RUN-2\'s passed list - failure text not captured (see AD-11).',
+  },
+];
+
+// scenario id -> observed result. Anything not listed was not observed individually.
+const RUN1 = {
+  passed: ['AUTH-V01', 'AUTH-V14', 'AUTH-V04', 'AUTH-V05', 'DASH-V01'],
+  failed: ['WF-V01', 'WF-V03', 'WF-V08', 'API-V01', 'API-V02', 'BEN-V01', 'CLI-V01', 'DOC-V01', 'PROD-V01', 'RIDER-V01'],
+};
+const RUN2 = {
+  passed: ['AUTH-V01', 'AUTH-V02', 'AUTH-V03', 'AUTH-V05', 'AUTH-V11', 'AUTH-V14', 'FW-01', 'FW-02', 'FW-03', 'FW-04'],
+  failed: ['BEN-V01', 'BEN-V02', 'BEN-V03', 'BEN-V04', 'BEN-V05', 'BEN-V06', 'BEN-V07', 'BEN-V08', ...RUN1.failed],
+  // passed in RUN-1, absent from RUN-2's passed list; RUN-2 shows no per-test failure text for them
+  investigate: ['AUTH-V04', 'DASH-V01'],
+};
+
+/** Result text for a scenario in a run. */
+function resultFor(run, id, smoke, automated) {
+  if (!automated) return 'Not automated';
+  if (run === 'RUN-1') {
+    if (RUN1.passed.includes(id)) return 'Passed';
+    if (RUN1.failed.includes(id)) return 'Failed';
+    return smoke ? 'Not itemised' : 'Not in smoke scope';
+  }
+  if (RUN2.passed.includes(id)) return 'Passed';
+  if (RUN2.failed.includes(id)) return 'Failed';
+  if (RUN2.investigate.includes(id)) return 'Not passed - investigate';
+  return 'Failed or skipped (not itemised)';
+}
+
+/**
+ * Defect log. type: Automation defect | Test-data issue | Application defect (candidate) | Clarification.
+ * status: Fixed in code - awaiting live re-run | Candidate - not reproduced | Open.
+ */
+const defectLog = [
+  {
+    id: 'AD-01', type: 'Automation defect', module: 'Dashboard / Workflow',
+    title: 'Start-new-application flow skipped the "Create Draft" page',
+    cases: ['WF-V01', 'WF-V03', 'WF-V08', 'BEN-V01', 'CLI-V01', 'DOC-V01', 'PROD-V01', 'RIDER-V01'],
+    evidence: 'RUN-1: every test that begins with "Start New Application" failed; AUTH and DASH tests passed. RUN-2: 73 failures, all in journey specs.',
+    analysis: 'The real app shows an application-start page with a Create Draft button between the dashboard and the client form. The flow clicked New Application and waited for client fields that never appeared.',
+    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    fix: 'pages/DashboardPage.js startNewApplication()', defects: [],
+  },
+  {
+    id: 'AD-02', type: 'Automation defect', module: 'All UI steps',
+    title: 'Guessed data-testid values did not match the application',
+    cases: ['CLI-V01', 'PROD-V01', 'RIDER-V01', 'BEN-V01', 'DOC-V01', 'WF-V03', 'WF-V08'],
+    evidence: 'RUN-1 and RUN-2 journey failures; third project\'s page objects list the real ids (e.g. client-first-name-input, product-select, rider-row-<id>).',
+    analysis: 'Only login and dashboard ids were confirmed. Every other id followed a guessed convention.',
+    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    fix: 'config/selectors.js (ids FROM MARKUP; run npm run verify:selectors to prove them)', defects: [],
+  },
+  {
+    id: 'AD-03', type: 'Automation defect', module: 'API',
+    title: 'API client did not follow the real contract (agent_email, field names, redirects, payload shapes)',
+    cases: ['API-V01', 'API-V02', 'API-V03', 'API-V04', 'API-V05', 'API-V06', 'API-V08', 'API-V10', 'API-V11'],
+    evidence: 'RUN-1: API-V01 failed in 343 ms, API-V02 in 446 ms (no response text captured).',
+    analysis: 'PROBABLE (failure text not supplied): products expose product_name not name; the acting agent must be sent as agent_email on every call (the API silently acts as learner001 otherwise); redirects must not be followed so a 302 to /login cannot look like success; payloads are snake_case.',
+    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    fix: 'api/ApiClient.js, api/helpers.js, config/endpoints.js, tests/api/applications.api.spec.js', defects: ['RI-19'],
+  },
+  {
+    id: 'AD-04', type: 'Automation defect', module: 'Product / Riders / Beneficiaries / Documents',
+    title: 'Page objects modelled the wrong controls (product and rider cards, Add-beneficiary modal, per-document file inputs, Save draft)',
+    cases: ['PROD-V01', 'RIDER-V01', 'BEN-V01', 'DOC-V01', 'WF-V01'],
+    evidence: 'Third project\'s page objects: product step is a dropdown, riders are table rows, beneficiaries are an always-open form using native alert()/confirm(), documents are one type dropdown + one file input + Upload, and there is no Save draft button.',
+    analysis: 'The wizard model assumed in Submission 2 does not match the application.',
+    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    fix: 'pages/ProductPage.js, RiderPage.js, BeneficiaryPage.js, DocumentsPage.js, BasePage.js', defects: [],
+  },
+  {
+    id: 'AD-05', type: 'Test-data issue', module: 'Client / Address / KYC / Product',
+    title: 'Test data omitted mandatory fields and used display text instead of the app\'s option values',
+    cases: ['CLI-V01', 'WF-V03'],
+    evidence: 'Third project\'s data builders: employer address, preferred contact mode, compliance declaration, payment term and coverage term are all required; selects use enum values (MALE, SSN, MONTHLY).',
+    analysis: 'Steps could not be saved without these fields even with correct locators.',
+    severity: 'Medium', priority: 'P2', status: 'Fixed in code - awaiting live re-run',
+    fix: 'utils/dataBuilder.js, pages/KycFinancialPage.js', defects: [],
+  },
+  {
+    id: 'AD-06', type: 'Test-data issue', module: 'Test isolation',
+    title: 'Write flows ran as the seeded agent.valid, whose draft is shared and seeded',
+    cases: ['WF-V01', 'WF-V03', 'BEN-V01', 'CLI-V01'],
+    evidence: 'Login resumes or creates the agent\'s single draft (BR-AUTH-010); third project runs all write flows as a learner account.',
+    analysis: 'Shared state between tests and with seeded data DASH-* relies on.',
+    severity: 'Medium', priority: 'P2', status: 'Fixed in code - awaiting live re-run',
+    fix: 'config/env.js learnerAgent (set LEARNER_USER to your assigned account); specs use agentRole learnerAgent', defects: [],
+  },
+  {
+    id: 'AD-07', type: 'Test-data issue', module: 'Authentication',
+    title: 'AUTH-V02 tried a wrong password on agent.valid; failed attempts count toward the 5-attempt lock (BR-AUTH-005)',
+    cases: ['AUTH-V02', 'AUTH-V04', 'DASH-V01'],
+    evidence: 'AUTH-V04 and DASH-V01 passed in RUN-1 but are missing from RUN-2\'s passed list.',
+    analysis: 'HYPOTHESIS only: repeated failed attempts may have locked or disturbed agent.valid. Not confirmed - RUN-2 gives no failure text for those two tests.',
+    severity: 'Medium', priority: 'P2', status: 'Fixed in code - awaiting live re-run',
+    fix: 'tests/ui/auth.spec.js AUTH-V02 now uses the second agent', defects: ['RI-02'],
+  },
+  {
+    id: 'AD-08', type: 'Automation defect', module: 'Client / KYC',
+    title: 'CLI-V08 (SSN masking, release gate) silently skipped: it looked for an SSN field the real form does not have',
+    cases: ['CLI-V08'],
+    evidence: 'The real KYC form takes the SSN as the ID number when the ID type is SSN.',
+    analysis: 'A P1 release-gate scenario was not executing.',
+    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    fix: 'tests/ui/client-kyc-sensitive.spec.js CLI-V08 rewritten (masked after reload, on review, no full SSN in page content)', defects: ['RI-07'],
+  },
+  // ---- application-side items: NOT reproduced by the team yet
+  {
+    id: 'AC-01', type: 'Application defect (candidate)', module: 'Review / Validation',
+    title: 'Validation errors on the review page render as plain text, not links to the owning section',
+    cases: ['VAL-V02'],
+    evidence: 'Third project\'s ReviewPage notes "the app currently renders plain text". VAL-V02 expects clicking an item to navigate.',
+    analysis: 'Either the requirement (links) is unmet or VAL-V02 over-specifies. Confirm the requirement, then reproduce on the lab.',
+    severity: 'Low', priority: 'P3', status: 'Candidate - not reproduced', fix: '', defects: ['RI-17'],
+  },
+  {
+    id: 'AC-02', type: 'Application defect (candidate)', module: 'API',
+    title: 'API silently acts as learner001 when agent_email is omitted',
+    cases: ['API-V08'],
+    evidence: 'Stated in the third project\'s README and ApiClient notes; not observed by the team.',
+    analysis: 'Possible data-scoping weakness: confirm with a call that omits agent_email.',
+    severity: 'Medium', priority: 'P2', status: 'Candidate - not reproduced', fix: '', defects: ['RI-19'],
+  },
+  {
+    id: 'CL-01', type: 'Clarification', module: 'Dashboard',
+    title: 'No search or status-filter control is known on the dashboard',
+    cases: ['DASH-V05', 'DASH-V07'],
+    evidence: 'Third project\'s dashboard page object exposes only status counters and the latest 10 applications.',
+    analysis: 'Ask the product owner whether search / filters are in scope before treating DASH-V05/V07 as defects.',
+    severity: 'Low', priority: 'P3', status: 'Open', fix: '', defects: [],
+  },
+  {
+    id: 'CL-02', type: 'Clarification', module: 'Dashboard / Authentication',
+    title: 'Login auto-creates a draft, so a brand-new agent never sees the empty dashboard state',
+    cases: ['DASH-V03'],
+    evidence: 'BR-AUTH-010 (login resumes or creates the agent\'s draft).',
+    analysis: 'DASH-V03 may be unreachable by design. Confirm with the product owner.',
+    severity: 'Low', priority: 'P3', status: 'Open', fix: '', defects: [],
+  },
+];
+
+/** Seeded-defect candidate ids (SDC-nn) the third project tags its tests with. RI-nn and SDC-nn describe the same 20 themes. */
+const SDC_NOTE = 'SDC = "seeded-defect-candidate" id used by the third project\'s tests. The official DEF-* catalogue codes have still not been received.';
+
+module.exports = { liveRuns, resultFor, defectLog, SDC_NOTE };

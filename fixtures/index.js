@@ -41,7 +41,7 @@ const knownDefectFixtures = {
 /**
  * Session reuse (Submission 1 plan, section 5.4): a role is logged in through the UI ONCE per worker and the session
  * is cached as storageState; later tests in the same worker start already signed in.
- * Tests opt in with  test.use({ agentRole: 'validAgent' })  (also allowed inside describe blocks).
+ * Tests opt in with  test.use({ agentRole: 'learnerAgent' })  (write flows)  or 'validAgent' (seeded data)  (also allowed inside describe blocks).
  * Login tests simply do not set it, so they always start from a clean, anonymous context.
  */
 const test = base.test.extend({
@@ -104,7 +104,7 @@ const apiTest = base.test.extend({
   ...knownDefectFixtures,
   api: [
     async ({ playwright }, use) => {
-      const client = await ApiClient.create(playwright, env.users.validAgent);
+      const client = await ApiClient.create(playwright, env.users.learnerAgent);
       await use(client);
       await client.dispose();
     },
@@ -131,7 +131,7 @@ const apiTest = base.test.extend({
 /** Hybrid: UI page objects AND an authenticated API client in the same test (UI-API integration scenarios). */
 const integrationTest = test.extend({
   api: async ({ playwright }, use) => {
-    const client = await ApiClient.create(playwright, env.users.validAgent);
+    const client = await ApiClient.create(playwright, env.users.learnerAgent);
     await use(client);
     await client.dispose();
   },

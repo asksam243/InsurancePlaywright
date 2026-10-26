@@ -1,10 +1,11 @@
 const { BasePage } = require('./BasePage');
 const { S } = require('../config/selectors');
 
-/** Step 4 - Address and Contact. */
+/** Address and Contact: /applications/:id/address-contact. */
 class AddressContactPage extends BasePage {
   async fillResidential(a) {
     await this.fillField(S.address.resLine1, a.line1);
+    await this.fillField(S.address.resLine2, a.line2);
     await this.fillField(S.address.resCity, a.city);
     await this.choose(S.address.resState, a.state);
     await this.fillField(S.address.resZip, a.zip);
@@ -13,9 +14,11 @@ class AddressContactPage extends BasePage {
   async fillContact(a) {
     await this.fillField(S.address.email, a.email);
     await this.fillField(S.address.phone, a.phone);
+    await this.fillField(S.address.alternatePhone, a.alternatePhone);
+    await this.choose(S.address.preferredContact, a.preferredMode);
   }
 
-  /** Fills the whole step; mailing address is copied via same-as-residential. */
+  /** Fills the whole step; the mailing address is copied via same-as-residential. */
   async fill(a) {
     await this.fillResidential(a);
     await this.fillContact(a);

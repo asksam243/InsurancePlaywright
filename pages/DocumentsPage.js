@@ -2,8 +2,13 @@ const { expect } = require('@playwright/test');
 const { BasePage } = require('./BasePage');
 const { S } = require('../config/selectors');
 const { ValidationSummary } = require('../components/ValidationSummary');
+const { options } = require('../utils/browser');
 
-/** Step 9 - Document Upload and Validation. */
+/**
+ * Document Upload and Validation: /applications/:id/documents.
+ * ONE document-type dropdown, ONE file input and an Upload button (the page reloads after each upload).
+ * KYC_ID is the only mandatory document type the app enforces.
+ */
 class DocumentsPage extends BasePage {
   constructor(page) {
     super(page);
@@ -18,16 +23,29 @@ class DocumentsPage extends BasePage {
     return this.$$(S.documents.uploadedItems);
   }
 
-  /** Uploads one file into the Nth upload control. */
-  async upload(file, index = 0) {
-    await this.inputs.nth(index).setInputFiles(file);
+  /** Document type values offered by the dropdown (placeholder excluded). */
+  async typeValues() {
+    return (await options(this.$(S.documents.typeSelect))).filter((o) => o.value !== '').map((o) => o.value);
   }
 
-  /** Uploads the same valid file into EVERY upload control (i.e. satisfies all mandatory documents). */
+  /** Uploads one file as the Nth document type (0 = first, normally KYC_ID) and waits for the page to reload. */
+  async upload(file, index = 0) {
+    const types = await this.typeValues();
+    await this.$(S.documents.typeSelect).selectOption(types[index] ?? types[0]);
+    await this.$(S.documents.fileInput).setInputFiles(file);
+    await this.$(S.documents.uploadButton).click();
+    await this.page.waitForLoadState('domcontentloaded');
+  }
+
+  /** Uploads the one mandatory document (KYC_ID; the first type if the build names it differently). */
   async uploadAllRequired(file) {
-    await this.inputs.first().waitFor({ state: 'attached' }); // count() does not auto-wait
-    const n = await this.inputs.count();
-    for (let i = 0; i < n; i += 1) await this.inputs.nth(i).setInputFiles(file);
+    await expect(this.$(S.documents.typeSelect)).toBeVisible();
+    const types = await this.typeValues();
+    await this.$(S.documents.typeSelect).selectOption(types.includes('KYC_ID') ? 'KYC_ID' : types[0]);
+    await this.$(S.documents.fileInput).setInputFiles(file);
+    await this.$(S.documents.uploadButton).click();
+    await this.page.waitForLoadState('domcontentloaded');
+    await expect(this.uploaded.first(), 'the uploaded document is listed').toBeVisible();
   }
 
   get message() {

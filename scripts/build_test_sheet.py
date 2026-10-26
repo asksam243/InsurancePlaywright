@@ -39,16 +39,20 @@ def title(ws, text, sub=None):
     if sub: ws['A2'] = sub; ws['A2'].font = Font(name=F, italic=True, size=9, color='595959')
 
 ri_desc = {i['id']: i['description'] for i in issues}
+ri_code = {i['id']: i['catalogCode'] for i in issues}
+def RUNFILL(v):
+    return {'Passed': 'D5E8D4', 'Failed': 'F4B6B6', 'Not passed - investigate': 'F9D5A7'}.get(v, 'FFFFFF')
 YN = lambda b: 'Y' if b else 'N'
 
 # ---------------------------------------------------------------- Test Cases
 tc = wb.active; tc.title = 'Test Cases'
 cols = [('Test Case ID', 14), ('Title', 42), ('Module', 22), ('Scenario ID', 11), ('Source', 8), ('Requirement / Risk Link (Submission 1 risk IDs)', 16),
-        ('Seeded Defect Theme (reported issue)', 34), ('Seeded Defect Catalog Code (fill when received)', 18), ('Test Type', 14), ('Layer', 12),
+        ('Seeded Defect Theme (reported issue)', 34), ('Seeded Defect Candidate / Catalog Code', 18), ('Test Type', 14), ('Layer', 12),
         ('Preconditions', 40), ('Test Steps', 50), ('Test Data', 30), ('Expected Result', 48), ('Severity', 10),
         ('Priority (P1 = release gate)', 12), ('Submission 1 Priority', 11), ('Release Gate', 8), ('Smoke', 7), ('Sensitive Data (no trace/video)', 11),
         ('Evidence Required', 30), ('Automation Status', 12), ('Automated In', 30), ('Run Conditions / TBC', 30), ('Open Questions', 12),
-        ('Blocked Reason', 40), ('Tags', 36)]
+        ('Blocked Reason', 40), ('Tags', 36),
+        ('Live run 1 - smoke 26-Oct 11:38 (old code)', 18), ('Live run 2 - full 26-Oct 11:51 (old code)', 18), ('Defect Log IDs', 14)]
 title(tc, 'Test Case Design Sheet - Insurance Order Entry Platform (Submission 2)',
       'Generated from test-design/testCases.js. Edit the .js file (single source of truth) and re-run: npm run export:testdesign && python scripts/build_test_sheet.py')
 H = 4; header(tc, H, [c[0] for c in cols], [c[1] for c in cols])
@@ -56,11 +60,14 @@ for r, c in enumerate(cases, H + 1):
     steps = '\n'.join(f'{i}. {s}' for i, s in enumerate(c['steps'], 1))
     defects = '\n'.join(f"{x}: {ri_desc[x]}" for x in c['defects'])
     sev = {'Critical': RATING['Critical'], 'High': RATING['High'], 'Medium': RATING['Medium'], 'Low': RATING['Low']}[c['severity']]
-    put(tc, r, [c['tcId'], c['title'], c['module'], c['id'], c['source'], ', '.join(c['risks']), defects, '', c['type'], c['layer'], c['pre'], steps, c['data'],
+    codes = ', '.join(dict.fromkeys(ri_code[x] for x in c['defects'] if ri_code.get(x)))
+    put(tc, r, [c['tcId'], c['title'], c['module'], c['id'], c['source'], ', '.join(c['risks']), defects, codes, c['type'], c['layer'], c['pre'], steps, c['data'],
                 c['expected'], c['severity'], c['priority'], c['submission1Priority'], YN(c['gate']), YN(c['smoke']), YN(c['sensitive']), c['evidence'],
-                c['automationStatus'], c['spec'], c['cond'], ', '.join(c['explore']), c['blockedReason'], ' '.join(c['tags'])],
+                c['automationStatus'], c['spec'], c['cond'], ', '.join(c['explore']), c['blockedReason'], ' '.join(c['tags']),
+                c['run1'], c['run2'], ', '.join(c['defectLogIds'])],
         fills={15: sev, 16: RATING['Critical'] if c['priority'] == 'P1' else 'FFFFFF', 8: INPUT,
-               22: {'Automated': 'D5E8D4', 'Blocked': 'F4B6B6'}.get(c['automationStatus'], 'FFF2B3')})
+               22: {'Automated': 'D5E8D4', 'Blocked': 'F4B6B6'}.get(c['automationStatus'], 'FFF2B3'),
+               28: RUNFILL(c['run1']), 29: RUNFILL(c['run2'])})
 last = H + len(cases)
 tc.freeze_panes = tc.cell(row=H + 1, column=3); tc.auto_filter.ref = f'A{H}:{L(len(cols))}{last}'
 TCR = lambda col: f"'Test Cases'!${col}${H+1}:${col}${last}"
@@ -106,17 +113,55 @@ tr.freeze_panes = 'B5'
 # ---------------------------------------------------------------- Traceability - Defects
 td = wb.create_sheet('Traceability - Defects')
 title(td, 'Traceability: seeded-defect themes (20 reported issues) to test cases',
-      'No official seeded-defect catalog was available (Submission 1 question Q05). Fill column D when it is received.')
+      d['sdcNote'] + ' Column D holds the SDC id where a tagged test matches the theme; RI-03, RI-09, RI-11 and RI-20 have none yet. Detection status is only set from evidence: the live runs never reached the validation rules, so almost everything is Not run.')
 header(td, 4, ['Reported Issue ID', 'Module', 'Description', 'Seeded Defect Catalog Code (fill)', 'Linked Test Cases', '# Test Cases', 'Detected in run? (fill: Detected / Not detected / Not run)', 'Defect Log ID (fill)'], [12, 22, 52, 20, 60, 11, 22, 16])
 for r, i in enumerate(issues, 5):
     linked = ', '.join(c['tcId'] for c in cases if i['id'] in c['defects'])
-    put(td, r, [i['id'], i['module'], i['description'], i['catalogCode'], linked, f"=COUNTIF({TCR('G')},\"*\"&A{r}&\"*\")", '', ''], fills={4: INPUT, 7: INPUT, 8: INPUT})
+    logged = ', '.join(x['id'] for x in d['defectLog'] if i['id'] in x['defects'])
+    seen = 'Not detected' if i['id'] == 'RI-01' else 'Not run'   # RI-01: AUTH-V01 passed in both live runs; every other theme was not reached
+    put(td, r, [i['id'], i['module'], i['description'], i['catalogCode'], linked, f"=COUNTIF({TCR('G')},\"*\"&A{r}&\"*\")", seen, logged], fills={4: INPUT, 7: INPUT, 8: INPUT})
 dv = DataValidation(type='list', formula1='"Detected,Not detected,Not run"', allow_blank=True); td.add_data_validation(dv); dv.add(f'G5:G{4+len(issues)}')
 dr = 5 + len(issues)
 td.cell(row=dr + 1, column=1, value='Detection rate').font = Font(name=F, bold=True)
 td.cell(row=dr + 1, column=3, value=f'=IF(COUNTIF(G5:G{dr-1},"Detected")+COUNTIF(G5:G{dr-1},"Not detected")=0,"n/a",COUNTIF(G5:G{dr-1},"Detected")/(COUNTIF(G5:G{dr-1},"Detected")+COUNTIF(G5:G{dr-1},"Not detected")))').font = bfont
 td.cell(row=dr + 1, column=3).number_format = '0%'
 td.freeze_panes = 'B5'
+
+# ---------------------------------------------------------------- Run Results
+rr = wb.create_sheet('Run Results')
+title(rr, 'Live run results (lab VM) and failure classification',
+      'Only runs observed on the lab VM are recorded. Offline dry-runs against a mock application are NOT evidence about the application and are not listed.')
+header(rr, 4, ['Run', 'When', 'Scope', 'Code under test', 'Total', 'Passed', 'Failed', 'Skipped', 'Pass rate', 'Duration (min)', 'Notes', 'Itemised Passed (formula)', 'Itemised Failed (formula)'],
+       [9, 17, 26, 40, 8, 8, 8, 9, 10, 12, 70, 14, 14])
+runcol = {'RUN-1': 'AB', 'RUN-2': 'AC'}
+for r, x in enumerate(d['liveRuns'], 5):
+    col = runcol[x['id']]
+    put(rr, r, [x['id'], x['when'], x['scope'], x['code'], x['total'], x['passed'], x['failed'], x['skipped'], f'=IF(E{r}=0,"n/a",F{r}/E{r})', x['durationMin'], x['note'],
+                f"=COUNTIF({TCR(col)},\"Passed\")", f"=COUNTIF({TCR(col)},\"Failed\")"], fills={5: INPUT, 6: INPUT, 7: INPUT, 8: INPUT})
+    rr.cell(row=r, column=9).number_format = '0%'
+n = 5 + len(d['liveRuns'])
+rr.cell(row=n + 1, column=1, value='Classification of the failures (from the Defect Log)').font = Font(name=F, bold=True, size=11)
+header(rr, n + 2, ['Type', 'Count', 'Meaning'], [9, 17, 26])
+meaning = {'Automation defect': 'The test or page object was wrong (locator, flow, API contract).', 'Test-data issue': 'Data or account choice made a correct test fail.',
+           'Application defect (candidate)': 'Possible application defect, NOT yet reproduced on the lab.', 'Clarification': 'Needs a product-owner answer before it can be called a defect.'}
+for k, (typ, mean) in enumerate(meaning.items(), n + 3):
+    put(rr, k, [typ, f"=COUNTIF('Defect Log'!$B$5:$B${4+len(d['defectLog'])},A{k})", mean])
+q = n + 3 + len(meaning)
+put(rr, q, ['Confirmed application defects', f"=COUNTIFS('Defect Log'!$B$5:$B${4+len(d['defectLog'])},\"Application defect*\",'Defect Log'!$K$5:$K${4+len(d['defectLog'])},\"Confirmed*\")",
+            'None yet: the first two live runs failed before any validation rule was reached. Re-run after the fixes, then update this sheet.'])
+rr.column_dimensions['C'].width = 26
+
+# ---------------------------------------------------------------- Defect Log
+dl = wb.create_sheet('Defect Log')
+title(dl, 'Defect Log - classified before logging (README section 6)',
+      'Yellow cells are for you: record the live re-run result and date after each fix. "PROBABLE" or "HYPOTHESIS" in the analysis means the failure text was not captured.')
+header(dl, 4, ['Defect ID', 'Type', 'Module', 'Title', 'Affected test cases', 'Reported issue (RI)', 'Evidence', 'Analysis / root cause', 'Severity', 'Priority', 'Status', 'Fix / where', 'Live re-run result (fill)', 'Re-test date (fill)'],
+       [10, 22, 22, 46, 34, 14, 52, 60, 10, 9, 28, 44, 24, 14])
+for r, x in enumerate(d['defectLog'], 5):
+    put(dl, r, [x['id'], x['type'], x['module'], x['title'], ', '.join('TC-' + c for c in x['cases']), ', '.join(x['defects']), x['evidence'], x['analysis'],
+                x['severity'], x['priority'], x['status'], x['fix'], '', ''], fills={9: RATING.get(x['severity'], 'FFFFFF'), 13: INPUT, 14: INPUT})
+dv3 = DataValidation(type='list', formula1='"Passed,Failed,Not re-run"', allow_blank=True); dl.add_data_validation(dv3); dv3.add(f'M5:M{4+len(d["defectLog"])}')
+dl.freeze_panes = 'B5'; dl.auto_filter.ref = f'A4:N{4+len(d["defectLog"])}'
 
 # ---------------------------------------------------------------- Exploration Log
 ex = wb.create_sheet('Exploration Log')
@@ -157,7 +202,7 @@ for i, (lbl, f, nf) in enumerate(rows):
     if nf: c.number_format = nf
 sm.cell(row=k + 6, column=1, value='Notes').font = Font(name=F, bold=True)
 for i, n in enumerate(['Automated = a Playwright test exists for the case. Blocked = cannot be automated yet (database access, Q04).',
-                       'Execution against the real lab application has NOT yet been done - see the Limitations sheet.']):
+                       'Two live runs exist (Run Results sheet): the first code version passed 5 of 15 smoke and 10 of 96 overall; the failures were automation defects. The fixed code has NOT yet been re-run on the lab.']):
     sm.cell(row=k + 7 + i, column=1, value=n).font = Font(name=F, size=9, italic=True)
 
 # ---------------------------------------------------------------- Limitations
@@ -165,8 +210,8 @@ lm = wb.create_sheet('Limitations')
 title(lm, 'Known limitations and blocked areas')
 header(lm, 3, ['#', 'Area', 'Limitation / blocked item', 'Impact', 'Resolution'], [5, 22, 70, 40, 46])
 items = [
- ('Execution', 'The automation has not been run against the real lab application (no access when it was built).', 'Selectors, routes and messages are unconfirmed', 'Complete the Exploration Log, run npm run discover and npm run verify:selectors, then run the smoke suite'),
- ('Selectors', 'Only the login ids (login-email-input, login-password-input, login-submit-button) are confirmed. Other test ids are conventions; every control has a role/label fallback.', 'Some locators may need correcting', 'config/selectors.js is the only file to edit'),
+ ('Execution', 'Live runs on 26 Oct (smoke 5/15 passed; full 10/96) used the first code version. The fixes in the Defect Log have only been exercised against an offline mock of the application, which proves internal consistency, not live behaviour.', 'Selectors and flows are consistent with the application markup but are unproven on the lab', 'Re-run npm run test:smoke on the lab, then npm run verify:selectors; record results in the Defect Log'),
+ ('Selectors', 'Login and dashboard ids are proven by live runs. All other ids come from the application markup as captured in the third project\'s page objects and are not yet proven live.', 'A wrong id fails a test for an automation reason', 'npm run discover then npm run verify:selectors; config/selectors.js is the only file to edit'),
  ('Database', 'No DB engine, schema or access (Q04). DB-01..DB-10 are Blocked.', '10 cases not automated', 'API reads are used as a proxy where the linked scenario has an API test'),
  ('Business rules', 'Max riders (4), upload size (5 MB) and lockout (5 attempts) are confirmed. Face value limits, age boundary and affordability rule are still TBC.', 'Dependent tests skip with a reason instead of failing', 'Resolve in exploration and set the .env values'),
  ('Users', 'Seeded accounts agent.valid/locked/new/mfa/draft/submitted, admin and learner001-030 are confirmed. Disposable lockout and reset users are not (Q06).', 'Lockout and reset tests skip until disposable users are set', 'Set AGENT_LOCKOUT_* and AGENT_RESET_* in .env'),

@@ -9,7 +9,7 @@ const { expectBlocked, expectAdvanced, captureEvidence } = require('../../utils/
 const inclusive = env.rules.ageInclusive;
 
 test.describe('Client / Insured Information', () => {
-  test.use({ agentRole: 'validAgent' });
+  test.use({ agentRole: 'learnerAgent' });
 
   test(...tc('CLI-V01'), async ({ pages }) => {
     const { data } = await progressTo(pages, 'client');

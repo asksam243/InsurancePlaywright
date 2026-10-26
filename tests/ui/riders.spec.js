@@ -9,7 +9,7 @@ const r = env.rules;
 const adb = r.patterns.riderAdb;
 
 test.describe('Rider Selection', () => {
-  test.use({ agentRole: 'validAgent' });
+  test.use({ agentRole: 'learnerAgent' });
 
   const needRider = async (pages, pattern, label) => {
     test.skip(!(await pages.rider.cardFor(pattern).count()), `No ${label} rider offered in this environment`);
@@ -28,6 +28,7 @@ test.describe('Rider Selection', () => {
     await needRider(pages, adb, 'ADB');
     await pages.rider.add(adb);
     await pages.rider.setCoverage(adb, data.product.faceValue + 1);
+    await pages.rider.next(); // the rule is enforced on Save & Continue
     await captureEvidence(page, testInfo, 'rider-coverage-above-face-value');
     await pages.rider.expectErrorText(M.riderExceeds);
   });

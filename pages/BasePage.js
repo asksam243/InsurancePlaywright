@@ -4,6 +4,21 @@ const { S } = require('../config/selectors');
 const { loc, byPrefix } = require('../utils/locators');
 const { formatDate } = require('../utils/dates');
 const { escapeRegex } = require('../utils/parse');
+const { disableBrowserValidation, isNativelyInvalid } = require('../utils/browser');
+
+/**
+ * The real app has no generic "Next" button: every step has its own Save & Continue control (FROM MARKUP).
+ * Keyed by the last URL segment of /applications/:id/<step>.
+ */
+const STEP_CONTINUE = {
+  client: 'client-save-continue-button',
+  'address-contact': 'address-contact-save-continue-button',
+  'kyc-financial': 'kyc-financial-save-continue-button',
+  product: 'product-save-continue-button',
+  riders: 'rider-save-continue-button',
+  beneficiaries: 'beneficiary-continue-button',
+  documents: 'documents-continue-review-button',
+};
 
 /**
  * Shared behaviour for every screen. Page objects expose USER ACTIONS and read-only getters;
@@ -35,7 +50,10 @@ class BasePage {
     await this.$(def).fill(String(value));
   }
 
-  /** Selects an option by label, then by value, then by partial text; falls back to the first real option. */
+  /**
+   * Selects an option. Playwright matches a plain string against the option VALUE or its visible LABEL, which covers both
+   * the app's enum values (MALE) and readable text (Male); falls back to a partial text match, then the first real option.
+   */
   async choose(def, value) {
     if (value === undefined || value === null) return;
     const el = this.$(def);
@@ -44,7 +62,7 @@ class BasePage {
       await el.fill(String(value));
       return;
     }
-    for (const attempt of [{ label: String(value) }, String(value)]) {
+    for (const attempt of [String(value), { label: String(value) }]) {
       try {
         await el.selectOption(attempt, { timeout: 1500 });
         return;
@@ -56,7 +74,7 @@ class BasePage {
       os.map((o) => ({ v: o.value, t: (o.textContent || '').trim() })).filter((o) => o.v),
     );
     const pattern = new RegExp(escapeRegex(value), 'i');
-    const match = options.find((o) => pattern.test(o.t)) || options[0];
+    const match = options.find((o) => pattern.test(o.t) || pattern.test(o.v)) || options[0];
     if (!match) throw new Error(`No selectable option found for ${JSON.stringify(def.id)} (wanted "${value}")`);
     await el.selectOption(match.v);
   }
@@ -74,24 +92,52 @@ class BasePage {
     else await el.uncheck();
   }
 
-  async next() {
-    await this.$(S.common.next).click();
+  /** Slug of the current application step ("client", "address-contact", ...), or "" outside an application. */
+  stepSlug() {
+    const m = new URL(this.page.url()).pathname.match(/\/applications\/[^/]+\/([a-z-]+)/i);
+    return m ? m[1] : '';
+  }
+
+  /** The Save & Continue control of the current step (falls back to a generic Next / Continue button). */
+  continueControl() {
+    const id = STEP_CONTINUE[this.stepSlug()];
+    const generic = loc(this.page, S.common.next);
+    return (id ? this.page.getByTestId(id).or(generic) : generic).first();
+  }
+
+  /** Saves the current step and moves on. `ignoreBrowserValidation` reaches the SERVER-side messages for blank forms. */
+  async next({ ignoreBrowserValidation = false } = {}) {
+    if (ignoreBrowserValidation) await disableBrowserValidation(this.page);
+    await this.continueControl().click();
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async back() {
     await this.$(S.common.back).click();
   }
 
+  /**
+   * There is NO "Save draft" button in the real app: the draft is created at the start page and saved by each
+   * Save & Continue. If a build does have a dedicated button it is used; otherwise Save & Continue persists the draft.
+   */
   async saveDraft() {
-    await this.$(S.common.saveDraft).click();
+    const explicit = this.$$(S.common.saveDraft);
+    if (await explicit.count()) {
+      await explicit.first().click();
+      await this.page.waitForLoadState('domcontentloaded');
+      return;
+    }
+    await this.next();
   }
 
+  /** Identifies the current step: URL step slug + first heading. Changes when the browser moves on. */
   async stepTitle() {
-    return ((await this.$(S.common.stepTitle).textContent()) || '').trim();
+    const heading = await this.$$(S.common.stepTitle).first().textContent({ timeout: 3000 }).catch(() => '');
+    return `${this.stepSlug()}|${(heading || '').trim()}`;
   }
 
   async expectStep(pattern) {
-    await expect(this.$(S.common.stepTitle)).toHaveText(pattern);
+    await expect.poll(() => this.stepTitle(), { message: `step to match ${pattern}` }).toMatch(pattern);
   }
 
   /** Error element belonging to a field: <testid>-error first, then an error node inside the field's wrapper. */
@@ -103,7 +149,13 @@ class BasePage {
       .first();
   }
 
+  /**
+   * A field is "flagged" when the app shows an error for it OR the browser itself refuses it. The real forms use HTML
+   * `required`, so a blank mandatory field is blocked by the browser (:invalid) before the server can answer.
+   */
   async expectFieldError(def, pattern) {
+    const field = this.$(def);
+    if (!pattern && (await field.count()) && (await isNativelyInvalid(field).catch(() => false))) return;
     const err = this.fieldError(def);
     await expect(err, `expected a validation error next to "${def.id}"`).toBeVisible();
     if (pattern) await expect(err).toHaveText(pattern);
@@ -117,9 +169,13 @@ class BasePage {
     ).toBeVisible();
   }
 
-  /** The user was NOT moved on: the step title is unchanged after a rejected Next. */
+  /** The user was NOT moved on: the step identity is unchanged after a rejected Save & Continue. */
   async expectStillOnStep(titleBefore) {
-    await expect(this.$(S.common.stepTitle)).toHaveText(titleBefore);
+    await expect.poll(() => this.stepTitle(), { message: 'still on the same step' }).toBe(titleBefore);
+  }
+
+  async expectAdvanced(titleBefore) {
+    await expect.poll(() => this.stepTitle(), { timeout: 10_000, message: 'moved to another step' }).not.toBe(titleBefore);
   }
 
   async getValue(def) {
@@ -127,4 +183,4 @@ class BasePage {
   }
 }
 
-module.exports = { BasePage };
+module.exports = { BasePage, STEP_CONTINUE };

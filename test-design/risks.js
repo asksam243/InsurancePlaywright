@@ -102,6 +102,13 @@ for (const r of risks) {
 }
 
 /** The 20 issues listed in the Problem Statement, in the order of QA plan section 2.7. */
+// RI-nn -> SDC-nn. Evidence: each pair below is the theme of a test the third project tags with that SDC id
+// (e.g. SDC-13 = TC-BEN-002/003/004 "allocation below / above 100%", which is RI-13).
+const SDC = {
+  'RI-01': 'SDC-01', 'RI-02': 'SDC-02', 'RI-04': 'SDC-04', 'RI-05': 'SDC-05', 'RI-06': 'SDC-06', 'RI-07': 'SDC-07', 'RI-08': 'SDC-08',
+  'RI-10': 'SDC-10', 'RI-12': 'SDC-12', 'RI-13': 'SDC-13', 'RI-14': 'SDC-14', 'RI-15': 'SDC-15', 'RI-16': 'SDC-16', 'RI-17': 'SDC-17',
+  'RI-18': 'SDC-18', 'RI-19': 'SDC-19',
+};
 const reportedIssues = [
   ['RI-01', 'Authentication', 'Valid agents cannot log in after authentication changes'],
   ['RI-02', 'Authentication', 'Locked or invalid agents get incorrect / misleading messages'],
@@ -127,9 +134,10 @@ const reportedIssues = [
   id,
   module,
   description,
-  // The official seeded-defect catalog was not available in Submission 1 (assumption A04 / question Q05).
-  // Fill in the catalog code here when it is received; reports and the Excel sheet pick it up automatically.
-  catalogCode: '',
+  // The official DEF-* seeded-defect catalogue has still not been received (assumption A04 / question Q05).
+  // Until it is, this holds the SDC-nn "seeded-defect candidate" id that the third project tags its tests with. Only the 16
+  // themes whose description matches a tagged test are filled in; RI-03, RI-09, RI-11 and RI-20 have no tagged test yet.
+  catalogCode: SDC[id] || '',
 }));
 
 module.exports = { risks, riskIndex, reportedIssues, expandCovered };

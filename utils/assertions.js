@@ -10,7 +10,7 @@ async function expectBlocked(pageObj, titleBefore, pattern) {
 
 /** The user moved on to a different step. */
 async function expectAdvanced(pageObj, titleBefore) {
-  await expect(pageObj.$(S.common.stepTitle)).not.toHaveText(titleBefore);
+  await pageObj.expectAdvanced(titleBefore);
 }
 
 /** Attaches a labelled, MASKED full-page screenshot to the HTML report (evidence for passed validations too). */

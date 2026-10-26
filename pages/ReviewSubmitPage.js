@@ -4,7 +4,7 @@ const { S } = require('../config/selectors');
 const { ValidationSummary } = require('../components/ValidationSummary');
 const { parseMoney } = require('../utils/parse');
 
-/** Step 10 - Review, validation summary, submission and status. */
+/** Review (/applications/:id/review) and the confirmation page it leads to (/applications/:id/confirmation). */
 class ReviewSubmitPage extends BasePage {
   constructor(page) {
     super(page);
@@ -23,24 +23,39 @@ class ReviewSubmitPage extends BasePage {
 
   /** Full text of the review area, for "review shows what was entered" checks. */
   async reviewText() {
-    return (await this.$(S.review.summary).innerText()) || '';
+    await expect(this.$(S.review.root)).toBeVisible();
+    return (await this.$(S.review.root).innerText()) || '';
   }
 
+  /** Clicks Submit. A valid application moves to the confirmation page; an invalid one stays here with errors. */
   async submit() {
     await this.submitButton.click();
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
+  /** Reference number (WL + date + sequence) shown on the confirmation page. */
   async referenceNumber() {
     const el = this.$(S.review.reference);
-    await expect(el).toBeVisible();
-    return ((await el.textContent()) || '').trim();
+    await expect(el, 'the confirmation page with a reference number').toBeVisible({ timeout: 15_000 });
+    const text = ((await el.textContent()) || '').trim();
+    const m = text.match(/WL\d+/);
+    return m ? m[0] : text;
   }
 
+  /** Current status. It is shown on the status page, which the confirmation page links to ("view status"). */
   async statusText() {
-    return ((await this.$(S.review.status).textContent()) || '').trim();
+    const status = this.$(S.review.status);
+    if (!(await status.count())) {
+      const link = this.$(S.review.viewStatusLink);
+      if (await link.count()) {
+        await link.click();
+        await this.page.waitForLoadState('domcontentloaded');
+      }
+    }
+    return ((await status.textContent()) || '').trim();
   }
 
-  /** True when no editable input remains on the page (submitted applications are read-only). */
+  /** True when no editable input remains on the page (a submitted application is read-only). */
   async isReadOnly() {
     const editable = this.page.locator(
       'main input:not([type="hidden"]):not([disabled]):not([readonly]), main select:not([disabled]), main textarea:not([disabled]):not([readonly])',

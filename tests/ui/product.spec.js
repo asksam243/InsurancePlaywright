@@ -6,11 +6,13 @@ const { buildClient, buildKyc } = require('../../utils/dataBuilder');
 const { progressTo, fillStep, finishFrom } = require('../../utils/flows');
 const { expectBlocked, expectAdvanced, captureEvidence } = require('../../utils/assertions');
 const { parseMoney } = require('../../utils/parse');
+const routes = require('../../config/routes');
+const { applicationIdFromUrl } = require('../../pages/DashboardPage');
 
 const r = env.rules;
 
 test.describe('Product Selection & Policy Configuration', () => {
-  test.use({ agentRole: 'validAgent' });
+  test.use({ agentRole: 'learnerAgent' });
 
   test(...tc('PROD-V01'), async ({ pages }) => {
     await progressTo(pages, 'product');
@@ -134,8 +136,11 @@ test.describe('Product Selection & Policy Configuration', () => {
     const options = await pages.product.optionTexts(S.product.frequency);
     await pages.product.setFrequency(options[options.length - 1]);
     const frequency = await pages.product.getValue(S.product.frequency);
-    await pages.product.saveDraft();
-    await page.reload();
+    // payment term and coverage term are mandatory dropdowns, so the step cannot be saved without them
+    await pages.product.configure({ paymentTerm: data.product.paymentTerm, policyTerm: data.product.policyTerm });
+    const applicationId = applicationIdFromUrl(page.url());
+    await pages.product.saveDraft(); // no separate draft button: Save & Continue persists the step and moves on
+    await page.goto(routes.step(applicationId, 'product')); // reopen the saved step
     expect(parseMoney(await pages.product.getValue(S.product.faceValue)), 'face value after reload').toBe(data.product.faceValue);
     expect(await pages.product.getValue(S.product.frequency), 'frequency after reload').toBe(frequency);
   });

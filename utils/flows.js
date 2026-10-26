@@ -46,7 +46,7 @@ async function fillStep(pages, step, data) {
       await pages.product.configure(data.product);
       return undefined;
     case 'riders':
-      for (const r of data.riders) await pages.rider.add(r);
+      for (const r of data.riders) await pages.rider.add(r, data.product.faceValue);
       return undefined;
     case 'beneficiaries':
       for (const b of data.beneficiaries) await pages.beneficiary.add(b);
