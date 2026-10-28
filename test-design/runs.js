@@ -27,12 +27,24 @@ const liveRuns = [
     total: 96, passed: 10, failed: 73, skipped: 13, durationMin: 14.1,
     note: 'Passed: AUTH-V01/V02/V03/V05/V11/V14 and FW-01..04. AUTH-V04 and DASH-V01 passed in RUN-1 but are not in RUN-2\'s passed list - failure text not captured (see AD-11).',
   },
+  {
+    id: 'RUN-3',
+    when: '2026-10-26 (after fixes)',
+    scope: 'Smoke (@smoke), chromium + api',
+    code: 'Merged repo v2 (real ids, Create Draft step, learner account)',
+    total: 15, passed: 7, failed: 8, skipped: 0, durationMin: 3.7,
+    note: 'CLI-V01 and PROD-V01 now pass, so the Create Draft step and the client/address/KYC/product ids work live. Remaining failures: product minimum (AD-09), API 404 (AD-11), first-login timeout (AD-10).',
+  },
 ];
 
 // scenario id -> observed result. Anything not listed was not observed individually.
 const RUN1 = {
   passed: ['AUTH-V01', 'AUTH-V14', 'AUTH-V04', 'AUTH-V05', 'DASH-V01'],
   failed: ['WF-V01', 'WF-V03', 'WF-V08', 'API-V01', 'API-V02', 'BEN-V01', 'CLI-V01', 'DOC-V01', 'PROD-V01', 'RIDER-V01'],
+};
+const RUN3 = {
+  passed: ['AUTH-V01', 'AUTH-V14', 'AUTH-V04', 'AUTH-V05', 'CLI-V01', 'DASH-V01', 'PROD-V01'],
+  failed: ['WF-V01', 'WF-V03', 'WF-V08', 'BEN-V01', 'DOC-V01', 'RIDER-V01', 'API-V01', 'API-V02'],
 };
 const RUN2 = {
   passed: ['AUTH-V01', 'AUTH-V02', 'AUTH-V03', 'AUTH-V05', 'AUTH-V11', 'AUTH-V14', 'FW-01', 'FW-02', 'FW-03', 'FW-04'],
@@ -44,6 +56,11 @@ const RUN2 = {
 /** Result text for a scenario in a run. */
 function resultFor(run, id, smoke, automated) {
   if (!automated) return 'Not automated';
+  if (run === 'RUN-3') {
+    if (RUN3.passed.includes(id)) return 'Passed';
+    if (RUN3.failed.includes(id)) return 'Failed';
+    return smoke ? 'Not itemised' : 'Not in smoke scope';
+  }
   if (run === 'RUN-1') {
     if (RUN1.passed.includes(id)) return 'Passed';
     if (RUN1.failed.includes(id)) return 'Failed';
@@ -66,7 +83,7 @@ const defectLog = [
     cases: ['WF-V01', 'WF-V03', 'WF-V08', 'BEN-V01', 'CLI-V01', 'DOC-V01', 'PROD-V01', 'RIDER-V01'],
     evidence: 'RUN-1: every test that begins with "Start New Application" failed; AUTH and DASH tests passed. RUN-2: 73 failures, all in journey specs.',
     analysis: 'The real app shows an application-start page with a Create Draft button between the dashboard and the client form. The flow clicked New Application and waited for client fields that never appeared.',
-    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    severity: 'High', priority: 'P1', status: 'Verified live in RUN-3 (journeys now reach the product step)',
     fix: 'pages/DashboardPage.js startNewApplication()', defects: [],
   },
   {
@@ -75,7 +92,7 @@ const defectLog = [
     cases: ['CLI-V01', 'PROD-V01', 'RIDER-V01', 'BEN-V01', 'DOC-V01', 'WF-V03', 'WF-V08'],
     evidence: 'RUN-1 and RUN-2 journey failures; third project\'s page objects list the real ids (e.g. client-first-name-input, product-select, rider-row-<id>).',
     analysis: 'Only login and dashboard ids were confirmed. Every other id followed a guessed convention.',
-    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    severity: 'High', priority: 'P1', status: 'Partly verified live in RUN-3 (client, address, KYC, product ids work; riders, beneficiaries, documents, review not yet reached)',
     fix: 'config/selectors.js (ids FROM MARKUP; run npm run verify:selectors to prove them)', defects: [],
   },
   {
@@ -83,7 +100,7 @@ const defectLog = [
     title: 'API client did not follow the real contract (agent_email, field names, redirects, payload shapes)',
     cases: ['API-V01', 'API-V02', 'API-V03', 'API-V04', 'API-V05', 'API-V06', 'API-V08', 'API-V10', 'API-V11'],
     evidence: 'RUN-1: API-V01 failed in 343 ms, API-V02 in 446 ms (no response text captured).',
-    analysis: 'PROBABLE (failure text not supplied): products expose product_name not name; the acting agent must be sent as agent_email on every call (the API silently acts as learner001 otherwise); redirects must not be followed so a 302 to /login cannot look like success; payloads are snake_case.',
+    analysis: 'SUPERSEDED by AD-11: RUN-3 showed HTTP 404 on both API calls, so the first cause is the API base URL, not the contract. The contract fixes (product_name, agent_email on every call, no redirects, snake_case payloads) are still correct but cannot be proven until AD-11 is resolved.',
     severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
     fix: 'api/ApiClient.js, api/helpers.js, config/endpoints.js, tests/api/applications.api.spec.js', defects: ['RI-19'],
   },
@@ -131,6 +148,33 @@ const defectLog = [
     analysis: 'A P1 release-gate scenario was not executing.',
     severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
     fix: 'tests/ui/client-kyc-sensitive.spec.js CLI-V08 rewritten (masked after reload, on review, no full SSN in page content)', defects: ['RI-07'],
+  },
+  {
+    id: 'AD-09', type: 'Automation defect', module: 'Product',
+    title: 'Journeys selected the first "whole life" product, whose minimum sum assured is above the default face value',
+    cases: ['WF-V03', 'WF-V08', 'BEN-V01', 'DOC-V01', 'RIDER-V01'],
+    evidence: 'RUN-3: "Sum assured is below the selected product minimum." at the product step in 5 tests (reference data: Elite Legacy minimum 500,000 vs default 250,000; SecureLife minimum 100,000).',
+    analysis: 'The dropdown\'s first matching entry is not necessarily SecureLife. This is the application correctly enforcing a product rule, not an application defect.',
+    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    fix: 'config/env.js patterns.defaultProduct (SecureLife; override with DEFAULT_PRODUCT_PATTERN); utils/dataBuilder.js', defects: [],
+  },
+  {
+    id: 'AD-10', type: 'Environment issue', module: 'Test setup',
+    title: 'First login of a run exceeded the 45 s test timeout while creating the cached session',
+    cases: ['WF-V01'],
+    evidence: 'RUN-3: "Test timeout of 45000ms exceeded while setting up storageState" on the first test; later tests logged in fine.',
+    analysis: 'PROBABLE: cold lab VM or slow first draft creation on login. Not an application defect unless it recurs after the timeout is raised.',
+    severity: 'Medium', priority: 'P2', status: 'Fixed in code - awaiting live re-run',
+    fix: 'fixtures/index.js storageState fixture has its own 180 s timeout', defects: [],
+  },
+  {
+    id: 'AD-11', type: 'Environment issue', module: 'API',
+    title: 'API base URL: every API call returned HTTP 404 at <host>:8081/api/',
+    cases: ['API-V01', 'API-V02', 'API-V03', 'API-V04', 'API-V05', 'API-V06', 'API-V08', 'API-V10', 'API-V11'],
+    evidence: 'RUN-3: API-V01 (with key) and API-V02 (without) both returned 404. curl on 28 Oct: http://34.93.84.61:8000/api/products = connection timed out (not reachable from the tester machine); :8081/api/products and :8082/api/products = HTTP 404 with a Laravel "Not Found" HTML page (Apache/PHP) - the server is up but has no route at that path.',
+    analysis: 'CONFIRMED: /api/products does not exist on :8081 or :8082, and :8000 is not reachable. NOT YET KNOWN: where the API really is (different prefix such as /api/v1, or an API only enabled on a local server). npm run discover:api records the calls the app\'s own pages make and probes likely paths.',
+    severity: 'High', priority: 'P1', status: 'Open - real API path not yet found (run npm run discover:api)',
+    fix: 'scripts/discover-api.js; then set INSURANCE_API_URL (or adjust config/endpoints.js)', defects: [],
   },
   // ---- application-side items: NOT reproduced by the team yet
   {

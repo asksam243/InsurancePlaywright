@@ -26,6 +26,7 @@
     "check:traceability": "node scripts/check-traceability.js",
     "export:testdesign": "node scripts/export-test-design.js",
     "report": "playwright show-report reports/html-report",
+    "discover:api": "node scripts/discover-api.js",
     "codegen": "playwright codegen",
     "install:browsers": "playwright install --with-deps chromium",
     "test:gate": "playwright test --grep @release-gate"

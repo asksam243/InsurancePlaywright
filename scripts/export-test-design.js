@@ -19,6 +19,7 @@ const out = {
       ...c, automationStatus, spec: declared[c.id] || '',
       run1: runs.resultFor('RUN-1', c.id, c.smoke, automated),
       run2: runs.resultFor('RUN-2', c.id, c.smoke, automated),
+      run3: runs.resultFor('RUN-3', c.id, c.smoke, automated),
       defectLogIds: runs.defectLog.filter((d) => d.cases.includes(c.id)).map((d) => d.id),
     };
   }),

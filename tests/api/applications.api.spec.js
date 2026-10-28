@@ -14,7 +14,7 @@ test.describe('API validation', () => {
     const res = await api.get(ep.products);
     const body = await api.json(res);
     await attachApi(testInfo, 'products', res, body);
-    expect(res.status()).toBe(200);
+    expect(res.status(), `GET ${env.apiBaseUrl}products -> HTTP ${res.status()}. A 404 here means the API is not served at this base URL: run npm run health (it probes the usual ports) and set INSURANCE_API_URL`).toBe(200);
     const list = asList(body);
     expect(list.length, 'non-empty product list').toBeGreaterThan(0);
     for (const p of list) {
@@ -28,7 +28,7 @@ test.describe('API validation', () => {
     const res = await anonApi.get(ep.applications, { params: { agent_email: env.users.learnerAgent.email } });
     const text = await res.text();
     await attachApi(testInfo, 'unauthenticated-applications', res, text.slice(0, 500));
-    expect([401, 403], `unauthenticated GET /applications returned ${res.status()}`).toContain(res.status());
+    expect([401, 403], `unauthenticated GET ${env.apiBaseUrl}applications returned ${res.status()}${res.status() === 404 ? ' - 404 means the API is not at this base URL (run npm run health, then set INSURANCE_API_URL)' : ''}`).toContain(res.status());
   });
 
   test.describe('draft-based negative tests', () => {

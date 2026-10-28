@@ -68,7 +68,7 @@ function buildKyc(overrides = {}) {
 
 function buildProduct(overrides = {}) {
   return {
-    namePattern: env.rules.patterns.product,
+    namePattern: env.rules.patterns.defaultProduct,
     faceValue: env.rules.faceValueDefault,
     frequency: 'MONTHLY',
     paymentTerm: 20, // mandatory dropdown: 10 / 15 / 20 / 25 / 30
