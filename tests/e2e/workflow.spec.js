@@ -1,4 +1,6 @@
 const { test, tc, expect, env } = require('../../fixtures');
+const routes = require('../../config/routes');
+const { applicationIdFromUrl } = require('../../pages/DashboardPage');
 const M = require('../../config/messages');
 const { S } = require('../../config/selectors');
 const { formatDate } = require('../../utils/dates');
@@ -77,7 +79,12 @@ test.describe('Submission & Status Tracking', () => {
     const text = await pages.review.reviewText();
     expect(text, 'client first name on review').toContain(data.client.firstName);
     expect(text, 'client last name on review').toContain(data.client.lastName);
-    expect(text, 'beneficiary on review').toContain(data.beneficiaries[0].name);
+    expect(text, 'product on review').toMatch(data.product.namePattern);
+    expect(text, 'sum assured on review').toContain(Number(data.product.faceValue).toLocaleString('en-US'));
     expect(await pages.review.premium(), 'review premium vs configured').toBeCloseTo(configured, 2);
+    // The live review snapshot has no beneficiary section (clarification CL-03), so the beneficiary is verified where the app shows it.
+    test.info().annotations.push({ type: 'issue', description: 'CL-03: the review snapshot lists client, product, premiums and status but no beneficiaries' });
+    await page.goto(routes.step(applicationIdFromUrl(page.url()), 'beneficiaries'));
+    await expect(pages.beneficiary.rows.filter({ hasText: data.beneficiaries[0].name }), 'beneficiary persisted on its step').toHaveCount(1);
   });
 });

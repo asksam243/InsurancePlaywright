@@ -1,8 +1,8 @@
 const { test, tc, expect, env } = require('../../fixtures');
 const M = require('../../config/messages');
 const { S } = require('../../config/selectors');
-const { dobForAge, futureDate } = require('../../utils/dates');
-const { buildAddress } = require('../../utils/dataBuilder');
+const { dobForAge, futureDate, formatDate } = require('../../utils/dates');
+const { buildAddress, buildClient } = require('../../utils/dataBuilder');
 const { progressTo } = require('../../utils/flows');
 const { expectBlocked, expectAdvanced, captureEvidence } = require('../../utils/assertions');
 
@@ -122,14 +122,13 @@ test.describe('Client / Insured Information', () => {
   });
 
 
-  test(...tc('CLI-V13'), async ({ pages }) => {
-    await progressTo(pages, 'client');
-    for (const age of [18, 35, 65]) {
-      await test.step(`DOB for age ${age} shows age ${age}`, async () => {
-        await pages.client.setDob(dobForAge(age));
-        await pages.client.expectAgeShown(age);
-      });
-    }
+  test(...tc('CLI-V13'), async ({ pages, page }, testInfo) => {
+    // The live app shows "Calculated Age" only in the review snapshot, so the age is read there.
+    const dob = dobForAge(35);
+    await progressTo(pages, 'review', { client: buildClient({ dob }) });
+    const shown = await pages.review.calculatedAge();
+    await testInfo.attach('dob-and-age', { body: `DOB entered: ${formatDate(dob, 'iso')}\nToday (test machine, UTC): ${new Date().toISOString().slice(0, 10)}\nAge shown on review: ${shown}`, contentType: 'text/plain' });
+    expect(shown, `a client born exactly 35 years ago today (${formatDate(dob, 'iso')}) should show age 35`).toBe(35);
   });
 
   test(...tc('CLI-V14'), async ({ pages }) => {

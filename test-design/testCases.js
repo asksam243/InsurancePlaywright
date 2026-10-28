@@ -302,12 +302,12 @@ const cases = [
     expected: 'An affordability warning or block referring to income/premium is shown (formula TBC with the product owner)',
     evidence: EV_SEEDED,
   }),
-  T('CLI-V13', 'Calculated age is displayed after DOB entry', {
-    source: 'S2+', priority: 'P2', severity: 'Medium',
-    pre: atStep('client').replace('with every earlier step completed using valid data', '(first step)'),
-    steps: ['Enter a DOB for each of ages 18, 35 and 65', 'Read the displayed age'],
-    data: 'dobForAge(18|35|65)',
-    expected: 'The age shown equals the age calculated from the DOB (calcAge in utils/dates.js)',
+  T('CLI-V13', 'Calculated age shown on review matches the date of birth', {
+    source: 'S2+', priority: 'P2', severity: 'Medium', defects: ['RI-04'],
+    steps: ['Complete a journey with a DOB exactly 35 years before today', 'Read "Calculated Age" on the review page'],
+    data: 'dobForAge(35)',
+    expected: 'The age shown is 35 (the live app shows the calculated age only on the review snapshot)',
+    evidence: 'DOB entered and age shown attached to the report',
   }),
   T('CLI-V14', 'Name validation rejects digits and special characters', {
     source: 'S2+', type: 'UI Negative', priority: 'P2', severity: 'Medium',
@@ -631,10 +631,10 @@ const cases = [
     expected: 'UI status text equals the API status',
     evidence: 'Screenshot + API response attached', cond: 'Skips if the application id cannot be read from the URL',
   }),
-  T('WF-V08', 'Review page reflects the entered client, product and beneficiary data', {
+  T('WF-V08', 'Review page reflects the entered client, product and premium (beneficiary persists on its step)', {
     source: 'S2+', type: 'UI Consistency', priority: 'P1', severity: 'High', smoke: true,
     steps: ['Complete every step with valid data', 'Open the review step', 'Read the review text'],
-    expected: 'Review shows the client name, the beneficiary name and a premium equal to the configured premium',
+    expected: 'Review shows the client name, product, sum assured and a premium equal to the configured premium; the beneficiary row is still present on the beneficiary step (the review snapshot has no beneficiary section - CL-03)',
     evidence: 'Screenshot of review attached on pass and fail',
   }),
 

@@ -15,10 +15,20 @@ class ReviewSubmitPage extends BasePage {
     return this.$(S.review.submit);
   }
 
+  /** Total modal premium: the dedicated element when present, otherwise the figure after the "Total Modal Premium" label. */
   async premium() {
     const el = this.$(S.review.premium);
-    if (!(await el.count())) return NaN;
-    return parseMoney(await el.textContent());
+    if (await el.count()) return parseMoney(await el.textContent());
+    const m = (await this.reviewText()).match(/Total\s+(?:Modal\s+)?Premium\s*\$?\s*([\d,]+\.\d{2})/i);
+    return m ? parseMoney(m[1]) : NaN;
+  }
+
+  /** Calculated age shown in the review snapshot (NaN when not shown). */
+  async calculatedAge() {
+    const el = this.$(S.review.age);
+    const raw = (await el.count()) ? (await el.textContent()) || '' : ((await this.reviewText()).match(/Calculated\s+Age\s*(\d+)/i) || [])[1] || '';
+    const m = String(raw).match(/\d+/);
+    return m ? Number(m[0]) : NaN;
   }
 
   /** Full text of the review area, for "review shows what was entered" checks. */

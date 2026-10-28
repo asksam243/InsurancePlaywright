@@ -69,6 +69,7 @@
       "run1": "Passed",
       "run2": "Passed",
       "run3": "Passed",
+      "run4": "Passed",
       "defectLogIds": []
     },
     {
@@ -116,6 +117,7 @@
       "run1": "Not in smoke scope",
       "run2": "Passed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AD-07"
       ]
@@ -162,6 +164,7 @@
       "run1": "Not in smoke scope",
       "run2": "Passed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -207,6 +210,7 @@
       "run1": "Passed",
       "run2": "Not passed - investigate",
       "run3": "Passed",
+      "run4": "Passed",
       "defectLogIds": [
         "AD-07"
       ]
@@ -253,6 +257,7 @@
       "run1": "Passed",
       "run2": "Passed",
       "run3": "Passed",
+      "run4": "Passed",
       "defectLogIds": []
     },
     {
@@ -302,6 +307,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -351,6 +357,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -401,6 +408,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -448,6 +456,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -493,6 +502,7 @@
       "run1": "Passed",
       "run2": "Passed",
       "run3": "Passed",
+      "run4": "Passed",
       "defectLogIds": []
     },
     {
@@ -539,6 +549,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -584,6 +595,7 @@
       "run1": "Not in smoke scope",
       "run2": "Passed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -630,6 +642,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -677,6 +690,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -720,6 +734,7 @@
       "run1": "Passed",
       "run2": "Not passed - investigate",
       "run3": "Passed",
+      "run4": "Passed",
       "defectLogIds": [
         "AD-07"
       ]
@@ -768,6 +783,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -811,6 +827,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "CL-02"
       ]
@@ -862,6 +879,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -906,6 +924,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "CL-01"
       ]
@@ -956,6 +975,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1000,6 +1020,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "CL-01"
       ]
@@ -1046,6 +1067,7 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Passed",
+      "run4": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -1094,6 +1116,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1141,6 +1164,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1188,6 +1212,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1236,6 +1261,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1280,6 +1306,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1324,6 +1351,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1373,6 +1401,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AD-08"
       ]
@@ -1418,6 +1447,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1463,6 +1493,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1506,6 +1537,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1555,27 +1587,30 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
       "id": "CLI-V13",
       "prefix": "CLI",
-      "title": "Calculated age is displayed after DOB entry",
+      "title": "Calculated age shown on review matches the date of birth",
       "source": "S2+",
       "type": "UI Positive",
       "priority": "P2",
       "severity": "Medium",
       "layer": "UI",
       "smoke": false,
-      "defects": [],
-      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the client step (first step)",
-      "steps": [
-        "Enter a DOB for each of ages 18, 35 and 65",
-        "Read the displayed age"
+      "defects": [
+        "RI-04"
       ],
-      "data": "dobForAge(18|35|65)",
-      "expected": "The age shown equals the age calculated from the DOB (calcAge in utils/dates.js)",
-      "evidence": "Screenshot + trace on failure",
+      "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable",
+      "steps": [
+        "Complete a journey with a DOB exactly 35 years before today",
+        "Read \"Calculated Age\" on the review page"
+      ],
+      "data": "dobForAge(35)",
+      "expected": "The age shown is 35 (the live app shows the calculated age only on the review snapshot)",
+      "evidence": "DOB entered and age shown attached to the report",
       "automation": "Automated",
       "cond": "",
       "blockedReason": "",
@@ -1591,14 +1626,18 @@
       "tags": [
         "@regression",
         "@client",
-        "@p2"
+        "@p2",
+        "@seeded"
       ],
       "automationStatus": "Automated",
       "spec": "tests/ui/client.spec.js",
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
-      "defectLogIds": []
+      "run4": "Not in smoke scope",
+      "defectLogIds": [
+        "AC-04"
+      ]
     },
     {
       "id": "CLI-V14",
@@ -1641,6 +1680,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1684,6 +1724,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1729,6 +1770,7 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Passed",
+      "run4": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -1775,6 +1817,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1822,6 +1865,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1868,6 +1912,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1918,6 +1963,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1967,6 +2013,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2016,6 +2063,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2066,6 +2114,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2109,6 +2158,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2152,6 +2202,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2201,6 +2252,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2245,11 +2297,13 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Failed",
+      "run4": "Failed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
         "AD-04",
-        "AD-09"
+        "AD-09",
+        "AD-13"
       ]
     },
     {
@@ -2298,6 +2352,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2343,6 +2398,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2386,6 +2442,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2434,6 +2491,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2476,6 +2534,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2523,6 +2582,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2567,6 +2627,7 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Failed",
+      "run4": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -2621,6 +2682,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2668,6 +2730,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2714,6 +2777,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2762,6 +2826,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2805,6 +2870,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2848,6 +2914,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2895,6 +2962,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2938,6 +3006,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2981,6 +3050,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3024,6 +3094,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3069,6 +3140,7 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Failed",
+      "run4": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -3118,6 +3190,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3160,6 +3233,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3209,6 +3283,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3252,6 +3327,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3294,6 +3370,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AC-01"
       ]
@@ -3344,6 +3421,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3394,6 +3472,7 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Failed",
+      "run4": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-04",
@@ -3448,6 +3527,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3497,6 +3577,7 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Failed",
+      "run4": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -3546,6 +3627,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3588,6 +3670,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3639,6 +3722,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3687,12 +3771,13 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
       "id": "WF-V08",
       "prefix": "WF",
-      "title": "Review page reflects the entered client, product and beneficiary data",
+      "title": "Review page reflects the entered client, product and premium (beneficiary persists on its step)",
       "source": "S2+",
       "type": "UI Consistency",
       "priority": "P2",
@@ -3707,7 +3792,7 @@
         "Read the review text"
       ],
       "data": "Generated synthetic data (utils/dataBuilder.js)",
-      "expected": "Review shows the client name, the beneficiary name and a premium equal to the configured premium",
+      "expected": "Review shows the client name, product, sum assured and a premium equal to the configured premium; the beneficiary row is still present on the beneficiary step (the review snapshot has no beneficiary section - CL-03)",
       "evidence": "Screenshot of review attached on pass and fail",
       "automation": "Automated",
       "cond": "",
@@ -3732,10 +3817,14 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Failed",
+      "run4": "Failed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
-        "AD-09"
+        "AD-09",
+        "AD-12",
+        "AC-04",
+        "CL-03"
       ]
     },
     {
@@ -3779,6 +3868,7 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Failed",
+      "run4": "Skipped (environment)",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -3826,9 +3916,11 @@
       "run1": "Failed",
       "run2": "Failed",
       "run3": "Failed",
+      "run4": "Skipped (environment)",
       "defectLogIds": [
         "AD-03",
-        "AD-11"
+        "AD-11",
+        "AC-03"
       ]
     },
     {
@@ -3878,6 +3970,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -3930,6 +4023,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -3982,6 +4076,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4032,6 +4127,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4082,6 +4178,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4126,6 +4223,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11",
@@ -4172,6 +4270,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4215,6 +4314,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4261,6 +4361,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4311,6 +4412,7 @@
       "run1": "Not in smoke scope",
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4358,6 +4460,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4405,6 +4508,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4452,6 +4556,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4499,6 +4604,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4546,6 +4652,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4593,6 +4700,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4640,6 +4748,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4687,6 +4796,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4734,6 +4844,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4781,6 +4892,7 @@
       "run1": "Not automated",
       "run2": "Not automated",
       "run3": "Not automated",
+      "run4": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4828,6 +4940,7 @@
       "run1": "Not in smoke scope",
       "run2": "Passed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4871,6 +4984,7 @@
       "run1": "Not in smoke scope",
       "run2": "Passed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4914,6 +5028,7 @@
       "run1": "Not in smoke scope",
       "run2": "Passed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4958,6 +5073,7 @@
       "run1": "Not in smoke scope",
       "run2": "Passed",
       "run3": "Not in smoke scope",
+      "run4": "Not in smoke scope",
       "defectLogIds": []
     }
   ],
@@ -4997,6 +5113,18 @@
       "skipped": 0,
       "durationMin": 3.7,
       "note": "CLI-V01 and PROD-V01 now pass, so the Create Draft step and the client/address/KYC/product ids work live. Remaining failures: product minimum (AD-09), API 404 (AD-11), first-login timeout (AD-10)."
+    },
+    {
+      "id": "RUN-4",
+      "when": "2026-10-28 (after product / timeout / API-skip fixes)",
+      "scope": "Smoke (@smoke), chromium + api",
+      "code": "Merged repo v3",
+      "total": 15,
+      "passed": 11,
+      "failed": 2,
+      "skipped": 2,
+      "durationMin": 2.5,
+      "note": "End-to-end submission (WF-V03), draft save (WF-V01), beneficiaries, documents and client info pass live. Failures: WF-V08 (over-specified review check, AD-12) and RIDER-V01 (premium summary not read, AD-13). API-V01/V02 skipped as an environment issue (AD-11). The review shows Calculated Age 36 for a DOB 35 years back (AC-04)."
     }
   ],
   "defectLog": [
@@ -5041,7 +5169,7 @@
       "analysis": "Only login and dashboard ids were confirmed. Every other id followed a guessed convention.",
       "severity": "High",
       "priority": "P1",
-      "status": "Partly verified live in RUN-3 (client, address, KYC, product ids work; riders, beneficiaries, documents, review not yet reached)",
+      "status": "Mostly verified live in RUN-4 (client, address, KYC, product, beneficiaries, documents, review, confirmation work; riders premium summary still open - AD-13)",
       "fix": "config/selectors.js (ids FROM MARKUP; run npm run verify:selectors to prove them)",
       "defects": []
     },
@@ -5087,7 +5215,7 @@
       "analysis": "The wizard model assumed in Submission 2 does not match the application.",
       "severity": "High",
       "priority": "P1",
-      "status": "Fixed in code - awaiting live re-run",
+      "status": "Mostly verified live in RUN-4 (product, beneficiary, document pages work); rider premium reading open - AD-13",
       "fix": "pages/ProductPage.js, RiderPage.js, BeneficiaryPage.js, DocumentsPage.js, BasePage.js",
       "defects": []
     },
@@ -5181,7 +5309,7 @@
       "analysis": "The dropdown's first matching entry is not necessarily SecureLife. This is the application correctly enforcing a product rule, not an application defect.",
       "severity": "High",
       "priority": "P1",
-      "status": "Fixed in code - awaiting live re-run",
+      "status": "Verified live in RUN-4 (WF-V03, BEN-V01, DOC-V01 now pass)",
       "fix": "config/env.js patterns.defaultProduct (SecureLife; override with DEFAULT_PRODUCT_PATTERN); utils/dataBuilder.js",
       "defects": []
     },
@@ -5197,9 +5325,43 @@
       "analysis": "PROBABLE: cold lab VM or slow first draft creation on login. Not an application defect unless it recurs after the timeout is raised.",
       "severity": "Medium",
       "priority": "P2",
-      "status": "Fixed in code - awaiting live re-run",
+      "status": "Verified live in RUN-4 (WF-V01 passed in 6.6 s; no timeout)",
       "fix": "fixtures/index.js storageState fixture has its own 180 s timeout",
       "defects": []
+    },
+    {
+      "id": "AD-12",
+      "type": "Automation defect",
+      "module": "Review",
+      "title": "WF-V08 expected the beneficiary on the review page; the live review snapshot has no beneficiary section",
+      "cases": [
+        "WF-V08"
+      ],
+      "evidence": "RUN-4 failure text: review shows Client, Calculated Age, Product, Sum Assured, Frequency, Payment Term, Coverage Term, Base/Rider/Total premium and Status only.",
+      "analysis": "The test over-specified the page. Whether the review SHOULD list beneficiaries is a requirement question (CL-03).",
+      "severity": "Medium",
+      "priority": "P2",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "tests/e2e/workflow.spec.js WF-V08 checks client, product, sum assured and premium on review, and the beneficiary on its own step",
+      "defects": []
+    },
+    {
+      "id": "AD-13",
+      "type": "Automation defect",
+      "module": "Riders",
+      "title": "RIDER-V01: the rider premium summary figure was not read (NaN after 8 s)",
+      "cases": [
+        "RIDER-V01"
+      ],
+      "evidence": "RUN-4: \"rider premium in the summary ... Expected > 0, Received NaN\".",
+      "analysis": "UNKNOWN which of: the summary element id differs, the summary shows 0.00 until the step is saved, or the ADB coverage field needs a value. The test now attaches what the page shows (rider-premium-diagnostics) when it fails.",
+      "severity": "Medium",
+      "priority": "P2",
+      "status": "Open - needs the attached diagnostics or error-context.md",
+      "fix": "pages/RiderPage.js riderPremiumSummary() reads a labelled figure as a fallback",
+      "defects": [
+        "RI-12"
+      ]
     },
     {
       "id": "AD-11",
@@ -5218,11 +5380,11 @@
         "API-V11"
       ],
       "evidence": "RUN-3: API-V01 (with key) and API-V02 (without) both returned 404. curl on 28 Oct: http://34.93.84.61:8000/api/products = connection timed out (not reachable from the tester machine); :8081/api/products and :8082/api/products = HTTP 404 with a Laravel \"Not Found\" HTML page (Apache/PHP) - the server is up but has no route at that path.",
-      "analysis": "CONFIRMED (discover:api, 28 Oct): all 24 probed paths under /api, /api/v1, /index.php/api, /public/api, /insurance/api and /api/insurance returned 404 on :8081; the pages make no background API calls and contain no /api strings. Anonymous GET /products and /applications return 401 JSON, which looks like the app's own login-protected pages, not a key-protected API. /health and /riders are 404. CONFIRMED: /api/products does not exist on :8081 or :8082, and :8000 is not reachable from the tester machine (possibly open only on the VM itself). NOT YET KNOWN: where the API really is (different prefix such as /api/v1, or an API only enabled on a local server). npm run discover:api records the calls the app's own pages make and probes likely paths.",
+      "analysis": "CONFIRMED by the application itself (discover:api, 28 Oct, signed-in session): Laravel answers \"The route api/products could not be found\" (same for api/applications), and every probed /api prefix is 404. /applications, /products and /applications/<id>/status return normal HTML pages. So this deployment (C:\\qa-lab\\apps\\insurance-order-entry-demo) registers NO API routes. HYPOTHESES to put to the lab admin: the API is only enabled when QA_DEMO_API_KEY is set in the app's environment, or it is a separate service reachable only from the VM (port 8000 timed out from the tester machine). Not an application defect until the lab confirms the API is meant to exist here.",
       "severity": "High",
       "priority": "P1",
-      "status": "Open - real API path not yet found (run npm run discover:api)",
-      "fix": "API tests now SKIP as an environment issue until the API answers (API_REQUIRED=true makes it a failure); ask the lab for the API address or run the API tests on the VM / via an SSH tunnel to :8000",
+      "status": "Open - no API routes in this deployment; ask the lab admin",
+      "fix": "API tests SKIP as an environment issue until the API answers (API_REQUIRED=true makes that a failure). Ask the lab admin: is QA_DEMO_API_KEY set and the API enabled on this VM, and where is it served?",
       "defects": []
     },
     {
@@ -5260,6 +5422,57 @@
       "defects": [
         "RI-19"
       ]
+    },
+    {
+      "id": "AC-03",
+      "type": "Application defect (candidate)",
+      "module": "Platform / Security",
+      "title": "Unknown routes return a debug exception page that leaks the exception class and the server file path",
+      "cases": [
+        "API-V02"
+      ],
+      "evidence": "Observed by the team in discover:api output (28 Oct): GET /api/products with Accept: application/json returns JSON containing \"exception\": \"Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException\" and \"file\": \"C:\\qa-lab\\apps\\insurance-order-entry-demo\\vendor\\laravel\\framework\\src...\". Reproduce with curl.exe -H \"Accept: application/json\" http://34.93.84.61:8081/api/products",
+      "analysis": "Looks like APP_DEBUG=true. That is expected in a training lab but would be an information-disclosure finding in any real environment. Confirm with the product owner whether debug mode is intended here before rating it.",
+      "severity": "Low",
+      "priority": "P3",
+      "status": "Observed - awaiting confirmation it is not intended",
+      "fix": "",
+      "defects": []
+    },
+    {
+      "id": "AC-04",
+      "type": "Application defect (candidate)",
+      "module": "Client / Review",
+      "title": "Calculated Age on the review page shows 36 for a client born exactly 35 years ago today",
+      "cases": [
+        "CLI-V13",
+        "WF-V08"
+      ],
+      "evidence": "RUN-4 WF-V08 failure text pasted the review snapshot: \"Calculated Age 36\". The tests enter dobForAge(35) = today minus 35 years (UTC). The exact DOB typed was not captured in that run; CLI-V13 now attaches DOB and age.",
+      "analysis": "Possible off-by-one in the age calculation (a seeded-defect theme, RI-04). NOT yet reproduced deliberately: re-run CLI-V13 and confirm by hand (enter a DOB exactly 35 years ago and read the age on review).",
+      "severity": "Medium",
+      "priority": "P2",
+      "status": "Candidate - reproduce with CLI-V13",
+      "fix": "",
+      "defects": [
+        "RI-04"
+      ]
+    },
+    {
+      "id": "CL-03",
+      "type": "Clarification",
+      "module": "Review",
+      "title": "Should the review page list the beneficiaries (and riders)?",
+      "cases": [
+        "WF-V08"
+      ],
+      "evidence": "The live review snapshot shows client, product and premiums only.",
+      "analysis": "Ask the product owner; if yes, this is an application gap.",
+      "severity": "Low",
+      "priority": "P3",
+      "status": "Open",
+      "fix": "",
+      "defects": []
     },
     {
       "id": "CL-01",

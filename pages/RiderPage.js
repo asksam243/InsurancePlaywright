@@ -94,11 +94,23 @@ class RiderPage extends BasePage {
     return figures.length ? figures[figures.length - 1] : NaN;
   }
 
-  /** Rider premium shown in the summary: the first positive figure (NaN when none is shown yet). */
+  /**
+   * Rider premium shown on the page: the first positive figure in the premium summary; if the summary element is absent or has
+   * none, the figure after a "Rider Premium" label anywhere in the main area. NaN when nothing positive is shown.
+   */
   async riderPremiumSummary() {
-    const figures = await this.summaryFigures();
-    const positive = figures.find((f) => f > 0);
-    return positive === undefined ? NaN : positive;
+    const positive = (await this.summaryFigures()).find((f) => f > 0);
+    if (positive !== undefined) return positive;
+    const main = await this.page.locator('main').first().innerText().catch(() => '');
+    const m = main.match(/Rider(?:s)?\s+(?:Modal\s+|Monthly\s+)?Premium[^\d\n]{0,20}\$?\s*([\d,]+\.\d{2})/i);
+    const fromLabel = m ? parseMoney(m[1]) : NaN;
+    return fromLabel > 0 ? fromLabel : NaN;
+  }
+
+  /** Everything the page shows about premiums, for failure diagnostics. */
+  async premiumDiagnostics() {
+    const main = await this.page.locator('main').first().innerText().catch(() => '');
+    return `summary element text: "${await this.summaryText()}"\nlines mentioning premium:\n${main.split('\n').filter((l) => /premium|rider|\$/i.test(l)).slice(0, 25).join('\n')}`;
   }
 
   get message() {

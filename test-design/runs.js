@@ -35,6 +35,14 @@ const liveRuns = [
     total: 15, passed: 7, failed: 8, skipped: 0, durationMin: 3.7,
     note: 'CLI-V01 and PROD-V01 now pass, so the Create Draft step and the client/address/KYC/product ids work live. Remaining failures: product minimum (AD-09), API 404 (AD-11), first-login timeout (AD-10).',
   },
+  {
+    id: 'RUN-4',
+    when: '2026-10-28 (after product / timeout / API-skip fixes)',
+    scope: 'Smoke (@smoke), chromium + api',
+    code: 'Merged repo v3',
+    total: 15, passed: 11, failed: 2, skipped: 2, durationMin: 2.5,
+    note: 'End-to-end submission (WF-V03), draft save (WF-V01), beneficiaries, documents and client info pass live. Failures: WF-V08 (over-specified review check, AD-12) and RIDER-V01 (premium summary not read, AD-13). API-V01/V02 skipped as an environment issue (AD-11). The review shows Calculated Age 36 for a DOB 35 years back (AC-04).',
+  },
 ];
 
 // scenario id -> observed result. Anything not listed was not observed individually.
@@ -46,6 +54,11 @@ const RUN3 = {
   passed: ['AUTH-V01', 'AUTH-V14', 'AUTH-V04', 'AUTH-V05', 'CLI-V01', 'DASH-V01', 'PROD-V01'],
   failed: ['WF-V01', 'WF-V03', 'WF-V08', 'BEN-V01', 'DOC-V01', 'RIDER-V01', 'API-V01', 'API-V02'],
 };
+const RUN4 = {
+  passed: ['WF-V01', 'WF-V03', 'AUTH-V01', 'AUTH-V14', 'AUTH-V04', 'AUTH-V05', 'BEN-V01', 'CLI-V01', 'DASH-V01', 'DOC-V01', 'PROD-V01'],
+  failed: ['WF-V08', 'RIDER-V01'],
+  skipped: ['API-V01', 'API-V02'],
+};
 const RUN2 = {
   passed: ['AUTH-V01', 'AUTH-V02', 'AUTH-V03', 'AUTH-V05', 'AUTH-V11', 'AUTH-V14', 'FW-01', 'FW-02', 'FW-03', 'FW-04'],
   failed: ['BEN-V01', 'BEN-V02', 'BEN-V03', 'BEN-V04', 'BEN-V05', 'BEN-V06', 'BEN-V07', 'BEN-V08', ...RUN1.failed],
@@ -56,6 +69,12 @@ const RUN2 = {
 /** Result text for a scenario in a run. */
 function resultFor(run, id, smoke, automated) {
   if (!automated) return 'Not automated';
+  if (run === 'RUN-4') {
+    if (RUN4.passed.includes(id)) return 'Passed';
+    if (RUN4.failed.includes(id)) return 'Failed';
+    if (RUN4.skipped.includes(id)) return 'Skipped (environment)';
+    return smoke ? 'Not itemised' : 'Not in smoke scope';
+  }
   if (run === 'RUN-3') {
     if (RUN3.passed.includes(id)) return 'Passed';
     if (RUN3.failed.includes(id)) return 'Failed';
@@ -92,7 +111,7 @@ const defectLog = [
     cases: ['CLI-V01', 'PROD-V01', 'RIDER-V01', 'BEN-V01', 'DOC-V01', 'WF-V03', 'WF-V08'],
     evidence: 'RUN-1 and RUN-2 journey failures; third project\'s page objects list the real ids (e.g. client-first-name-input, product-select, rider-row-<id>).',
     analysis: 'Only login and dashboard ids were confirmed. Every other id followed a guessed convention.',
-    severity: 'High', priority: 'P1', status: 'Partly verified live in RUN-3 (client, address, KYC, product ids work; riders, beneficiaries, documents, review not yet reached)',
+    severity: 'High', priority: 'P1', status: 'Mostly verified live in RUN-4 (client, address, KYC, product, beneficiaries, documents, review, confirmation work; riders premium summary still open - AD-13)',
     fix: 'config/selectors.js (ids FROM MARKUP; run npm run verify:selectors to prove them)', defects: [],
   },
   {
@@ -110,7 +129,7 @@ const defectLog = [
     cases: ['PROD-V01', 'RIDER-V01', 'BEN-V01', 'DOC-V01', 'WF-V01'],
     evidence: 'Third project\'s page objects: product step is a dropdown, riders are table rows, beneficiaries are an always-open form using native alert()/confirm(), documents are one type dropdown + one file input + Upload, and there is no Save draft button.',
     analysis: 'The wizard model assumed in Submission 2 does not match the application.',
-    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    severity: 'High', priority: 'P1', status: 'Mostly verified live in RUN-4 (product, beneficiary, document pages work); rider premium reading open - AD-13',
     fix: 'pages/ProductPage.js, RiderPage.js, BeneficiaryPage.js, DocumentsPage.js, BasePage.js', defects: [],
   },
   {
@@ -155,7 +174,7 @@ const defectLog = [
     cases: ['WF-V03', 'WF-V08', 'BEN-V01', 'DOC-V01', 'RIDER-V01'],
     evidence: 'RUN-3: "Sum assured is below the selected product minimum." at the product step in 5 tests (reference data: Elite Legacy minimum 500,000 vs default 250,000; SecureLife minimum 100,000).',
     analysis: 'The dropdown\'s first matching entry is not necessarily SecureLife. This is the application correctly enforcing a product rule, not an application defect.',
-    severity: 'High', priority: 'P1', status: 'Fixed in code - awaiting live re-run',
+    severity: 'High', priority: 'P1', status: 'Verified live in RUN-4 (WF-V03, BEN-V01, DOC-V01 now pass)',
     fix: 'config/env.js patterns.defaultProduct (SecureLife; override with DEFAULT_PRODUCT_PATTERN); utils/dataBuilder.js', defects: [],
   },
   {
@@ -164,17 +183,34 @@ const defectLog = [
     cases: ['WF-V01'],
     evidence: 'RUN-3: "Test timeout of 45000ms exceeded while setting up storageState" on the first test; later tests logged in fine.',
     analysis: 'PROBABLE: cold lab VM or slow first draft creation on login. Not an application defect unless it recurs after the timeout is raised.',
-    severity: 'Medium', priority: 'P2', status: 'Fixed in code - awaiting live re-run',
+    severity: 'Medium', priority: 'P2', status: 'Verified live in RUN-4 (WF-V01 passed in 6.6 s; no timeout)',
     fix: 'fixtures/index.js storageState fixture has its own 180 s timeout', defects: [],
+  },
+  {
+    id: 'AD-12', type: 'Automation defect', module: 'Review',
+    title: 'WF-V08 expected the beneficiary on the review page; the live review snapshot has no beneficiary section',
+    cases: ['WF-V08'],
+    evidence: 'RUN-4 failure text: review shows Client, Calculated Age, Product, Sum Assured, Frequency, Payment Term, Coverage Term, Base/Rider/Total premium and Status only.',
+    analysis: 'The test over-specified the page. Whether the review SHOULD list beneficiaries is a requirement question (CL-03).',
+    severity: 'Medium', priority: 'P2', status: 'Fixed in code - awaiting live re-run',
+    fix: 'tests/e2e/workflow.spec.js WF-V08 checks client, product, sum assured and premium on review, and the beneficiary on its own step', defects: [],
+  },
+  {
+    id: 'AD-13', type: 'Automation defect', module: 'Riders',
+    title: 'RIDER-V01: the rider premium summary figure was not read (NaN after 8 s)',
+    cases: ['RIDER-V01'],
+    evidence: 'RUN-4: "rider premium in the summary ... Expected > 0, Received NaN".',
+    analysis: 'UNKNOWN which of: the summary element id differs, the summary shows 0.00 until the step is saved, or the ADB coverage field needs a value. The test now attaches what the page shows (rider-premium-diagnostics) when it fails.',
+    severity: 'Medium', priority: 'P2', status: 'Open - needs the attached diagnostics or error-context.md', fix: 'pages/RiderPage.js riderPremiumSummary() reads a labelled figure as a fallback', defects: ['RI-12'],
   },
   {
     id: 'AD-11', type: 'Environment issue', module: 'API',
     title: 'API base URL: every API call returned HTTP 404 at <host>:8081/api/',
     cases: ['API-V01', 'API-V02', 'API-V03', 'API-V04', 'API-V05', 'API-V06', 'API-V08', 'API-V10', 'API-V11'],
     evidence: 'RUN-3: API-V01 (with key) and API-V02 (without) both returned 404. curl on 28 Oct: http://34.93.84.61:8000/api/products = connection timed out (not reachable from the tester machine); :8081/api/products and :8082/api/products = HTTP 404 with a Laravel "Not Found" HTML page (Apache/PHP) - the server is up but has no route at that path.',
-    analysis: 'CONFIRMED (discover:api, 28 Oct): all 24 probed paths under /api, /api/v1, /index.php/api, /public/api, /insurance/api and /api/insurance returned 404 on :8081; the pages make no background API calls and contain no /api strings. Anonymous GET /products and /applications return 401 JSON, which looks like the app\'s own login-protected pages, not a key-protected API. /health and /riders are 404. CONFIRMED: /api/products does not exist on :8081 or :8082, and :8000 is not reachable from the tester machine (possibly open only on the VM itself). NOT YET KNOWN: where the API really is (different prefix such as /api/v1, or an API only enabled on a local server). npm run discover:api records the calls the app\'s own pages make and probes likely paths.',
-    severity: 'High', priority: 'P1', status: 'Open - real API path not yet found (run npm run discover:api)',
-    fix: 'API tests now SKIP as an environment issue until the API answers (API_REQUIRED=true makes it a failure); ask the lab for the API address or run the API tests on the VM / via an SSH tunnel to :8000', defects: [],
+    analysis: 'CONFIRMED by the application itself (discover:api, 28 Oct, signed-in session): Laravel answers "The route api/products could not be found" (same for api/applications), and every probed /api prefix is 404. /applications, /products and /applications/<id>/status return normal HTML pages. So this deployment (C:\\qa-lab\\apps\\insurance-order-entry-demo) registers NO API routes. HYPOTHESES to put to the lab admin: the API is only enabled when QA_DEMO_API_KEY is set in the app\'s environment, or it is a separate service reachable only from the VM (port 8000 timed out from the tester machine). Not an application defect until the lab confirms the API is meant to exist here.',
+    severity: 'High', priority: 'P1', status: 'Open - no API routes in this deployment; ask the lab admin',
+    fix: 'API tests SKIP as an environment issue until the API answers (API_REQUIRED=true makes that a failure). Ask the lab admin: is QA_DEMO_API_KEY set and the API enabled on this VM, and where is it served?', defects: [],
   },
   // ---- application-side items: NOT reproduced by the team yet
   {
@@ -192,6 +228,30 @@ const defectLog = [
     evidence: 'Stated in the third project\'s README and ApiClient notes; not observed by the team.',
     analysis: 'Possible data-scoping weakness: confirm with a call that omits agent_email.',
     severity: 'Medium', priority: 'P2', status: 'Candidate - not reproduced', fix: '', defects: ['RI-19'],
+  },
+  {
+    id: 'AC-03', type: 'Application defect (candidate)', module: 'Platform / Security',
+    title: 'Unknown routes return a debug exception page that leaks the exception class and the server file path',
+    cases: ['API-V02'],
+    evidence: 'Observed by the team in discover:api output (28 Oct): GET /api/products with Accept: application/json returns JSON containing "exception": "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException" and "file": "C:\\qa-lab\\apps\\insurance-order-entry-demo\\vendor\\laravel\\framework\\src...". Reproduce with curl.exe -H "Accept: application/json" http://34.93.84.61:8081/api/products',
+    analysis: 'Looks like APP_DEBUG=true. That is expected in a training lab but would be an information-disclosure finding in any real environment. Confirm with the product owner whether debug mode is intended here before rating it.',
+    severity: 'Low', priority: 'P3', status: 'Observed - awaiting confirmation it is not intended', fix: '', defects: [],
+  },
+  {
+    id: 'AC-04', type: 'Application defect (candidate)', module: 'Client / Review',
+    title: 'Calculated Age on the review page shows 36 for a client born exactly 35 years ago today',
+    cases: ['CLI-V13', 'WF-V08'],
+    evidence: 'RUN-4 WF-V08 failure text pasted the review snapshot: "Calculated Age 36". The tests enter dobForAge(35) = today minus 35 years (UTC). The exact DOB typed was not captured in that run; CLI-V13 now attaches DOB and age.',
+    analysis: 'Possible off-by-one in the age calculation (a seeded-defect theme, RI-04). NOT yet reproduced deliberately: re-run CLI-V13 and confirm by hand (enter a DOB exactly 35 years ago and read the age on review).',
+    severity: 'Medium', priority: 'P2', status: 'Candidate - reproduce with CLI-V13', fix: '', defects: ['RI-04'],
+  },
+  {
+    id: 'CL-03', type: 'Clarification', module: 'Review',
+    title: 'Should the review page list the beneficiaries (and riders)?',
+    cases: ['WF-V08'],
+    evidence: 'The live review snapshot shows client, product and premiums only.',
+    analysis: 'Ask the product owner; if yes, this is an application gap.',
+    severity: 'Low', priority: 'P3', status: 'Open', fix: '', defects: [],
   },
   {
     id: 'CL-01', type: 'Clarification', module: 'Dashboard',

@@ -15,12 +15,18 @@ test.describe('Rider Selection', () => {
     test.skip(!(await pages.rider.cardFor(pattern).count()), `No ${label} rider offered in this environment`);
   };
 
-  test(...tc('RIDER-V01'), async ({ pages }) => {
+  test(...tc('RIDER-V01'), async ({ pages }, testInfo) => {
     await progressTo(pages, 'riders');
     await needRider(pages, adb, 'ADB');
     await pages.rider.add(adb);
     expect(await pages.rider.isAdded(adb)).toBe(true);
-    await expect.poll(() => pages.rider.riderPremiumSummary(), { message: 'rider premium in the summary' }).toBeGreaterThan(0);
+    try {
+      await expect.poll(() => pages.rider.riderPremiumSummary(), { message: 'rider premium in the summary' }).toBeGreaterThan(0);
+    } catch (e) {
+      // Attach exactly what the page showed, so the cause (no summary element, a zero premium, a different label) is visible in the report.
+      await testInfo.attach('rider-premium-diagnostics', { body: await pages.rider.premiumDiagnostics(), contentType: 'text/plain' });
+      throw e;
+    }
   });
 
   test(...tc('RIDER-V02'), async ({ pages, page }, testInfo) => {
