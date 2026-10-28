@@ -67,8 +67,23 @@ async function recordFromPages() {
     await page.waitForLoadState('networkidle').catch(() => {});
     await scan();
   }
+  // 4. The same paths, but WITH the signed-in session cookie (and the key). A 401 JSON for an anonymous request on /products or
+  //    /applications only means "log in first"; with a session these may return JSON, i.e. a session-based API.
+  const authed = [];
+  const paths = ['/applications', '/products', '/riders', '/api/products', '/api/applications', '/products/1'];
+  if (draftId) paths.push(`/applications/${draftId}/status`, `/applications/${draftId}`);
+  for (const p of paths) {
+    try {
+      const res = await ctx.request.get(p, { headers: { Accept: 'application/json', 'X-API-Key': env.apiKey }, maxRedirects: 0, timeout: 15000 });
+      const ct = res.headers()['content-type'] || '';
+      const text = (await res.text()).replace(/\s+/g, ' ');
+      authed.push({ path: p, status: res.status(), contentType: ct.split(';')[0], isJson: /json/i.test(ct), preview: /json/i.test(ct) ? text.slice(0, 220) : '' });
+    } catch (e) {
+      authed.push({ path: p, status: 'error', contentType: '', isJson: false, preview: String(e.message).split('\n')[0] });
+    }
+  }
   await browser.close();
-  return { calls: Object.fromEntries(calls), apiStrings: [...apiStrings], landing };
+  return { calls: Object.fromEntries(calls), apiStrings: [...apiStrings], landing, authedProbe: authed };
 }
 
 async function probe() {
@@ -103,6 +118,8 @@ async function probe() {
     const entries = Object.entries(result.calls);
     if (!entries.length) console.log('  (none - the pages are server-rendered and make no background API calls)');
     for (const [k, v] of entries) console.log(`  ${String(v.status).padEnd(4)} ${k}   [${v.contentType || v.type}]`);
+    console.log('\n[discover:api] Same paths WITH your signed-in session + key (Accept: application/json):');
+    for (const r of result.authedProbe) console.log(`  ${String(r.status).padEnd(6)} ${r.isJson ? 'JSON ' : '     '} ${r.path}${r.preview ? `\n         ${r.preview}` : ''}`);
     console.log('\n[discover:api] "/api" strings found in the pages and scripts:');
     if (!result.apiStrings.length) console.log('  (none)');
     for (const s of result.apiStrings.slice(0, 40)) console.log(`  ${s}`);

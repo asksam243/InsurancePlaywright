@@ -1,9 +1,13 @@
-Copy these files over your project folder (same paths, overwrite). Keep your .env.
-Changes since the version you last ran (smoke 7/15):
-  - config/env.js, utils/dataBuilder.js : journeys sell SecureLife (fixes "Sum assured is below the selected product minimum")
-  - fixtures/index.js                   : first login gets a 180 s timeout (fixes WF-V01 setup timeout)
-  - scripts/healthcheck.js              : npm run health now probes the API ports
-  - scripts/discover-api.js + package.json : NEW npm run discover:api (finds where the API really is)
-  - tests/api/applications.api.spec.js  : clearer message when the API returns 404
-  - test-design/*, scripts/*.py/js, docs/ : Run Results + Defect Log in the test case sheet (AD-09..AD-11)
-Then run:  npm run discover:api   and   npm run test:smoke
+Unzip over your project folder, overwrite when asked. Your .env is not included, so it is kept.
+Includes package.json (adds: npm run discover:api).
+
+New in this version
+  - fixtures/index.js : API tests are SKIPPED as an environment issue when the API does not answer (set API_REQUIRED=true to make that a failure)
+  - scripts/discover-api.js : now also probes with your signed-in session
+  - config/env.js, .env.example : API_REQUIRED
+Carried over from the previous patch
+  - config/env.js, utils/dataBuilder.js : journeys sell SecureLife
+  - fixtures/index.js : 180 s first-login timeout
+  - scripts/healthcheck.js, package.json, test-design/*, docs/*
+
+Then:  npm run test:smoke

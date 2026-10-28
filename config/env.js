@@ -58,6 +58,9 @@ module.exports = {
   // session = POST auth/login sets a session cookie that the request context carries
   // Whether agent-scoped endpoints also need a per-agent session on top of the key is still open (Q03).
   apiAuthMode: str(process.env.API_AUTH_MODE, 'key'),
+  // When the API cannot be reached at the configured base URL the API tests are SKIPPED as an environment problem (not failed as a
+  // product defect). Set API_REQUIRED=true to make that a hard failure instead (e.g. in CI once the API address is known).
+  apiRequired: bool(process.env.API_REQUIRED),
   isCI: process.env.CI === 'true', // explicit compare: the string "false" is truthy in JS
   // Shared lab VM: ONE worker until a stable baseline exists (raise WORKERS deliberately, e.g. WORKERS=2, then watch for flakiness).
   workers: Math.max(1, num(process.env.WORKERS) || 1),
@@ -103,7 +106,10 @@ module.exports = {
     maxUploadMb: num(process.env.MAX_UPLOAD_MB) || 5, // CONFIRMED: DEMO_DOCUMENT_MAX_SIZE_MB (was TBC - Q17)
     sessionTimeoutSeconds: num(process.env.SESSION_TIMEOUT_SECONDS), // TBC - Q07
     patterns: {
-      product: regex(str(process.env.PRODUCT_NAME_PATTERN, 'whole life')),
+      product: regex(str(process.env.PRODUCT_NAME_PATTERN, 'whole life')), // what the CATALOGUE must show
+      // The product the journeys SELL. The dropdown's first entry can have a higher minimum than the default face value
+      // (live smoke run: "Sum assured is below the selected product minimum"), so a specific product is chosen.
+      defaultProduct: regex(str(process.env.DEFAULT_PRODUCT_PATTERN, 'SecureLife')),
       riderAdb: regex(str(process.env.RIDER_ADB_PATTERN, 'accidental')),
       riderWaiverA: regex(process.env.RIDER_WAIVER_A_PATTERN),
       riderWaiverB: regex(process.env.RIDER_WAIVER_B_PATTERN),

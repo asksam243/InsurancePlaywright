@@ -57,3 +57,14 @@ The lockout test needs a disposable account (a real lock lasts `DEMO_LOCKOUT_MIN
 - **Write flows run as the learner account** (`LEARNER_USER`), never as the seeded agents.
 - **A wrong password counts toward the 5-attempt lock**, so AUTH-V02 uses the second agent, not agent.valid.
 - **Still unproven on the lab:** every id other than login/dashboard (run `npm run verify:selectors`), exact message wording, and the rules the offline mock could not model (duplicate beneficiary, affordability, guardian, file size, filters).
+
+## Third live run (smoke after the first fixes): 7 of 15 passed
+
+- **Works live:** login, dashboard, Create Draft, the client step and the product catalogue/step (CLI-V01, PROD-V01 passed).
+- **Product choice matters.** The product dropdown's first "whole life" entry can have a higher minimum than the default face value (live message: "Sum assured is below the selected product minimum"). Journeys now sell SecureLife (override: `DEFAULT_PRODUCT_PATTERN`).
+- **The API is NOT at `<host>:8081/api/`** (HTTP 404 with and without the key). The starter project's documented curl checks use port 8000. Run `npm run health`: it probes the usual ports and prints the `INSURANCE_API_URL=` line to put in `.env`.
+- **First login on a cold lab can exceed 45 s**; the session fixture now has a 180 s timeout.
+
+## API location is still unknown (curl evidence, 28 Oct)
+
+`GET <host>:8000/api/products` timed out; `GET <host>:8081/api/products` and `:8082/api/products` both returned a Laravel "Not Found" HTML page (Apache/PHP). So the API is not at `/api/products` on the UI ports. Run `npm run discover:api` (read-only): it signs in as the learner, records the API calls the pages themselves make, scans for `/api` strings and probes likely prefixes, then writes `discovery/api-calls.json`. Until the real base is known, API-V01..V11 will fail for an environment reason, not a product reason.

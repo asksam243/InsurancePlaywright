@@ -11,6 +11,7 @@ const base = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
 const env = require('../config/env');
+const ep = require('../config/endpoints');
 const { PageManager } = require('../pages');
 const { LoginPage } = require('../pages/LoginPage');
 const { ApiClient } = require('../api/ApiClient');
@@ -49,7 +50,8 @@ const test = base.test.extend({
   agentRole: [null, { option: true }],
   sessionCache: [async ({}, use) => use(new Map()), { scope: 'worker' }], // eslint-disable-line no-empty-pattern
 
-  storageState: async ({ browser, agentRole, sessionCache }, use, testInfo) => {
+  // The first login on a cold lab VM took >45 s in a live run (WF-V01 timed out in fixture setup), so this fixture has its own timeout.
+  storageState: [async ({ browser, agentRole, sessionCache }, use, testInfo) => {
     if (!agentRole) return use(undefined);
     let file = sessionCache.get(agentRole);
     if (!file) {
@@ -67,7 +69,7 @@ const test = base.test.extend({
       sessionCache.set(agentRole, file);
     }
     return use(file);
-  },
+  }, { timeout: 180_000 }],
 
   pages: async ({ page }, use) => use(new PageManager(page)),
 
@@ -100,7 +102,41 @@ const test = base.test.extend({
   ],
 });
 
+/**
+ * API PREFLIGHT. A live run and curl showed every /api call returning 404 on the lab's UI ports, which is an ENVIRONMENT problem
+ * (the API is not at the configured base URL), not a product defect. The first API test of each worker probes GET products once;
+ * if the API does not answer 200, API-dependent tests are skipped with that reason instead of reporting 11 misleading failures.
+ * API_REQUIRED=true turns the skip into a failure.
+ */
+const apiPreflightFixtures = {
+  apiStatus: [
+    async ({ playwright }, use) => {
+      const ctx = await playwright.request.newContext({ baseURL: env.apiBaseUrl, extraHTTPHeaders: { Accept: 'application/json', 'X-API-Key': env.apiKey } });
+      let result;
+      try {
+        const res = await ctx.get(ep.products, { maxRedirects: 0, timeout: 15_000 });
+        result = { ok: res.status() === 200, status: res.status() };
+      } catch (e) {
+        result = { ok: false, status: 'unreachable', error: String(e.message).split('\n')[0] };
+      }
+      await ctx.dispose();
+      await use(result);
+    },
+    { scope: 'worker' },
+  ],
+  apiPreflight: [
+    async ({ apiStatus }, use) => {
+      if (!apiStatus.ok && !env.apiRequired) {
+        base.test.skip(true, `ENVIRONMENT: the API does not answer at ${env.apiBaseUrl}products (HTTP ${apiStatus.status}). Run npm run discover:api / ask for the API address, then set INSURANCE_API_URL. See defect AD-11. (API_REQUIRED=true makes this a failure.)`);
+      }
+      await use();
+    },
+    { auto: true },
+  ],
+};
+
 const apiTest = base.test.extend({
+  ...apiPreflightFixtures,
   ...knownDefectFixtures,
   api: [
     async ({ playwright }, use) => {
@@ -130,6 +166,7 @@ const apiTest = base.test.extend({
 
 /** Hybrid: UI page objects AND an authenticated API client in the same test (UI-API integration scenarios). */
 const integrationTest = test.extend({
+  ...apiPreflightFixtures,
   api: async ({ playwright }, use) => {
     const client = await ApiClient.create(playwright, env.users.learnerAgent);
     await use(client);

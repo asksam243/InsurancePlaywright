@@ -172,9 +172,9 @@ const defectLog = [
     title: 'API base URL: every API call returned HTTP 404 at <host>:8081/api/',
     cases: ['API-V01', 'API-V02', 'API-V03', 'API-V04', 'API-V05', 'API-V06', 'API-V08', 'API-V10', 'API-V11'],
     evidence: 'RUN-3: API-V01 (with key) and API-V02 (without) both returned 404. curl on 28 Oct: http://34.93.84.61:8000/api/products = connection timed out (not reachable from the tester machine); :8081/api/products and :8082/api/products = HTTP 404 with a Laravel "Not Found" HTML page (Apache/PHP) - the server is up but has no route at that path.',
-    analysis: 'CONFIRMED: /api/products does not exist on :8081 or :8082, and :8000 is not reachable. NOT YET KNOWN: where the API really is (different prefix such as /api/v1, or an API only enabled on a local server). npm run discover:api records the calls the app\'s own pages make and probes likely paths.',
+    analysis: 'CONFIRMED (discover:api, 28 Oct): all 24 probed paths under /api, /api/v1, /index.php/api, /public/api, /insurance/api and /api/insurance returned 404 on :8081; the pages make no background API calls and contain no /api strings. Anonymous GET /products and /applications return 401 JSON, which looks like the app\'s own login-protected pages, not a key-protected API. /health and /riders are 404. CONFIRMED: /api/products does not exist on :8081 or :8082, and :8000 is not reachable from the tester machine (possibly open only on the VM itself). NOT YET KNOWN: where the API really is (different prefix such as /api/v1, or an API only enabled on a local server). npm run discover:api records the calls the app\'s own pages make and probes likely paths.',
     severity: 'High', priority: 'P1', status: 'Open - real API path not yet found (run npm run discover:api)',
-    fix: 'scripts/discover-api.js; then set INSURANCE_API_URL (or adjust config/endpoints.js)', defects: [],
+    fix: 'API tests now SKIP as an environment issue until the API answers (API_REQUIRED=true makes it a failure); ask the lab for the API address or run the API tests on the VM / via an SSH tunnel to :8000', defects: [],
   },
   // ---- application-side items: NOT reproduced by the team yet
   {
