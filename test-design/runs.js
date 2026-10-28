@@ -43,6 +43,14 @@ const liveRuns = [
     total: 15, passed: 11, failed: 2, skipped: 2, durationMin: 2.5,
     note: 'End-to-end submission (WF-V03), draft save (WF-V01), beneficiaries, documents and client info pass live. Failures: WF-V08 (over-specified review check, AD-12) and RIDER-V01 (premium summary not read, AD-13). API-V01/V02 skipped as an environment issue (AD-11). The review shows Calculated Age 36 for a DOB 35 years back (AC-04).',
   },
+  {
+    id: 'RUN-5',
+    when: '2026-10-28 (after the WF-V08 / CLI-V13 / diagnostics patch)',
+    scope: 'Smoke (@smoke), chromium + api',
+    code: 'Merged repo v4',
+    total: 15, passed: 12, failed: 1, skipped: 2, durationMin: 2.0,
+    note: 'Only RIDER-V01 fails: the page shows "Current rider premium: $0.00" until the step is saved (AD-13). API-V01/V02 still skipped (AD-11). CLI-V13 (age) not yet run.',
+  },
 ];
 
 // scenario id -> observed result. Anything not listed was not observed individually.
@@ -59,6 +67,11 @@ const RUN4 = {
   failed: ['WF-V08', 'RIDER-V01'],
   skipped: ['API-V01', 'API-V02'],
 };
+const RUN5 = {
+  passed: ['WF-V01', 'WF-V03', 'WF-V08', 'AUTH-V01', 'AUTH-V14', 'AUTH-V04', 'AUTH-V05', 'BEN-V01', 'CLI-V01', 'DASH-V01', 'DOC-V01', 'PROD-V01'],
+  failed: ['RIDER-V01'],
+  skipped: ['API-V01', 'API-V02'],
+};
 const RUN2 = {
   passed: ['AUTH-V01', 'AUTH-V02', 'AUTH-V03', 'AUTH-V05', 'AUTH-V11', 'AUTH-V14', 'FW-01', 'FW-02', 'FW-03', 'FW-04'],
   failed: ['BEN-V01', 'BEN-V02', 'BEN-V03', 'BEN-V04', 'BEN-V05', 'BEN-V06', 'BEN-V07', 'BEN-V08', ...RUN1.failed],
@@ -69,6 +82,12 @@ const RUN2 = {
 /** Result text for a scenario in a run. */
 function resultFor(run, id, smoke, automated) {
   if (!automated) return 'Not automated';
+  if (run === 'RUN-5') {
+    if (RUN5.passed.includes(id)) return 'Passed';
+    if (RUN5.failed.includes(id)) return 'Failed';
+    if (RUN5.skipped.includes(id)) return 'Skipped (environment)';
+    return smoke ? 'Not itemised' : 'Not in smoke scope';
+  }
   if (run === 'RUN-4') {
     if (RUN4.passed.includes(id)) return 'Passed';
     if (RUN4.failed.includes(id)) return 'Failed';
@@ -192,16 +211,16 @@ const defectLog = [
     cases: ['WF-V08'],
     evidence: 'RUN-4 failure text: review shows Client, Calculated Age, Product, Sum Assured, Frequency, Payment Term, Coverage Term, Base/Rider/Total premium and Status only.',
     analysis: 'The test over-specified the page. Whether the review SHOULD list beneficiaries is a requirement question (CL-03).',
-    severity: 'Medium', priority: 'P2', status: 'Fixed in code - awaiting live re-run',
+    severity: 'Medium', priority: 'P2', status: 'Verified live in RUN-5 (WF-V08 passes)',
     fix: 'tests/e2e/workflow.spec.js WF-V08 checks client, product, sum assured and premium on review, and the beneficiary on its own step', defects: [],
   },
   {
     id: 'AD-13', type: 'Automation defect', module: 'Riders',
     title: 'RIDER-V01: the rider premium summary figure was not read (NaN after 8 s)',
-    cases: ['RIDER-V01'],
+    cases: ['RIDER-V01', 'RIDER-V07'],
     evidence: 'RUN-4: "rider premium in the summary ... Expected > 0, Received NaN".',
-    analysis: 'UNKNOWN which of: the summary element id differs, the summary shows 0.00 until the step is saved, or the ADB coverage field needs a value. The test now attaches what the page shows (rider-premium-diagnostics) when it fails.',
-    severity: 'Medium', priority: 'P2', status: 'Open - needs the attached diagnostics or error-context.md', fix: 'pages/RiderPage.js riderPremiumSummary() reads a labelled figure as a fallback', defects: ['RI-12'],
+    analysis: 'CONFIRMED by the attached diagnostics (RUN-5): the page shows "Current rider premium: $0.00" after the rider is ticked. The premium is calculated by the server on SAVE, not live; the third project\'s own RIDER-V01 saves, reopens the step and then reads the summary. The test assumed a live update.',
+    severity: 'Medium', priority: 'P2', status: 'Fixed in code - awaiting live re-run', fix: 'tests/ui/riders.spec.js RIDER-V01 saves and reopens the step (RiderPage.saveAndReopen); RIDER-V07 reads the review breakdown (ReviewSubmitPage.premiumBreakdown)', defects: ['RI-12'],
   },
   {
     id: 'AD-11', type: 'Environment issue', module: 'API',

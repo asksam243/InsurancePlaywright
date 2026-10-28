@@ -23,6 +23,16 @@ class ReviewSubmitPage extends BasePage {
     return m ? parseMoney(m[1]) : NaN;
   }
 
+  /** The itemised premiums of the review snapshot: base policy, rider and total modal premium (NaN when a figure is absent). */
+  async premiumBreakdown() {
+    const text = await this.reviewText();
+    const money = (label) => {
+      const m = text.match(new RegExp(`${label}\\s*\\$?\\s*([\\d,]+\\.\\d{2})`, 'i'));
+      return m ? parseMoney(m[1]) : NaN;
+    };
+    return { base: money('Base\\s+Policy\\s+Premium'), rider: money('Rider\\s+Premium'), total: money('Total\\s+(?:Modal\\s+)?Premium') };
+  }
+
   /** Calculated age shown in the review snapshot (NaN when not shown). */
   async calculatedAge() {
     const el = this.$(S.review.age);

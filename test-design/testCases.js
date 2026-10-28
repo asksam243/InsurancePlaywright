@@ -412,9 +412,9 @@ const cases = [
   T('RIDER-V01', 'Eligible protection rider (ADB) added to premium summary', {
     priority: 'P1', severity: 'High', smoke: true,
     pre: atStep('riders'),
-    steps: ['Add the Accidental Death Benefit rider', 'Read the rider premium summary'],
+    steps: ['Add the Accidental Death Benefit rider with its coverage amount', 'Save and continue, then reopen the riders step', 'Read the rider premium summary'],
     data: 'RIDER_ADB_PATTERN',
-    expected: 'The rider shows as added and a rider premium greater than zero appears in the summary',
+    expected: 'The rider is still selected after saving and a rider premium greater than zero appears in the summary (the server calculates it on save; ticking alone leaves it at $0.00)',
   }),
   T('RIDER-V02', 'Rider coverage cannot exceed base face value', {
     type: 'UI Boundary', priority: 'P1', severity: 'High', defects: ['RI-10'], layer: 'UI + API',
@@ -459,8 +459,8 @@ const cases = [
   T('RIDER-V07', 'Rider premium itemized and total premium updated', {
     priority: 'P1', severity: 'High', defects: ['RI-12'],
     pre: atStep('riders'),
-    steps: ['Read total premium', 'Add the ADB rider', 'Read the rider premium and the new total'],
-    expected: 'New total = old total + rider premium (to 2 decimals)',
+    steps: ['Add the ADB rider and save', 'Complete the journey to the review page', 'Read Base Policy Premium, Rider Premium and Total Modal Premium'],
+    expected: 'Rider premium is itemised (> 0) and Total Modal Premium = Base Policy Premium + Rider Premium (to 2 decimals)',
     evidence: EV_SEEDED,
   }),
 

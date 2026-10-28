@@ -70,6 +70,7 @@
       "run2": "Passed",
       "run3": "Passed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": []
     },
     {
@@ -118,6 +119,7 @@
       "run2": "Passed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AD-07"
       ]
@@ -165,6 +167,7 @@
       "run2": "Passed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -211,6 +214,7 @@
       "run2": "Not passed - investigate",
       "run3": "Passed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": [
         "AD-07"
       ]
@@ -258,6 +262,7 @@
       "run2": "Passed",
       "run3": "Passed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": []
     },
     {
@@ -308,6 +313,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -358,6 +364,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -409,6 +416,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -457,6 +465,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -503,6 +512,7 @@
       "run2": "Passed",
       "run3": "Passed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": []
     },
     {
@@ -550,6 +560,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -596,6 +607,7 @@
       "run2": "Passed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -643,6 +655,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -691,6 +704,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -735,6 +749,7 @@
       "run2": "Not passed - investigate",
       "run3": "Passed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": [
         "AD-07"
       ]
@@ -784,6 +799,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -828,6 +844,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "CL-02"
       ]
@@ -880,6 +897,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -925,6 +943,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "CL-01"
       ]
@@ -976,6 +995,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1021,6 +1041,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "CL-01"
       ]
@@ -1068,6 +1089,7 @@
       "run2": "Failed",
       "run3": "Passed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -1117,6 +1139,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1165,6 +1188,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1213,6 +1237,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1262,6 +1287,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1307,6 +1333,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1352,6 +1379,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1402,6 +1430,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AD-08"
       ]
@@ -1448,6 +1477,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1494,6 +1524,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1538,6 +1569,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1588,6 +1620,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1635,6 +1668,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AC-04"
       ]
@@ -1681,6 +1715,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1725,6 +1760,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1771,6 +1807,7 @@
       "run2": "Failed",
       "run3": "Passed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -1818,6 +1855,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1866,6 +1904,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1913,6 +1952,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -1964,6 +2004,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2014,6 +2055,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2064,6 +2106,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2115,6 +2158,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2159,6 +2203,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2203,6 +2248,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2253,6 +2299,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2268,11 +2315,12 @@
       "defects": [],
       "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the riders step with every earlier step completed using valid data",
       "steps": [
-        "Add the Accidental Death Benefit rider",
+        "Add the Accidental Death Benefit rider with its coverage amount",
+        "Save and continue, then reopen the riders step",
         "Read the rider premium summary"
       ],
       "data": "RIDER_ADB_PATTERN",
-      "expected": "The rider shows as added and a rider premium greater than zero appears in the summary",
+      "expected": "The rider is still selected after saving and a rider premium greater than zero appears in the summary (the server calculates it on save; ticking alone leaves it at $0.00)",
       "evidence": "Screenshot + trace on failure",
       "automation": "Automated",
       "cond": "",
@@ -2298,6 +2346,7 @@
       "run2": "Failed",
       "run3": "Failed",
       "run4": "Failed",
+      "run5": "Failed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -2353,6 +2402,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2399,6 +2449,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2443,6 +2494,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2492,6 +2544,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2535,6 +2588,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2552,12 +2606,12 @@
       ],
       "pre": "Valid agent (AGENT_VALID) signed in via saved session; environment reachable; NEW application open at the riders step with every earlier step completed using valid data",
       "steps": [
-        "Read total premium",
-        "Add the ADB rider",
-        "Read the rider premium and the new total"
+        "Add the ADB rider and save",
+        "Complete the journey to the review page",
+        "Read Base Policy Premium, Rider Premium and Total Modal Premium"
       ],
       "data": "Generated synthetic data (utils/dataBuilder.js)",
-      "expected": "New total = old total + rider premium (to 2 decimals)",
+      "expected": "Rider premium is itemised (> 0) and Total Modal Premium = Base Policy Premium + Rider Premium (to 2 decimals)",
       "evidence": "Screenshot attached on pass AND fail; trace/video on failure; diagnostics.json (console + 5xx)",
       "automation": "Automated",
       "cond": "",
@@ -2583,7 +2637,10 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
-      "defectLogIds": []
+      "run5": "Not in smoke scope",
+      "defectLogIds": [
+        "AD-13"
+      ]
     },
     {
       "id": "BEN-V01",
@@ -2628,6 +2685,7 @@
       "run2": "Failed",
       "run3": "Failed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -2683,6 +2741,7 @@
       "run2": "Failed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2731,6 +2790,7 @@
       "run2": "Failed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2778,6 +2838,7 @@
       "run2": "Failed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2827,6 +2888,7 @@
       "run2": "Failed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2871,6 +2933,7 @@
       "run2": "Failed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2915,6 +2978,7 @@
       "run2": "Failed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -2963,6 +3027,7 @@
       "run2": "Failed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3007,6 +3072,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3051,6 +3117,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3095,6 +3162,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3141,6 +3209,7 @@
       "run2": "Failed",
       "run3": "Failed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -3191,6 +3260,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3234,6 +3304,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3284,6 +3355,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3328,6 +3400,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3371,6 +3444,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AC-01"
       ]
@@ -3422,6 +3496,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3473,6 +3548,7 @@
       "run2": "Failed",
       "run3": "Failed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-04",
@@ -3528,6 +3604,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3578,6 +3655,7 @@
       "run2": "Failed",
       "run3": "Failed",
       "run4": "Passed",
+      "run5": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -3628,6 +3706,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3671,6 +3750,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3723,6 +3803,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3772,6 +3853,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -3818,6 +3900,7 @@
       "run2": "Failed",
       "run3": "Failed",
       "run4": "Failed",
+      "run5": "Passed",
       "defectLogIds": [
         "AD-01",
         "AD-02",
@@ -3869,6 +3952,7 @@
       "run2": "Failed",
       "run3": "Failed",
       "run4": "Skipped (environment)",
+      "run5": "Skipped (environment)",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -3917,6 +4001,7 @@
       "run2": "Failed",
       "run3": "Failed",
       "run4": "Skipped (environment)",
+      "run5": "Skipped (environment)",
       "defectLogIds": [
         "AD-03",
         "AD-11",
@@ -3971,6 +4056,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4024,6 +4110,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4077,6 +4164,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4128,6 +4216,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4179,6 +4268,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4224,6 +4314,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11",
@@ -4271,6 +4362,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4315,6 +4407,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4362,6 +4455,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": [
         "AD-03",
         "AD-11"
@@ -4413,6 +4507,7 @@
       "run2": "Failed or skipped (not itemised)",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4461,6 +4556,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4509,6 +4605,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4557,6 +4654,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4605,6 +4703,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4653,6 +4752,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4701,6 +4801,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4749,6 +4850,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4797,6 +4899,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4845,6 +4948,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4893,6 +4997,7 @@
       "run2": "Not automated",
       "run3": "Not automated",
       "run4": "Not automated",
+      "run5": "Not automated",
       "defectLogIds": []
     },
     {
@@ -4941,6 +5046,7 @@
       "run2": "Passed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -4985,6 +5091,7 @@
       "run2": "Passed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -5029,6 +5136,7 @@
       "run2": "Passed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     },
     {
@@ -5074,6 +5182,7 @@
       "run2": "Passed",
       "run3": "Not in smoke scope",
       "run4": "Not in smoke scope",
+      "run5": "Not in smoke scope",
       "defectLogIds": []
     }
   ],
@@ -5125,6 +5234,18 @@
       "skipped": 2,
       "durationMin": 2.5,
       "note": "End-to-end submission (WF-V03), draft save (WF-V01), beneficiaries, documents and client info pass live. Failures: WF-V08 (over-specified review check, AD-12) and RIDER-V01 (premium summary not read, AD-13). API-V01/V02 skipped as an environment issue (AD-11). The review shows Calculated Age 36 for a DOB 35 years back (AC-04)."
+    },
+    {
+      "id": "RUN-5",
+      "when": "2026-10-28 (after the WF-V08 / CLI-V13 / diagnostics patch)",
+      "scope": "Smoke (@smoke), chromium + api",
+      "code": "Merged repo v4",
+      "total": 15,
+      "passed": 12,
+      "failed": 1,
+      "skipped": 2,
+      "durationMin": 2,
+      "note": "Only RIDER-V01 fails: the page shows \"Current rider premium: $0.00\" until the step is saved (AD-13). API-V01/V02 still skipped (AD-11). CLI-V13 (age) not yet run."
     }
   ],
   "defectLog": [
@@ -5341,7 +5462,7 @@
       "analysis": "The test over-specified the page. Whether the review SHOULD list beneficiaries is a requirement question (CL-03).",
       "severity": "Medium",
       "priority": "P2",
-      "status": "Fixed in code - awaiting live re-run",
+      "status": "Verified live in RUN-5 (WF-V08 passes)",
       "fix": "tests/e2e/workflow.spec.js WF-V08 checks client, product, sum assured and premium on review, and the beneficiary on its own step",
       "defects": []
     },
@@ -5351,14 +5472,15 @@
       "module": "Riders",
       "title": "RIDER-V01: the rider premium summary figure was not read (NaN after 8 s)",
       "cases": [
-        "RIDER-V01"
+        "RIDER-V01",
+        "RIDER-V07"
       ],
       "evidence": "RUN-4: \"rider premium in the summary ... Expected > 0, Received NaN\".",
-      "analysis": "UNKNOWN which of: the summary element id differs, the summary shows 0.00 until the step is saved, or the ADB coverage field needs a value. The test now attaches what the page shows (rider-premium-diagnostics) when it fails.",
+      "analysis": "CONFIRMED by the attached diagnostics (RUN-5): the page shows \"Current rider premium: $0.00\" after the rider is ticked. The premium is calculated by the server on SAVE, not live; the third project's own RIDER-V01 saves, reopens the step and then reads the summary. The test assumed a live update.",
       "severity": "Medium",
       "priority": "P2",
-      "status": "Open - needs the attached diagnostics or error-context.md",
-      "fix": "pages/RiderPage.js riderPremiumSummary() reads a labelled figure as a fallback",
+      "status": "Fixed in code - awaiting live re-run",
+      "fix": "tests/ui/riders.spec.js RIDER-V01 saves and reopens the step (RiderPage.saveAndReopen); RIDER-V07 reads the review breakdown (ReviewSubmitPage.premiumBreakdown)",
       "defects": [
         "RI-12"
       ]

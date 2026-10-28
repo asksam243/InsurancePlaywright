@@ -3,6 +3,8 @@ const { BasePage } = require('./BasePage');
 const env = require('../config/env');
 const { S } = require('../config/selectors');
 const { parseMoney } = require('../utils/parse');
+const routes = require('../config/routes');
+const { applicationIdFromUrl } = require('./DashboardPage');
 
 const MONEY = /\d[\d,]*\.\d{2}/g;
 
@@ -111,6 +113,17 @@ class RiderPage extends BasePage {
   async premiumDiagnostics() {
     const main = await this.page.locator('main').first().innerText().catch(() => '');
     return `summary element text: "${await this.summaryText()}"\nlines mentioning premium:\n${main.split('\n').filter((l) => /premium|rider|\$/i.test(l)).slice(0, 25).join('\n')}`;
+  }
+
+  /**
+   * The premium summary is calculated by the SERVER when the step is saved (live finding: ticking a rider leaves it at
+   * "Current rider premium: $0.00"). Saves the step, then reopens the riders page so the summary can be read.
+   */
+  async saveAndReopen() {
+    const id = applicationIdFromUrl(this.page.url());
+    await this.next();
+    await this.page.goto(routes.step(id, 'riders'));
+    await this.$(S.rider.root).waitFor({ state: 'visible' });
   }
 
   get message() {

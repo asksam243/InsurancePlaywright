@@ -2,7 +2,7 @@ const { test, tc, expect, env } = require('../../fixtures');
 const M = require('../../config/messages');
 const { dobForAge } = require('../../utils/dates');
 const { buildClient } = require('../../utils/dataBuilder');
-const { progressTo } = require('../../utils/flows');
+const { progressTo, finishFrom } = require('../../utils/flows');
 const { captureEvidence } = require('../../utils/assertions');
 
 const r = env.rules;
@@ -16,10 +16,11 @@ test.describe('Rider Selection', () => {
   };
 
   test(...tc('RIDER-V01'), async ({ pages }, testInfo) => {
-    await progressTo(pages, 'riders');
+    const { data } = await progressTo(pages, 'riders');
     await needRider(pages, adb, 'ADB');
-    await pages.rider.add(adb);
-    expect(await pages.rider.isAdded(adb)).toBe(true);
+    await pages.rider.add(adb, data.product.faceValue);
+    await pages.rider.saveAndReopen(); // the rider premium summary is calculated on save, not while ticking
+    expect(await pages.rider.isAdded(adb), 'the rider is still selected after saving').toBe(true);
     try {
       await expect.poll(() => pages.rider.riderPremiumSummary(), { message: 'rider premium in the summary' }).toBeGreaterThan(0);
     } catch (e) {
@@ -94,14 +95,16 @@ test.describe('Rider Selection', () => {
   });
 
   test(...tc('RIDER-V07'), async ({ pages, page }, testInfo) => {
-    await progressTo(pages, 'riders');
+    const { data } = await progressTo(pages, 'riders');
     await needRider(pages, adb, 'ADB');
-    const before = await pages.rider.totalPremium();
-    expect(before, 'total premium must be displayed on the rider step').not.toBeNaN();
-    await pages.rider.add(adb);
-    await expect.poll(() => pages.rider.riderPremiumSummary()).toBeGreaterThan(0);
-    const riderPremium = await pages.rider.riderPremiumSummary();
+    await pages.rider.add(adb, data.product.faceValue);
+    await pages.rider.next();
+    await finishFrom(pages, 'beneficiaries', data);
+    // The review snapshot itemises Base Policy Premium, Rider Premium and Total Modal Premium (live finding).
     await captureEvidence(page, testInfo, 'rider-premium-itemised');
-    await expect.poll(() => pages.rider.totalPremium(), { message: 'total = old total + rider premium' }).toBeCloseTo(before + riderPremium, 2);
+    const { base, rider, total } = await pages.review.premiumBreakdown();
+    expect(base, 'base premium on review').toBeGreaterThan(0);
+    expect(rider, 'rider premium itemised on review').toBeGreaterThan(0);
+    expect(total, 'total = base + rider premium').toBeCloseTo(base + rider, 2);
   });
 });

@@ -21,6 +21,7 @@ const out = {
       run2: runs.resultFor('RUN-2', c.id, c.smoke, automated),
       run3: runs.resultFor('RUN-3', c.id, c.smoke, automated),
       run4: runs.resultFor('RUN-4', c.id, c.smoke, automated),
+      run5: runs.resultFor('RUN-5', c.id, c.smoke, automated),
       defectLogIds: runs.defectLog.filter((d) => d.cases.includes(c.id)).map((d) => d.id),
     };
   }),

@@ -52,7 +52,7 @@ cols = [('Test Case ID', 14), ('Title', 42), ('Module', 22), ('Scenario ID', 11)
         ('Priority (P1 = release gate)', 12), ('Submission 1 Priority', 11), ('Release Gate', 8), ('Smoke', 7), ('Sensitive Data (no trace/video)', 11),
         ('Evidence Required', 30), ('Automation Status', 12), ('Automated In', 30), ('Run Conditions / TBC', 30), ('Open Questions', 12),
         ('Blocked Reason', 40), ('Tags', 36),
-        ('Live run 1 - smoke 26-Oct 11:38 (old code)', 18), ('Live run 2 - full 26-Oct 11:51 (old code)', 18), ('Live run 3 - smoke after fixes', 18), ('Live run 4 - smoke 28-Oct', 18), ('Defect Log IDs', 14)]
+        ('Live run 1 - smoke 26-Oct 11:38 (old code)', 18), ('Live run 2 - full 26-Oct 11:51 (old code)', 18), ('Live run 3 - smoke after fixes', 18), ('Live run 4 - smoke 28-Oct', 18), ('Live run 5 - smoke 28-Oct (later)', 18), ('Defect Log IDs', 14)]
 title(tc, 'Test Case Design Sheet - Insurance Order Entry Platform (Submission 2)',
       'Generated from test-design/testCases.js. Edit the .js file (single source of truth) and re-run: npm run export:testdesign && python scripts/build_test_sheet.py')
 H = 4; header(tc, H, [c[0] for c in cols], [c[1] for c in cols])
@@ -64,10 +64,10 @@ for r, c in enumerate(cases, H + 1):
     put(tc, r, [c['tcId'], c['title'], c['module'], c['id'], c['source'], ', '.join(c['risks']), defects, codes, c['type'], c['layer'], c['pre'], steps, c['data'],
                 c['expected'], c['severity'], c['priority'], c['submission1Priority'], YN(c['gate']), YN(c['smoke']), YN(c['sensitive']), c['evidence'],
                 c['automationStatus'], c['spec'], c['cond'], ', '.join(c['explore']), c['blockedReason'], ' '.join(c['tags']),
-                c['run1'], c['run2'], c['run3'], c['run4'], ', '.join(c['defectLogIds'])],
+                c['run1'], c['run2'], c['run3'], c['run4'], c['run5'], ', '.join(c['defectLogIds'])],
         fills={15: sev, 16: RATING['Critical'] if c['priority'] == 'P1' else 'FFFFFF', 8: INPUT,
                22: {'Automated': 'D5E8D4', 'Blocked': 'F4B6B6'}.get(c['automationStatus'], 'FFF2B3'),
-               28: RUNFILL(c['run1']), 29: RUNFILL(c['run2']), 30: RUNFILL(c['run3']), 31: RUNFILL(c['run4'])})
+               28: RUNFILL(c['run1']), 29: RUNFILL(c['run2']), 30: RUNFILL(c['run3']), 31: RUNFILL(c['run4']), 32: RUNFILL(c['run5'])})
 last = H + len(cases)
 tc.freeze_panes = tc.cell(row=H + 1, column=3); tc.auto_filter.ref = f'A{H}:{L(len(cols))}{last}'
 TCR = lambda col: f"'Test Cases'!${col}${H+1}:${col}${last}"
@@ -133,7 +133,7 @@ title(rr, 'Live run results (lab VM) and failure classification',
       'Only runs observed on the lab VM are recorded. Offline dry-runs against a mock application are NOT evidence about the application and are not listed.')
 header(rr, 4, ['Run', 'When', 'Scope', 'Code under test', 'Total', 'Passed', 'Failed', 'Skipped', 'Pass rate', 'Duration (min)', 'Notes', 'Itemised Passed (formula)', 'Itemised Failed (formula)'],
        [9, 17, 26, 40, 8, 8, 8, 9, 10, 12, 70, 14, 14])
-runcol = {'RUN-1': 'AB', 'RUN-2': 'AC', 'RUN-3': 'AD', 'RUN-4': 'AE'}
+runcol = {'RUN-1': 'AB', 'RUN-2': 'AC', 'RUN-3': 'AD', 'RUN-4': 'AE', 'RUN-5': 'AF'}
 for r, x in enumerate(d['liveRuns'], 5):
     col = runcol[x['id']]
     put(rr, r, [x['id'], x['when'], x['scope'], x['code'], x['total'], x['passed'], x['failed'], x['skipped'], f'=IF(E{r}=0,"n/a",F{r}/E{r})', x['durationMin'], x['note'],
@@ -202,7 +202,7 @@ for i, (lbl, f, nf) in enumerate(rows):
     if nf: c.number_format = nf
 sm.cell(row=k + 6, column=1, value='Notes').font = Font(name=F, bold=True)
 for i, n in enumerate(['Automated = a Playwright test exists for the case. Blocked = cannot be automated yet (database access, Q04).',
-                       'Four live runs exist (Run Results sheet): v1 passed 5/15 smoke and 10/96 overall; the latest smoke run passed 11/15 (2 API tests skipped as environment, 2 failures open). The full suite has NOT been re-run since the first round of fixes.']):
+                       'Four live runs exist (Run Results sheet): v1 passed 5/15 smoke and 10/96 overall; the latest smoke run passed 12/15 (2 API tests skipped as environment, 1 failure open: RIDER-V01, fixed in code). The full suite has NOT been re-run since the first round of fixes.']):
     sm.cell(row=k + 7 + i, column=1, value=n).font = Font(name=F, size=9, italic=True)
 
 # ---------------------------------------------------------------- Limitations
